@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D CSS Slider - Direct View</title>
+  
+  <!-- Original fonts -->
+  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/murty/Murty.ttf" rel="stylesheet" />
+  
+  <style>
+    @font-face {
+      font-family: 'Murty Sanskrit';
+      src: url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/murty/Murty.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    /* Reset default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #D2D2D2;
+      background-image: 
+        repeating-linear-gradient(
+          to right, transparent 0 100px,
+          rgba(37, 40, 59, 0.13) 100px 101px
+        ),
+        repeating-linear-gradient(
+          to bottom, transparent 0 100px,
+          rgba(37, 40, 59, 0.13) 100px 101px
+        );
+    }
+    
+    /* Original styles from style.css */
+    .banner{
+      width: 100%;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .banner .slider{
+      position: absolute;
+      width: 200px;
+      height: 250px;
+      top: 15%;
+      left: calc(50% - 100px);
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+      animation: autoRun 20s linear infinite;
+      z-index: 2;
+    }
+    @keyframes autoRun{
+      from{
+        transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
+      }to{
+        transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
+      }
+    }
+
+    .banner .slider .item{
+      position: absolute;
+      inset: 0 0 0 0;
+      transform: 
+        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(420px);
+    }
+    .banner .slider .item img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .banner .content{
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1400px, 100vw);
+      height: max-content;
+      padding-bottom: 120px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
+    }
+    .banner .content h1{
+      font-family: 'Murty Sanskrit', serif;
+      font-size: 12em;
+      line-height: 1em;
+      color: #909dab;
+      position: relative;
+      margin-top: 200px;
+      width: 100%;
+      letter-spacing: 0.1em;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .banner .content h1::after{
+      position: absolute;
+      inset: 0 0 0 0;
+      content: attr(data-content);
+      z-index: 2;
+      color: transparent;
+      -webkit-text-stroke: 1px #fff;
+      text-shadow: none;
+    }
+    .banner .content .author{
+      font-family: Cooper Lt BT, Arial, sans-serif;
+      text-align: right;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: 40px;
+      position: relative;
+      z-index: 3;
+    }
+    .banner .content h2{
+      font-size: 3em;
+    }
+    .banner .content .model{
+      background-image: url('./static-images/model.png');
+      width: 100%;
+      height: 75vh;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-size: auto 130%;
+      background-repeat: no-repeat;
+      background-position: top center;
+      z-index: 1;
+    }
+    
+    /* Responsive styles */
+    @media screen and (max-width: 1023px) {
+      .banner .slider{
+        width: 160px;
+        height: 200px;
+        left: calc(50% - 80px);
+        top: 15%;
+      }
+      .banner .slider .item{
+        transform: 
+          rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+          translateZ(270px);
+      }
+      .banner .content h1{
+        text-align: center;
+        width: 100%;
+        font-size: 5em;
+        margin-top: 50px;
+        -webkit-text-stroke: 0.75px #fff;
+      }
+      .banner .content .author{
+        color: #fff;
+        padding: 20px;
+        text-shadow: 0 10px 20px #000;
+        z-index: 2;
+        max-width: unset;
+        width: 100%;
+        text-align: right;
+        padding: 0 30px;
+        margin-right: 0;
+      }
+      .banner .content h1::after {
+        -webkit-text-stroke: 0.75px #fff;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      .banner .slider{
+        width: 100px;
+        height: 150px;
+        left: calc(50% - 50px);
+        top: 15%;
+      }
+      .banner .slider .item{
+        transform: 
+          rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+          translateZ(160px);
+      }
+      .banner .content h1{
+        font-size: 3.5em;
+        margin-top: 30px;
+        -webkit-text-stroke: 0.5px #fff;
+      }
+      .banner .content h1::after {
+        -webkit-text-stroke: 0.5px #fff;
+      }
+    }
+
+    /* Add the :before pseudo-element for the body from the inline CSS */
+    body::before{
+      position: absolute;
+      width: min(1400px, 90vw);
+      top: 10%;
+      left: 50%;
+      height: 90%;
+      transform: translateX(-50%);
+      content: '';
+      background-image: url('./static-images/bg.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: top center;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="slider" style="--quantity: 10;">
+      <div class="item" style="--position: 1;"><img src="./static-images/dragon_1.jpg" alt="" /></div>
+      <div class="item" style="--position: 2;"><img src="./static-images/dragon_2.jpg" alt="" /></div>
+      <div class="item" style="--position: 3;"><img src="./static-images/dragon_3.jpg" alt="" /></div>
+      <div class="item" style="--position: 4;"><img src="./static-images/dragon_4.jpg" alt="" /></div>
+      <div class="item" style="--position: 5;"><img src="./static-images/dragon_5.jpg" alt="" /></div>
+      <div class="item" style="--position: 6;"><img src="./static-images/dragon_6.jpg" alt="" /></div>
+      <div class="item" style="--position: 7;"><img src="./static-images/dragon_7.jpg" alt="" /></div>
+      <div class="item" style="--position: 8;"><img src="./static-images/dragon_8.jpg" alt="" /></div>
+      <div class="item" style="--position: 9;"><img src="./static-images/dragon_9.jpg" alt="" /></div>
+      <div class="item" style="--position: 10;"><img src="./static-images/dragon_10.jpg" alt="" /></div>
+    </div>
+    <div class="content">
+      <h1 data-content="𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽">
+       𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽
+      </h1>
+      <div class="author">
+        <h2>LUN DEV</h2>
+        <p><b>Web Design</b></p>
+        <p>
+          Subscribe to the channel to watch many interesting videos
+        </p>
+      </div>
+      <div class="model"></div>
+    </div>
+  </div>
+</body>
+</html> 

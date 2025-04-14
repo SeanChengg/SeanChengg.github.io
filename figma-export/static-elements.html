@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Elements for Figma</title>
+    <!-- Import the same fonts -->
+    <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/murty/Murty.ttf" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Murty Sanskrit';
+            src: url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/murty/Murty.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            background-color: #D2D2D2;
+            background-image: 
+                repeating-linear-gradient(
+                    to right, transparent 0 100px,
+                    #25283b22 100px 101px
+                ),
+                repeating-linear-gradient(
+                    to bottom, transparent 0 100px,
+                    #25283b22 100px 101px
+                );
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Container for all static elements */
+        .static-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Sanskrit Text Styling */
+        .sanskrit-text {
+            font-family: 'Murty Sanskrit', serif;
+            font-size: 12em;
+            line-height: 1em;
+            color: #909dab;
+            position: absolute;
+            top: 200px;
+            width: 100%;
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-rendering: geometricPrecision;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Sanskrit Text Outline */
+        .sanskrit-outline {
+            font-family: 'Murty Sanskrit', serif;
+            font-size: 12em;
+            line-height: 1em;
+            position: absolute;
+            top: 200px;
+            width: 100%;
+            text-align: center;
+            letter-spacing: 0.1em;
+            color: transparent;
+            -webkit-text-stroke: 1px #fff;
+            text-shadow: none;
+            pointer-events: none;
+        }
+
+        /* Author Section */
+        .author {
+            font-family: 'Cooper Lt BT', 'Arial', sans-serif;
+            text-align: right;
+            max-width: 300px;
+            position: absolute;
+            bottom: 200px;
+            right: 40px;
+        }
+
+        .author h2 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        .author p {
+            margin: 5px 0;
+        }
+
+        .author p b {
+            font-weight: 700;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 1023px) {
+            .sanskrit-text, .sanskrit-outline {
+                font-size: 5em;
+                top: 50px;
+                text-align: center;
+            }
+            
+            .sanskrit-outline {
+                -webkit-text-stroke: 0.75px #fff;
+            }
+
+            .author {
+                color: #fff;
+                text-shadow: 0 10px 20px #000;
+                max-width: unset;
+                width: 100%;
+                text-align: right;
+                padding: 0 30px;
+                right: 0;
+                bottom: 150px;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .sanskrit-text, .sanskrit-outline {
+                font-size: 3.5em;
+                top: 30px;
+            }
+            
+            .sanskrit-outline {
+                -webkit-text-stroke: 0.5px #fff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="static-container">
+        <!-- Sanskrit text with both solid color and outline versions -->
+        <div class="sanskrit-text">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</div>
+        <div class="sanskrit-outline">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</div>
+
+        <!-- Author section -->
+        <div class="author">
+            <h2>LUN DEV</h2>
+            <p><b>Web Design</b></p>
+            <p>Subscribe to the channel to watch many interesting videos</p>
+        </div>
+    </div>
+</body>
+</html> 

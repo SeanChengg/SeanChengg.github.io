@@ -1,0 +1,55 @@
+{
+  "colors": {
+    "background": "#D2D2D2",
+    "gridLines": "rgba(37, 40, 59, 0.13)",
+    "sanskritText": "#909dab",
+    "sanskritOutline": "#ffffff",
+    "authorText": {
+      "desktop": "#000000",
+      "mobile": "#ffffff"
+    }
+  },
+  "typography": {
+    "sanskritText": {
+      "fontFamily": "Murty Sanskrit",
+      "fontSize": {
+        "desktop": "12em",
+        "tablet": "5em",
+        "mobile": "3.5em"
+      },
+      "lineHeight": "1em",
+      "letterSpacing": "0.1em",
+      "textRendering": "geometricPrecision"
+    },
+    "authorName": {
+      "fontFamily": "Cooper Lt BT, Arial",
+      "fontSize": "3em"
+    },
+    "authorHeading": {
+      "fontFamily": "Cooper Lt BT, Arial",
+      "fontWeight": "bold"
+    },
+    "authorText": {
+      "fontFamily": "Cooper Lt BT, Arial",
+      "fontWeight": "regular"
+    }
+  },
+  "spacing": {
+    "sanskritTextTop": "200px",
+    "authorBottom": "200px",
+    "authorRight": "40px",
+    "authorMaxWidth": "300px"
+  },
+  "effects": {
+    "sanskritOutline": {
+      "desktop": "1px #ffffff",
+      "tablet": "0.75px #ffffff",
+      "mobile": "0.5px #ffffff"
+    },
+    "mobileAuthorShadow": "0 10px 20px #000000"
+  },
+  "breakpoints": {
+    "tablet": "1023px",
+    "mobile": "767px"
+  }
+} 

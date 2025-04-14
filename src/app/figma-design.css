@@ -1,0 +1,191 @@
+/* Figma-inspired design styles */
+
+/* Main container */
+.container {
+  width: 1400px;
+  height: 900px;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  background-color: #000000;
+  background-image: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 15%, #909090 30%, #505050 45%, #252525 65%, #101010 80%, #000000 90%);
+  padding: 20px;
+  box-shadow: 0 0 60px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+
+/* Navigation buttons */
+.nav-buttons {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.nav-button {
+  padding: 10px 18px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #333;
+  font-family: 'Cooper Lt BT', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 4px;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Name and title section */
+.name-section {
+  position: absolute;
+  right: 30px;
+  bottom: 60px;
+  text-align: right;
+  z-index: 5;
+}
+
+.name {
+  font-family: 'Cooper Lt BT', sans-serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.title {
+  font-family: 'Cooper Lt BT', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.3;
+}
+
+/* Small dot in bottom left */
+.dot-button {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.dot-button::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Carousel adjustments for the new design */
+.carousel {
+  position: absolute;
+  width: 200px;
+  height: 250px;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-80%);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  z-index: 4; /* In front of the image */
+}
+
+.carousel .slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: autoRun 60s linear infinite;
+}
+
+@keyframes autoRun {
+  from {
+    transform: rotateX(-5deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-5deg) rotateY(360deg);
+  }
+}
+
+/* Standard styling for all carousel items */
+.carousel .slider .item {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(420px);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Standard styling for all carousel images */
+.carousel .slider .item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  background-color: transparent;
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+  transform: rotateY(0deg);
+  will-change: transform;
+}
+
+/* Compress size for Head1.png and Head_Open.png */
+.carousel .slider .item:nth-child(3) img,
+.carousel .slider .item:nth-child(4) img {
+  transform: rotateY(0deg) scale(0.75);
+}
+
+/* Remove any special styling for specific items */
+/* .carousel .slider .item:nth-child(3) img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  opacity: 1;
+} */
+
+/* Responsive adjustments */
+@media screen and (max-width: 767px) {
+  .name {
+    font-size: 36px;
+  }
+  
+  .title {
+    font-size: 12px;
+  }
+  
+  .carousel {
+    transform: translateX(-50%) translateY(-60%);
+  }
+}
+
+/* Layer 2 image */
+.layer2-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1; /* Behind the carousel */
+  pointer-events: none; /* Makes the image not capture mouse events */
+} 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1400" height="900" fill="#D2D2D2"/>
+  
+  <!-- Grid pattern - explicit lines for better Figma compatibility -->
+  <g stroke="rgba(37, 40, 59, 0.13)" stroke-width="1">
+    <!-- Vertical grid lines -->
+    <line x1="100" y1="0" x2="100" y2="900"/>
+    <line x1="200" y1="0" x2="200" y2="900"/>
+    <line x1="300" y1="0" x2="300" y2="900"/>
+    <line x1="400" y1="0" x2="400" y2="900"/>
+    <line x1="500" y1="0" x2="500" y2="900"/>
+    <line x1="600" y1="0" x2="600" y2="900"/>
+    <line x1="700" y1="0" x2="700" y2="900"/>
+    <line x1="800" y1="0" x2="800" y2="900"/>
+    <line x1="900" y1="0" x2="900" y2="900"/>
+    <line x1="1000" y1="0" x2="1000" y2="900"/>
+    <line x1="1100" y1="0" x2="1100" y2="900"/>
+    <line x1="1200" y1="0" x2="1200" y2="900"/>
+    <line x1="1300" y1="0" x2="1300" y2="900"/>
+    
+    <!-- Horizontal grid lines -->
+    <line x1="0" y1="100" x2="1400" y2="100"/>
+    <line x1="0" y1="200" x2="1400" y2="200"/>
+    <line x1="0" y1="300" x2="1400" y2="300"/>
+    <line x1="0" y1="400" x2="1400" y2="400"/>
+    <line x1="0" y1="500" x2="1400" y2="500"/>
+    <line x1="0" y1="600" x2="1400" y2="600"/>
+    <line x1="0" y1="700" x2="1400" y2="700"/>
+    <line x1="0" y1="800" x2="1400" y2="800"/>
+  </g>
+  
+  <!-- 3D Carousel (simplified representation) -->
+  <g transform="translate(700, 250)">
+    <!-- Circular platform for 3D carousel -->
+    <ellipse cx="0" cy="0" rx="200" ry="50" fill="rgba(37, 40, 59, 0.05)" stroke="rgba(37, 40, 59, 0.2)" stroke-width="1"/>
+    
+    <!-- Image placeholders for the carousel -->
+    <rect x="-50" y="-175" width="100" height="125" fill="#25283B" opacity="0.7" transform="rotate(0)"/>
+    <rect x="86.6" y="-125" width="100" height="125" fill="#25283B" opacity="0.6" transform="rotate(30)"/>
+    <rect x="125" y="-50" width="100" height="125" fill="#25283B" opacity="0.5" transform="rotate(60)"/>
+    <rect x="86.6" y="50" width="100" height="125" fill="#25283B" opacity="0.4" transform="rotate(120)"/>
+    <rect x="-50" y="100" width="100" height="125" fill="#25283B" opacity="0.3" transform="rotate(180)"/>
+    <rect x="-150" y="50" width="100" height="125" fill="#25283B" opacity="0.4" transform="rotate(240)"/>
+    <rect x="-200" y="-50" width="100" height="125" fill="#25283B" opacity="0.5" transform="rotate(300)"/>
+    <rect x="-150" y="-125" width="100" height="125" fill="#25283B" opacity="0.6" transform="rotate(330)"/>
+  </g>
+  
+  <!-- Sanskrit text -->
+  <g transform="translate(700, 300)">
+    <!-- Outline version (appears behind solid fill) -->
+    <text x="0" y="0" font-family="Arial" font-size="192" text-anchor="middle" fill="transparent" stroke="#FFFFFF" stroke-width="1" letter-spacing="0.1em" dominant-baseline="middle">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</text>
+    
+    <!-- Main text -->
+    <text x="0" y="0" font-family="Arial" font-size="192" text-anchor="middle" fill="#909dab" letter-spacing="0.1em" dominant-baseline="middle">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</text>
+  </g>
+  
+  <!-- Author section -->
+  <g transform="translate(1060, 700)">
+    <text x="0" y="0" font-family="Arial" font-size="48" text-anchor="end" font-weight="bold">LUN DEV</text>
+    <text x="0" y="60" font-family="Arial" font-size="16" text-anchor="end" font-weight="bold">Web Design</text>
+    <text x="0" y="90" font-family="Arial" font-size="16" text-anchor="end">Subscribe to the channel to</text>
+    <text x="0" y="115" font-family="Arial" font-size="16" text-anchor="end">watch many interesting videos</text>
+  </g>
+  
+  <!-- Decorative element (representing model.png) -->
+  <g transform="translate(700, 650)">
+    <ellipse cx="0" cy="0" rx="300" ry="50" fill="rgba(37, 40, 59, 0.1)" opacity="0.5"/>
+    <rect x="-50" y="-200" width="100" height="200" fill="rgba(37, 40, 59, 0.15)" rx="10" ry="10"/>
+  </g>
+  
+  <!-- Instructions for Figma -->
+  <g transform="translate(700, 40)">
+    <text x="0" y="0" font-family="Arial" font-size="14" text-anchor="middle" fill="#333333">
+      Note: For proper display, replace placeholder with actual Sanskrit text and install Murty Sanskrit font
+    </text>
+  </g>
+</svg> 

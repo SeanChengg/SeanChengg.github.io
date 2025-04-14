@@ -1,0 +1,52 @@
+/* 
+FIGMA REFERENCE STYLES
+These styles are formatted to be easily copied into Figma properties
+*/
+
+/* --- COLORS --- */
+/* Background color: #D2D2D2 */
+/* Grid lines color: #25283b22 (rgba(37, 40, 59, 0.13)) */
+/* Sanskrit text color: #909dab */
+/* Sanskrit outline color: #ffffff */
+/* Author text color: Default is black, mobile view is #ffffff */
+
+/* --- TYPOGRAPHY --- */
+
+/* Sanskrit Text */
+/* Font: Murty Sanskrit */
+/* Size: 12em (desktop) / 5em (tablet) / 3.5em (mobile) */
+/* Line Height: 1em */
+/* Letter Spacing: 0.1em */
+/* Text Rendering: geometricPrecision */
+
+/* Author Name */
+/* Font: Cooper Lt BT (fallback to Arial) */
+/* Size: 3em */
+
+/* Author Heading */
+/* Font: Cooper Lt BT (fallback to Arial) */
+/* Weight: Bold */
+
+/* Author Text */
+/* Font: Cooper Lt BT (fallback to Arial) */
+/* Weight: Regular */
+
+/* --- SPACING --- */
+
+/* Sanskrit Text Position: 200px from top */
+/* Author Box: 200px from bottom, 40px from right */
+/* Max width of author box: 300px */
+
+/* --- EFFECTS --- */
+
+/* Sanskrit Outline: 
+   - 1px white stroke (desktop)
+   - 0.75px white stroke (tablet)
+   - 0.5px white stroke (mobile)
+*/
+
+/* Mobile author text shadow: 0 10px 20px #000 */
+
+/* --- RESPONSIVE BREAKPOINTS --- */
+/* Tablet: max-width 1023px */
+/* Mobile: max-width 767px */ 

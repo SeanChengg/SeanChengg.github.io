@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background grid pattern -->
+  <rect width="1400" height="900" fill="#D2D2D2"/>
+  <pattern id="grid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+    <line x1="100" y1="0" x2="100" y2="900" stroke="rgba(37, 40, 59, 0.13)" stroke-width="1"/>
+    <line x1="0" y1="100" x2="1400" y2="100" stroke="rgba(37, 40, 59, 0.13)" stroke-width="1"/>
+  </pattern>
+  <rect width="1400" height="900" fill="url(#grid)"/>
+  
+  <!-- Sanskrit text - transparent with outline -->
+  <text x="700" y="300" font-family="'Murty Sanskrit', serif" font-size="192" text-anchor="middle" fill="transparent" stroke="#FFFFFF" stroke-width="1" letter-spacing="0.1em">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</text>
+  
+  <!-- Sanskrit text - solid fill -->
+  <text x="700" y="300" font-family="'Murty Sanskrit', serif" font-size="192" text-anchor="middle" fill="#909dab" letter-spacing="0.1em">𑖌𑖼𑖦𑖜𑖰𑖢𑖟𑖿𑖦𑖸𑖮𑖳𑖽</text>
+  
+  <!-- Author section -->
+  <g transform="translate(1060, 620)">
+    <text font-family="'Cooper Lt BT', Arial, sans-serif" font-size="48" text-anchor="end" font-weight="bold">LUN DEV</text>
+    <text y="60" font-family="'Cooper Lt BT', Arial, sans-serif" font-size="16" text-anchor="end" font-weight="bold">Web Design</text>
+    <text y="90" font-family="'Cooper Lt BT', Arial, sans-serif" font-size="16" text-anchor="end" width="300">Subscribe to the channel to watch many interesting videos</text>
+  </g>
+
+  <!-- Note: Figma will need the Murty Sanskrit font installed to display the Sanskrit text correctly -->
+</svg> 
