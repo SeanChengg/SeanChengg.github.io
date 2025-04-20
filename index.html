@@ -202,6 +202,11 @@
       transition: all 0.3s ease;
     }
     
+    /* Compress size for Path_Finder.png */
+    .carousel .slider .item:nth-child(1) img {
+      transform: rotateY(0deg) scale(0.85);
+    }
+    
     /* Compress size for Head1.png and Head_Open.png */
     .carousel .slider .item:nth-child(3) img {
       transform: rotateY(0deg) scale(0.80);
@@ -366,7 +371,7 @@
     <!-- Carousel - positioned in the background but visible -->
     <div class="carousel">
       <div class="slider" style="--quantity: 10;">
-        <div class="item" style="--position: 1;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 1;"><img src="./public/images/Path_Finder.png" alt="Path Finder Image" /></div>
         <div class="item" style="--position: 2;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
         <div class="item" style="--position: 3;">
           <div class="image-container">
