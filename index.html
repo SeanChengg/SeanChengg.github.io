@@ -207,6 +207,28 @@
       transform: rotateY(0deg) scale(0.75);
     }
     
+    /* Shelf_Close default state */
+    .carousel .slider .item:nth-child(2) .shelf-closed {
+      opacity: 0.4;
+      transform: rotateY(0deg) scale(0.75);
+    }
+    
+    /* Shelf_Open hover state */
+    .carousel .slider .item:nth-child(2) .shelf-open {
+      opacity: 0;
+      transform: rotateY(0deg) scale(0.75);
+    }
+    
+    .carousel .slider .item:nth-child(2):hover .shelf-closed,
+    .carousel .slider .item:nth-child(2):active .shelf-closed {
+      opacity: 0;
+    }
+    
+    .carousel .slider .item:nth-child(2):hover .shelf-open,
+    .carousel .slider .item:nth-child(2):active .shelf-open {
+      opacity: 1;
+    }
+    
     /* Compress size for Head1.png and Head_Open.png */
     .carousel .slider .item:nth-child(3) img {
       transform: rotateY(0deg) scale(0.80);
@@ -372,7 +394,12 @@
     <div class="carousel">
       <div class="slider" style="--quantity: 10;">
         <div class="item" style="--position: 1;"><img src="./public/images/Path_Finder.png" alt="Path Finder Image" /></div>
-        <div class="item" style="--position: 2;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 2;">
+          <div class="image-container">
+            <img class="shelf-closed" src="./public/images/Shelf_Close.png" alt="Shelf Close Image" />
+            <img class="shelf-open" src="./public/images/Shelf_Open.png" alt="Shelf Open Image" />
+          </div>
+        </div>
         <div class="item" style="--position: 3;">
           <div class="image-container">
             <img class="head-closed" src="./public/images/Head1.png" alt="Head Image" />
