@@ -510,10 +510,16 @@
       const items = document.querySelectorAll('.carousel .slider .item');
       items.forEach(item => {
         item.addEventListener('click', function() {
-          // Get the image source
-          const imgSrc = this.querySelector('img').src;
-          // You can add your click handling logic here
-          console.log('Clicked image:', imgSrc);
+          const img = this.querySelector('img');
+          console.log('Clicked image:', img ? img.src : 'no image found');
+          
+          if (img) {
+            // Check if the image is MCW.png regardless of path
+            if (img.src.toLowerCase().includes('mcw.png')) {
+              console.log('MCW image detected, navigating to runaway-teapot-01.html');
+              window.location.href = '/runaway-teapot-01.html';  // Add a slash for absolute path
+            }
+          }
         });
       });
     });
