@@ -389,12 +389,14 @@
     /* Enhanced hover effect for MCW images */
     .carousel .slider .item img[src*="MCW"] {
       transition: all 0.4s ease-in-out;
+      filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); /* No shadow initially */
     }
 
     .carousel .slider .item:hover img[src*="MCW"] {
       transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); /* Glow effect that follows contour */
       opacity: 1;
+      /* We're using drop-shadow instead of box-shadow to follow the image contour */
     }
 
     /* Page and button transitions */
@@ -463,8 +465,9 @@
   <div class="container">
     <!-- Navigation buttons -->
     <div class="nav-buttons">
-      <a href="index.html" class="nav-button">Prev</a>
-      <a href="runaway-teapot-01.html" class="nav-button">Next</a>
+      <a href="#products" class="nav-button">Products</a>
+      <a href="#mechatronics" class="nav-button">Mechatronics</a>
+      <a href="#game" class="nav-button">Game</a>
     </div>
     
     <!-- Background image -->
@@ -513,8 +516,12 @@
     
     <!-- Name and title section -->
     <div class="name-section">
-      <div class="name">Sean Cheng</div>
-      <div class="title">Interactive Media Designer & Developer</div>
+      <h1 class="name">Sean Cheng</h1>
+      <div class="title">
+        <p>Product &amp;</p>
+        <p>Mechatronics &amp;</p>
+        <p>Game Design</p>
+      </div>
     </div>
     
     <!-- Dot button in bottom left -->
@@ -613,10 +620,18 @@
         event.preventDefault();
         const href = this.getAttribute('href');
         
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          window.location.href = href;
-        }, 500);
+        // If it's a hash link, handle it without fade
+        if (href.startsWith('#')) {
+          // Handle menu navigation here
+          console.log('Menu navigation to:', href);
+          // You can add specific functionality for each menu item
+        } else {
+          // For regular page navigation, use fade effect
+          document.body.style.opacity = 0;
+          setTimeout(() => {
+            window.location.href = href;
+          }, 500);
+        }
       });
     });
   </script>
