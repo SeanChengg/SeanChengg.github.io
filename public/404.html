@@ -2,13 +2,19 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting...</title>
+  <title>Page Not Found</title>
   <script>
-    // Redirect to the correct page
-    window.location.href = "/index.html";
+    // Extract the current path
+    const path = window.location.pathname;
+    // Check if we're at the root of the site
+    if (path === "/" || path === "/index.html") {
+      window.location.href = "/public/index.html";
+    }
   </script>
 </head>
-<body>
-  <p>If you are not redirected automatically, <a href="/index.html">click here</a>.</p>
+<body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+  <h1>Page Not Found</h1>
+  <p>Sorry, the page you're looking for doesn't exist.</p>
+  <p><a href="/public/index.html">Click here</a> to go to the portfolio homepage.</p>
 </body>
 </html> 
