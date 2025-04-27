@@ -28,7 +28,7 @@
       justify-content: center;
       align-items: center;
       background-color: #000000;
-      opacity: 0;
+      opacity: 1; /* Changed from 0 to 1 to make content visible */
       transition: opacity 0.5s ease-in-out;
     }
     
@@ -463,66 +463,62 @@
   <div class="container">
     <!-- Navigation buttons -->
     <div class="nav-buttons">
-      <a href="index.html" class="nav-btn">Prev</a>
-      <a href="runaway-teapot-02.html" class="nav-btn">Next</a>
+      <a href="/index.html" class="nav-button">Prev</a>
+      <a href="/runaway-teapot-01.html" class="nav-button">Next</a>
     </div>
     
     <!-- Background image -->
-    <img src="./public/images/Layer 3.png" alt="Background Image" class="background-image">
+    <img src="/images/Layer 3.png" alt="Background Image" class="background-image">
     
     <!-- Carousel - positioned in the background but visible -->
     <div class="carousel">
       <div class="slider" style="--quantity: 10;">
-        <div class="item" style="--position: 1;"><img src="./public/images/Path_Finder.png" alt="Path Finder Image" /></div>
+        <div class="item" style="--position: 1;"><img src="/images/Path_Finder.png" alt="Path Finder Image" /></div>
         <div class="item" style="--position: 2;">
           <div class="image-container">
-            <img class="shelf-closed" src="./public/images/Shelf_Close.png" alt="Shelf Close Image" />
-            <img class="shelf-open" src="./public/images/Shelf_Open.png" alt="Shelf Open Image" />
+            <img class="shelf-closed" src="/images/Shelf_Close.png" alt="Shelf Close Image" />
+            <img class="shelf-open" src="/images/Shelf_Open.png" alt="Shelf Open Image" />
           </div>
         </div>
         <div class="item" style="--position: 3;">
           <div class="image-container">
-            <img class="head-closed" src="./public/images/Head1.png" alt="Head Image" />
-            <img class="head-open" src="./public/images/Head_Open.png" alt="Head Open Image" />
+            <img class="head-closed" src="/images/Head1.png" alt="Head Image" />
+            <img class="head-open" src="/images/Head_Open.png" alt="Head Open Image" />
           </div>
         </div>
         <div class="item" style="--position: 4;">
           <div class="image-container">
-            <img class="arm-closed" src="./public/images/ARM1.png" alt="ARM Image" />
-            <img class="arm-open" src="./public/images/ARM2.png" alt="ARM Open Image" />
+            <img class="arm-closed" src="/images/ARM1.png" alt="ARM Image" />
+            <img class="arm-open" src="/images/ARM2.png" alt="ARM Open Image" />
           </div>
         </div>
         <div class="item" style="--position: 5;">
           <div class="image-container">
-            <img class="w-closed" src="./public/images/w1.png" alt="W1 Image" />
-            <img class="w-open" src="./public/images/w2.png" alt="W2 Image" />
+            <img class="w-closed" src="/images/w1.png" alt="W1 Image" />
+            <img class="w-open" src="/images/w2.png" alt="W2 Image" />
           </div>
         </div>
         <div class="item" style="--position: 6;">
           <div class="image-container">
-            <img class="jaw-closed" src="./public/images/JAW1.png" alt="JAW1 Image" />
-            <img class="jaw-open" src="./public/images/JAW2.png" alt="JAW2 Image" />
+            <img class="jaw-closed" src="/images/JAW1.png" alt="JAW1 Image" />
+            <img class="jaw-open" src="/images/JAW2.png" alt="JAW2 Image" />
           </div>
         </div>
-        <div class="item" style="--position: 7;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
-        <div class="item" style="--position: 8;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
-        <div class="item" style="--position: 9;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
-        <div class="item" style="--position: 10;"><img src="./public/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 7;"><img src="/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 8;"><img src="/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 9;"><img src="/images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 10;"><img src="/images/MCW.png" alt="MCW Image" /></div>
       </div>
     </div>
     
     <!-- Name and title section -->
     <div class="name-section">
-      <h1 class="name">Sean Cheng</h1>
-      <div class="title">
-        <p>Product &amp;</p>
-        <p>Mechatronics &amp;</p>
-        <p>Game Design</p>
-      </div>
+      <div class="name">Sean Cheng</div>
+      <div class="title">Interactive Media Designer & Developer</div>
     </div>
     
     <!-- Dot button in bottom left -->
-    <button class="dot-button"></button>
+    <div class="dot-button"></div>
   </div>
   
   <script>
@@ -605,21 +601,19 @@
       });
 
       // Add fade-in effect when page loads
-      document.addEventListener('DOMContentLoaded', function() {
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          document.body.style.opacity = 1;
-        }, 10);
-      });
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        document.body.style.opacity = 1;
+      }, 10);
     });
 
     // Fade out before navigation
-    document.querySelectorAll('.nav-btn').forEach(button => {
+    document.querySelectorAll('.nav-button').forEach(button => {
       button.addEventListener('click', function(event) {
         event.preventDefault();
-        document.body.style.opacity = 0;
+        const href = this.getAttribute('href');
         
-        const href = this.getAttribute('onclick').split("'")[1];
+        document.body.style.opacity = 0;
         setTimeout(() => {
           window.location.href = href;
         }, 500);
