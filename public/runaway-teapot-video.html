@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Runaway Teapot - Video</title>
+  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f2f1ec;
+      color: #333;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .frame-number {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      color: #888;
+      font-size: 1.2rem;
+    }
+    /* Full page background image */
+    .full-page-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      margin: 0;
+      padding: 0;
+    }
+    /* Video container */
+    .teapot-video-container {
+      position: absolute;
+      width: 38%;
+      height: 48%;
+      top: 42.5%;
+      right: 56.5%;
+      z-index: 5;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .video-player {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+    /* Container for footer navigation */
+    .nav-container {
+      position: absolute;
+      bottom: 18px;
+      right: 32px;
+      z-index: 10;
+    }
+    .next-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 15px;
+      margin-right: 30px;
+    }
+    .prev-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .nav-btn {
+      display: inline-block;
+      color: #777;
+      text-decoration: none;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      font-family: 'Zilla Slab', serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transform: translateY(0);
+    }
+    .nav-btn:hover {
+      color: #555;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
+                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
+                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+    .nav-btn::after {
+      content: none;
+    }
+    .nav-line {
+      display: inline-block;
+      width: 120px;
+      height: 1px;
+      background-color: #777;
+      position: relative;
+      top: 6px;
+    }
+    .next-line {
+      margin-right: 5px;
+    }
+    .prev-line {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="frame-number">Frame 3</div>
+    
+    <!-- Full page image (can be the same as page 2 or another background) -->
+    <img src="images/Runaway_Teapot02.jpg" alt="The Runaway Teapot" class="full-page-image">
+    
+    <!-- Video container -->
+    <div class="teapot-video-container">
+      <video controls autoplay class="video-player" id="teapot-video">
+        <source src="videos/runaway-teapot-demo.MOV" type="video/quicktime">
+        <source src="videos/runaway-teapot-demo.MOV" type="video/mp4">
+        <source src="videos/runaway-teapot-demo.MOV" type="video/x-m4v">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    
+    <!-- Navigation at bottom right -->
+    <div class="nav-container">
+      <div class="next-container">
+        <span class="nav-line next-line"></span>
+        <a href="runaway-teapot-01.html" class="nav-btn">Prev</a>
+      </div>
+      <div class="prev-container">
+        <a href="index.html" class="nav-btn">Home</a>
+        <span class="nav-line prev-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fade in effect
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+      document.body.style.opacity = 1;
+    }, 10);
+
+    // Fade out before navigation
+    document.querySelectorAll('.nav-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const href = this.getAttribute('href');
+        
+        document.body.style.opacity = 0;
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500);
+      });
+    });
+
+    // Fix for video not playing in some browsers
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('teapot-video');
+      
+      // Try to play the video
+      video.play().catch(function(error) {
+        console.log('Video play failed:', error);
+        // If autoplay fails (common on mobile), show a play button overlay
+        if (error.name === 'NotAllowedError') {
+          video.setAttribute('controls', 'controls');
+        }
+      });
+      
+      // Handle video errors
+      video.addEventListener('error', function(e) {
+        console.error('Video error:', e);
+        const videoContainer = document.querySelector('.teapot-video-container');
+        videoContainer.innerHTML = `
+          <div style="display: flex; justify-content: center; align-items: center; height: 100%; background: #000; color: #fff; text-align: center; padding: 20px;">
+            <div>
+              <h3>Video playback error</h3>
+              <p>There was an issue playing the video. Please make sure the file exists and is in a supported format.</p>
+              <p>Try opening it directly: <a href="videos/runaway-teapot-demo.MOV" style="color: #4a9;" target="_blank">runaway-teapot-demo.MOV</a></p>
+            </div>
+          </div>
+        `;
+      });
+    });
+  </script>
+</body>
+</html> 
