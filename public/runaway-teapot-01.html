@@ -203,10 +203,10 @@
     <div class="nav-container">
       <div class="next-container">
         <span class="nav-line next-line"></span>
-        <a href="runaway-teapot-02.html" class="nav-btn">Mechatronics</a>
+        <a href="runaway-teapot-video.html" class="nav-btn">Next</a>
       </div>
       <div class="prev-container">
-        <a href="index.html" class="nav-btn">Home</a>
+        <a href="index.html" class="nav-btn">Back</a>
         <span class="nav-line prev-line"></span>
       </div>
     </div>
@@ -224,13 +224,6 @@
       button.addEventListener('click', function(event) {
         event.preventDefault();
         const href = this.getAttribute('href');
-        
-        // Check if it's a hash link (for menu navigation)
-        if (href.startsWith('#')) {
-          console.log('Menu navigation:', href);
-          window.location.href = href;
-          return;
-        }
         
         document.body.style.opacity = 0;
         setTimeout(() => {

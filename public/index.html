@@ -621,6 +621,17 @@
               window.location.href = 'runaway-teapot-01.html';
             }, 500);
           }
+          
+          // Add navigation for ARM1/ARM2 images
+          else if (img && (img.src.toLowerCase().includes('arm1.png') || img.src.toLowerCase().includes('arm2.png'))) {
+            // Fade out before navigation
+            document.body.style.opacity = 0;
+            
+            // Navigate after fade completes
+            setTimeout(() => {
+              window.location.href = 'reverse-01.html';
+            }, 500);
+          }
         });
       });
 
