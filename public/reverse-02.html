@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LIMS2 Elbow Joint - Demo</title>
+  
+  <!-- Preload critical assets -->
+  <link rel="preload" href="images/Reverse02.jpg" as="image">
+  <link rel="preload" href="videos/LIMS2.mov" as="video">
+  
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
@@ -16,6 +21,8 @@
       padding: 0;
       overflow-x: hidden;
       overflow-y: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
     .frame {
       position: relative;
@@ -45,13 +52,26 @@
       margin: 0;
       padding: 0;
     }
+    /* Low-res placeholder image styling */
+    .placeholder-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      filter: blur(10px);
+      transition: opacity 0.5s ease;
+    }
     /* Video container */
     .teapot-video-container {
       position: absolute;
-      width: 40.5%;
-      height: 40.5%;
-      top: 50.5%;
-      right: 18%;
+      width: 32.5%;
+      height: 51%;
+      top: 24.5%;
+      right: 60%;
       z-index: 5;
       border-radius: 8px;
       overflow: hidden;
@@ -60,6 +80,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
     .video-player {
       width: 100%;
@@ -135,17 +157,50 @@
     .prev-line {
       margin-left: 5px;
     }
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f2f1ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #777;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+  <!-- Loading screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+  </div>
+
   <div class="frame">
     <div class="frame-number">Frame 2</div>
     
-    <!-- Full page image -->
-    <img src="images/Reverse02.jpg" alt="LIMS2 Elbow Joint" class="full-page-image">
+    <!-- Placeholder low-res image (initially visible) -->
+    <img src="images/placeholder.svg" data-src="images/Reverse02.jpg" alt="Loading..." class="placeholder-image" id="placeholderImage">
+    
+    <!-- Full page image (hidden until loaded) -->
+    <img src="images/Reverse02.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage" style="opacity: 0;">
     
     <!-- Video container -->
-    <div class="teapot-video-container">
+    <div class="teapot-video-container" id="videoContainer">
       <video controls autoplay class="video-player" id="lims2-video">
         <source src="videos/LIMS2.mov" type="video/quicktime">
         <source src="videos/LIMS2.mov" type="video/mp4">
@@ -168,11 +223,40 @@
   </div>
 
   <script>
-    // Fade in effect
-    document.body.style.opacity = 0;
+    // Handle image loading and display with progressive enhancement
+    const mainImage = document.getElementById('mainImage');
+    const placeholderImage = document.getElementById('placeholderImage');
+    const loadingScreen = document.getElementById('loadingScreen');
+    const videoContainer = document.getElementById('videoContainer');
+    
+    // Start showing content immediately instead of waiting
     setTimeout(() => {
       document.body.style.opacity = 1;
     }, 10);
+    
+    // When the main image is loaded, fade it in and fade out placeholder
+    mainImage.onload = function() {
+      // Hide loading screen
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+      
+      // Show the main image
+      mainImage.style.opacity = 1;
+      placeholderImage.style.opacity = 0;
+      
+      // Remove placeholder and show video after transition
+      setTimeout(() => {
+        placeholderImage.style.display = 'none';
+        videoContainer.style.opacity = 1;
+      }, 300);
+    };
+    
+    // If image loads quickly, still ensure minimal loading time for better UX
+    setTimeout(() => {
+      if (mainImage.complete) {
+        mainImage.onload();
+      }
+    }, 300);
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
@@ -183,7 +267,7 @@
         document.body.style.opacity = 0;
         setTimeout(() => {
           window.location.href = href;
-        }, 500);
+        }, 300); // Reduced from 500ms to 300ms for faster navigation
       });
     });
 
@@ -203,7 +287,6 @@
       // Handle video errors
       video.addEventListener('error', function(e) {
         console.error('Video error:', e);
-        const videoContainer = document.querySelector('.teapot-video-container');
         videoContainer.innerHTML = `
           <div style="display: flex; justify-content: center; align-items: center; height: 100%; background: #000; color: #fff; text-align: center; padding: 20px;">
             <div>
@@ -215,6 +298,10 @@
         `;
       });
     });
+    
+    // Preload previous page image for faster back navigation
+    const preloadPrevImage = new Image();
+    preloadPrevImage.src = "images/Reverse01.jpg";
   </script>
 </body>
 </html> 
