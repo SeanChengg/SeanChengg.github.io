@@ -49,19 +49,7 @@
       z-index: 0;
       margin: 0;
       padding: 0;
-    }
-    /* Low-res placeholder image styling */
-    .placeholder-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: 0;
-      filter: blur(10px);
-      transition: opacity 0.5s ease;
+      opacity: 1;
     }
     /* Container for footer navigation */
     .nav-container {
@@ -163,11 +151,8 @@
   <div class="frame">
     <div class="frame-number">Frame 1</div>
     
-    <!-- Placeholder low-res image (initially visible) -->
-    <img src="images/placeholder.svg" data-src="images/Reverse01.jpg" alt="Loading..." class="placeholder-image" id="placeholderImage">
-    
-    <!-- Full page image (hidden until loaded) -->
-    <img src="images/Reverse01.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage" style="opacity: 0;">
+    <!-- Full page image (visible immediately) -->
+    <img src="images/Reverse01.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage">
     
     <!-- Navigation at bottom right -->
     <div class="nav-container">
@@ -183,27 +168,19 @@
   </div>
 
   <script>
-    // Immediately set body to visible
-    document.body.style.opacity = 1;
+    // Hide loading screen immediately after page loads
+    window.addEventListener('load', function() {
+      document.getElementById('loadingScreen').style.opacity = 0;
+      document.getElementById('loadingScreen').style.visibility = 'hidden';
+    });
     
-    const mainImage = document.getElementById('mainImage');
-    const loadingScreen = document.getElementById('loadingScreen');
-    
-    // Hide loading screen after 1 second max, regardless of image load
-    setTimeout(() => {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-      mainImage.style.opacity = 1;
+    // Backup timeout to hide loading screen after 1 second in case load event doesn't fire
+    setTimeout(function() {
+      document.getElementById('loadingScreen').style.opacity = 0;
+      document.getElementById('loadingScreen').style.visibility = 'hidden';
     }, 1000);
     
-    // If image loads before timeout, hide loading screen
-    mainImage.onload = function() {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-      mainImage.style.opacity = 1;
-    };
-    
-    // Fade out before navigation but make it faster
+    // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
       button.addEventListener('click', function(event) {
         event.preventDefault();
@@ -212,13 +189,9 @@
         document.body.style.opacity = 0;
         setTimeout(() => {
           window.location.href = href;
-        }, 200); // Even faster transition
+        }, 200);
       });
     });
-    
-    // Preload next page image
-    const preloadNextImage = new Image();
-    preloadNextImage.src = "images/Reverse02.jpg";
   </script>
 </body>
 </html> 

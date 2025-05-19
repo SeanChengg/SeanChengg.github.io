@@ -184,7 +184,7 @@
       transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(460px) scale(0.95);
     }
     
-    /* Image container for transition */
+    /* Container for carousel items to ensure they fit */
     .carousel .slider .item .image-container {
       position: relative;
       width: 100%;
@@ -192,6 +192,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      /* Make sure images don't get cut off */
+      overflow: visible;
     }
     
     /* Standard styling for all carousel images */
