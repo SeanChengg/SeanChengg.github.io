@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LIMS2 Elbow Joint - Demo</title>
   
-  <!-- Preload critical assets -->
+  <!-- Only preload the background image, not the video -->
   <link rel="preload" href="images/Reverse02.jpg" as="image">
-  <link rel="preload" href="videos/LIMS2.mov" as="video">
   
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -21,8 +20,7 @@
       padding: 0;
       overflow-x: hidden;
       overflow-y: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      opacity: 1;
     }
     .frame {
       position: relative;
@@ -52,26 +50,13 @@
       margin: 0;
       padding: 0;
     }
-    /* Low-res placeholder image styling */
-    .placeholder-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: 0;
-      filter: blur(10px);
-      transition: opacity 0.5s ease;
-    }
     /* Video container */
     .teapot-video-container {
       position: absolute;
       width: 32.5%;
       height: 51%;
       top: 24.5%;
-      right: 20%;
+      right: 10%;
       z-index: 5;
       border-radius: 8px;
       overflow: hidden;
@@ -80,8 +65,41 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      opacity: 0;
-      transition: opacity 0.5s ease;
+    }
+    .video-thumbnail {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: #111;
+      background-image: linear-gradient(45deg, #222 25%, transparent 25%, transparent 75%, #222 75%, #222), 
+                        linear-gradient(45deg, #222 25%, transparent 25%, transparent 75%, #222 75%, #222);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+    }
+    .play-button {
+      width: 60px;
+      height: 60px;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+    .play-button:hover {
+      background-color: rgba(255,255,255,0.4);
+    }
+    .play-button::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 10px 0 10px 20px;
+      border-color: transparent transparent transparent white;
+      margin-left: 5px;
     }
     .video-player {
       width: 100%;
@@ -92,9 +110,10 @@
     /* Video caption */
     .video-caption {
       position: absolute;
-      top: 20%;
-      right: 35%;
-      color: #fff;
+      top: auto;
+      bottom: 20%;
+      right: 10%;
+      color: #777;
       font-family: 'Zilla Slab', serif;
       font-weight: 600;
       font-size: 1.4rem;
@@ -166,6 +185,7 @@
       height: 100%;
       background-color: #f2f1ec;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -178,6 +198,12 @@
       border-radius: 50%;
       border-top-color: #777;
       animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    .loading-text {
+      color: #777;
+      font-family: 'Zilla Slab', serif;
+      font-size: 16px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
@@ -188,28 +214,23 @@
   <!-- Loading screen -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-spinner"></div>
+    <div class="loading-text">Loading page content...</div>
   </div>
 
   <div class="frame">
     <div class="frame-number">Frame 2</div>
     
-    <!-- Placeholder low-res image (initially visible) -->
-    <img src="images/placeholder.svg" data-src="images/Reverse02.jpg" alt="Loading..." class="placeholder-image" id="placeholderImage">
+    <!-- Full page image -->
+    <img src="images/Reverse02.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage">
     
-    <!-- Full page image (hidden until loaded) -->
-    <img src="images/Reverse02.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage" style="opacity: 0;">
-    
-    <!-- Video container -->
+    <!-- Video container with thumbnail placeholder -->
     <div class="teapot-video-container" id="videoContainer">
-      <video controls autoplay class="video-player" id="lims2-video">
-        <source src="videos/LIMS2.mov" type="video/quicktime">
-        <source src="videos/LIMS2.mov" type="video/mp4">
-        <source src="videos/LIMS2.mov" type="video/x-m4v">
-        Your browser does not support the video tag.
-      </video>
+      <div class="video-thumbnail" id="videoThumbnail">
+        <div class="play-button"></div>
+      </div>
     </div>
     
-    <!-- Add video caption -->
+    <!-- Video caption -->
     <div class="video-caption">Demo of LIMS2 Elbow Joint</div>
     
     <!-- Navigation at bottom right -->
@@ -226,40 +247,31 @@
   </div>
 
   <script>
-    // Handle image loading and display with progressive enhancement
-    const mainImage = document.getElementById('mainImage');
-    const placeholderImage = document.getElementById('placeholderImage');
-    const loadingScreen = document.getElementById('loadingScreen');
-    const videoContainer = document.getElementById('videoContainer');
-    
-    // Start showing content immediately instead of waiting
+    // Hide loading screen after a short delay
     setTimeout(() => {
-      document.body.style.opacity = 1;
-    }, 10);
+      document.getElementById('loadingScreen').style.opacity = 0;
+      document.getElementById('loadingScreen').style.visibility = 'hidden';
+    }, 800);
     
-    // When the main image is loaded, fade it in and fade out placeholder
-    mainImage.onload = function() {
-      // Hide loading screen
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
+    // Handle click on video thumbnail
+    document.getElementById('videoThumbnail').addEventListener('click', function() {
+      // Replace placeholder with actual video
+      document.getElementById('videoContainer').innerHTML = `
+        <video controls class="video-player" id="lims2-video">
+          <source src="videos/LIMS2.mov" type="video/quicktime">
+          <source src="videos/LIMS2.mov" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
       
-      // Show the main image
-      mainImage.style.opacity = 1;
-      placeholderImage.style.opacity = 0;
-      
-      // Remove placeholder and show video after transition
+      // Start playing video
       setTimeout(() => {
-        placeholderImage.style.display = 'none';
-        videoContainer.style.opacity = 1;
-      }, 300);
-    };
-    
-    // If image loads quickly, still ensure minimal loading time for better UX
-    setTimeout(() => {
-      if (mainImage.complete) {
-        mainImage.onload();
-      }
-    }, 300);
+        const video = document.getElementById('lims2-video');
+        if (video) {
+          video.play().catch(e => console.log('Autoplay prevented:', e));
+        }
+      }, 100);
+    });
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
@@ -270,41 +282,9 @@
         document.body.style.opacity = 0;
         setTimeout(() => {
           window.location.href = href;
-        }, 300); // Reduced from 500ms to 300ms for faster navigation
+        }, 200);
       });
     });
-
-    // Fix for video not playing in some browsers
-    document.addEventListener('DOMContentLoaded', function() {
-      const video = document.getElementById('lims2-video');
-      
-      // Try to play the video
-      video.play().catch(function(error) {
-        console.log('Video play failed:', error);
-        // If autoplay fails (common on mobile), show a play button overlay
-        if (error.name === 'NotAllowedError') {
-          video.setAttribute('controls', 'controls');
-        }
-      });
-      
-      // Handle video errors
-      video.addEventListener('error', function(e) {
-        console.error('Video error:', e);
-        videoContainer.innerHTML = `
-          <div style="display: flex; justify-content: center; align-items: center; height: 100%; background: #000; color: #fff; text-align: center; padding: 20px;">
-            <div>
-              <h3>Video playback error</h3>
-              <p>There was an issue playing the video. Please make sure the file exists and is in a supported format.</p>
-              <p>Try opening it directly: <a href="videos/LIMS2.mov" style="color: #4a9;" target="_blank">LIMS2.mov</a></p>
-            </div>
-          </div>
-        `;
-      });
-    });
-    
-    // Preload previous page image for faster back navigation
-    const preloadPrevImage = new Image();
-    preloadPrevImage.src = "images/Reverse01.jpg";
   </script>
 </body>
 </html> 

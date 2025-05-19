@@ -20,8 +20,7 @@
       padding: 0;
       overflow-x: hidden;
       overflow-y: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      opacity: 1; /* Start visible immediately */
     }
     .frame {
       position: relative;
@@ -129,6 +128,7 @@
       height: 100%;
       background-color: #f2f1ec;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -141,6 +141,12 @@
       border-radius: 50%;
       border-top-color: #777;
       animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    .loading-text {
+      color: #777;
+      font-family: 'Zilla Slab', serif;
+      font-size: 16px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
@@ -151,6 +157,7 @@
   <!-- Loading screen -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-spinner"></div>
+    <div class="loading-text">Loading page content...</div>
   </div>
 
   <div class="frame">
@@ -176,40 +183,27 @@
   </div>
 
   <script>
-    // Handle image loading and display with progressive enhancement
+    // Immediately set body to visible
+    document.body.style.opacity = 1;
+    
     const mainImage = document.getElementById('mainImage');
-    const placeholderImage = document.getElementById('placeholderImage');
     const loadingScreen = document.getElementById('loadingScreen');
     
-    // Start showing content immediately instead of waiting
+    // Hide loading screen after 1 second max, regardless of image load
     setTimeout(() => {
-      document.body.style.opacity = 1;
-    }, 10);
-    
-    // When the main image is loaded, fade it in and fade out placeholder
-    mainImage.onload = function() {
-      // Hide loading screen
       loadingScreen.style.opacity = 0;
       loadingScreen.style.visibility = 'hidden';
-      
-      // Show the main image
       mainImage.style.opacity = 1;
-      placeholderImage.style.opacity = 0;
-      
-      // Remove placeholder after transition
-      setTimeout(() => {
-        placeholderImage.style.display = 'none';
-      }, 500);
+    }, 1000);
+    
+    // If image loads before timeout, hide loading screen
+    mainImage.onload = function() {
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+      mainImage.style.opacity = 1;
     };
     
-    // If image loads quickly, still ensure minimal loading time for better UX
-    setTimeout(() => {
-      if (mainImage.complete) {
-        mainImage.onload();
-      }
-    }, 300);
-
-    // Fade out before navigation
+    // Fade out before navigation but make it faster
     document.querySelectorAll('.nav-btn').forEach(button => {
       button.addEventListener('click', function(event) {
         event.preventDefault();
@@ -218,7 +212,7 @@
         document.body.style.opacity = 0;
         setTimeout(() => {
           window.location.href = href;
-        }, 300); // Reduced from 500ms to 300ms for faster navigation
+        }, 200); // Even faster transition
       });
     });
     
