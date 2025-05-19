@@ -6,6 +6,7 @@
   <title>LIMS2 Wrist - Video Demo</title>
   
   <link rel="preload" href="images/Wrist3.jpg" as="image">
+  <link rel="preload" href="videos/LIMS2_Wrist.mov" as="video">
   
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -49,13 +50,14 @@
       margin: 0;
       padding: 0;
     }
-    /* Video container - now positioned on the left */
+    /* Video container - positioned on the left */
     .teapot-video-container {
       position: absolute;
-      width: 39%;
-      height: 42%;
-      top: 50%;
-      left: 20%; /* Positioned from the left instead of right */
+      width: 45%;
+      height: 50%;
+      top: 45%;
+      left: 25%;
+      transform: translate(-50%, -50%);
       z-index: 5;
       border-radius: 8px;
       overflow: hidden;
@@ -197,19 +199,26 @@
   </div>
 
   <script>
-    // Hide loading screen after a short delay
+    // Hide loading screen when image is loaded and handle video
+    const mainImage = document.getElementById('mainImage');
+    const loadingScreen = document.getElementById('loadingScreen');
+    const video = document.getElementById('lims2-video');
+    
+    mainImage.onload = function() {
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    };
+    
+    // Fallback timeout to hide loading screen after max 2 seconds
     setTimeout(() => {
-      document.getElementById('loadingScreen').style.opacity = 0;
-      document.getElementById('loadingScreen').style.visibility = 'hidden';
-    }, 800);
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    }, 2000);
     
     // Make sure video plays after loading
-    document.addEventListener('DOMContentLoaded', function() {
-      const video = document.getElementById('lims2-video');
-      if (video) {
-        video.play().catch(e => console.log('Autoplay prevented:', e));
-      }
-    });
+    if (video) {
+      video.play().catch(e => console.log('Autoplay prevented:', e));
+    }
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {

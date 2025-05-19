@@ -166,11 +166,20 @@
   </div>
 
   <script>
-    // Hide loading screen after a short delay
+    // Hide loading screen when image is loaded
+    const mainImage = document.getElementById('mainImage');
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    mainImage.onload = function() {
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    };
+    
+    // Fallback timeout to hide loading screen after max 2 seconds
     setTimeout(() => {
-      document.getElementById('loadingScreen').style.opacity = 0;
-      document.getElementById('loadingScreen').style.visibility = 'hidden';
-    }, 800);
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    }, 2000);
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
