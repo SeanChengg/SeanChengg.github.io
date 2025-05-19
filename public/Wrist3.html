@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIMS2 Elbow Joint - Demo</title>
+  <title>LIMS2 Wrist - Video Demo</title>
   
-  <link rel="preload" href="images/Reverse02.jpg" as="image">
+  <link rel="preload" href="images/Wrist3.jpg" as="image">
   
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -49,13 +49,13 @@
       margin: 0;
       padding: 0;
     }
-    /* Video container */
+    /* Video container - now positioned on the left */
     .teapot-video-container {
       position: absolute;
       width: 39%;
       height: 42%;
       top: 50%;
-      right: 20%;
+      left: 20%; /* Positioned from the left instead of right */
       z-index: 5;
       border-radius: 8px;
       overflow: hidden;
@@ -70,20 +70,6 @@
       height: 100%;
       object-fit: contain;
       background-color: #000;
-    }
-    /* Video caption */
-    .video-caption {
-      position: absolute;
-      top: auto;
-      bottom: 42%;
-      right: 20%;
-      color: #777;
-      font-family: 'Zilla Slab', serif;
-      font-weight: 600;
-      font-size: 1.4rem;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      z-index: 6;
-      text-align: right;
     }
     /* Container for footer navigation */
     .nav-container {
@@ -183,28 +169,28 @@
   </div>
 
   <div class="frame">
-    <div class="frame-number">Frame 2</div>
+    <div class="frame-number">Wrist 3</div>
     
     <!-- Full page image -->
-    <img src="images/Reverse02.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage">
+    <img src="images/Wrist3.jpg" alt="LIMS2 Wrist" class="full-page-image" id="mainImage">
     
     <!-- Video container with video element directly -->
     <div class="teapot-video-container" id="videoContainer">
       <video controls autoplay class="video-player" id="lims2-video">
-        <source src="videos/LIMS2.mov" type="video/quicktime">
-        <source src="videos/LIMS2.mov" type="video/mp4">
+        <source src="videos/LIMS2_Wrist.mov" type="video/quicktime">
+        <source src="videos/LIMS2_Wrist.mov" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
     
-    <!-- Navigation at bottom right -->
+    <!-- Navigation at bottom right with Back/Home navigation -->
     <div class="nav-container">
       <div class="next-container">
         <span class="nav-line next-line"></span>
-        <a href="Wrist1.html" class="nav-btn">Next</a>
+        <a href="index.html" class="nav-btn">Home</a>
       </div>
       <div class="prev-container">
-        <a href="reverse-01.html" class="nav-btn">Back</a>
+        <a href="Wrist2.html" class="nav-btn">Back</a>
         <span class="nav-line prev-line"></span>
       </div>
     </div>
