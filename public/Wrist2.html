@@ -763,6 +763,8 @@
       if (isPitchRoll) {
         // When in pitchroll area, completely hide the yaw hotspot
         yawHotspot.style.opacity = "0";
+        // Make sure pitchroll hotspot is visible
+        pitchrollHotspot.style.opacity = "0.8";
         
         // ONLY show PitchRoll label
         wristLabelPitchRoll.style.opacity = "1";
@@ -774,6 +776,8 @@
       else if (isYaw) {
         // Make sure yaw hotspot is visible
         yawHotspot.style.opacity = "0.8"; // Reset to default opacity
+        // When in yaw area, completely hide the pitchroll hotspot
+        pitchrollHotspot.style.opacity = "0";
         
         // ONLY show Yaw label
         wristLabelYaw.style.opacity = "1";
@@ -784,8 +788,9 @@
       }
       else {
         // Not hovering over any hotspot
-        // Make sure yaw hotspot is visible with default opacity
+        // Make both hotspots visible with default opacity
         yawHotspot.style.opacity = "0.8";
+        pitchrollHotspot.style.opacity = "0.8";
         
         // ONLY show the default label
         wristLabel.style.opacity = "1";
@@ -806,8 +811,9 @@
       yawHotspot.classList.remove('hotspot-active');
       pitchrollHotspot.classList.remove('hotspot-active');
       
-      // Make sure yaw hotspot is back to default visibility
+      // Make both hotspots back to default visibility
       yawHotspot.style.opacity = "0.8";
+      pitchrollHotspot.style.opacity = "0.8";
       
       stopAnimation();
     });
