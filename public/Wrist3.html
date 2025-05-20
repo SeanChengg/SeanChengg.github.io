@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LIMS2 Wrist - Video Demo</title>
   
-  <link rel="preload" href="images/Wrist3.jpg" as="image">
-  <link rel="preload" href="videos/LIMS2_Wrist.mov" as="video">
+  <!-- Optimized preloads -->
+  <link rel="preload" href="images/Wrist3.jpg" as="image" fetchpriority="high">
+  <!-- Defer video preload for faster initial page render -->
   
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -53,8 +54,8 @@
     /* Video container - positioned on the left */
     .teapot-video-container {
       position: absolute;
-      width: 24.1%;
-      height: 80%;
+      width: 27%;
+      height: 83%;
       top: 52%;
       left: 31%;
       transform: translate(-50%, -50%);
@@ -178,7 +179,7 @@
     
     <!-- Video container with video element directly -->
     <div class="teapot-video-container" id="videoContainer">
-      <video controls autoplay class="video-player" id="lims2-video">
+      <video controls class="video-player" id="lims2-video" preload="metadata" playsinline>
         <source src="videos/LIMS2_Wrist.mov" type="video/quicktime">
         <source src="videos/LIMS2_Wrist.mov" type="video/mp4">
         Your browser does not support the video tag.
@@ -204,21 +205,31 @@
     const loadingScreen = document.getElementById('loadingScreen');
     const video = document.getElementById('lims2-video');
     
+    // Improved loading strategy
     mainImage.onload = function() {
       loadingScreen.style.opacity = 0;
       loadingScreen.style.visibility = 'hidden';
+      
+      // Only load video after page is visible
+      setTimeout(() => {
+        if (video) {
+          video.preload = "auto";
+          video.play().catch(e => console.log('Autoplay prevented:', e));
+        }
+      }, 300);
     };
     
     // Fallback timeout to hide loading screen after max 2 seconds
     setTimeout(() => {
       loadingScreen.style.opacity = 0;
       loadingScreen.style.visibility = 'hidden';
+      
+      // Also try to load video if image load event didn't fire
+      if (video && video.preload !== "auto") {
+        video.preload = "auto";
+        video.play().catch(e => console.log('Autoplay prevented:', e));
+      }
     }, 2000);
-    
-    // Make sure video plays after loading
-    if (video) {
-      video.play().catch(e => console.log('Autoplay prevented:', e));
-    }
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
