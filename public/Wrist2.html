@@ -250,6 +250,44 @@
       opacity: 1;
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
     }
+
+    /* Add styles for label overlays */
+    .label-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 150%;
+      height: 150%;
+      z-index: 150; /* Much higher than other elements */
+      object-fit: contain;
+      pointer-events: none; /* Allow click-through */
+      opacity: 1; /* Ensure full visibility */
+      mix-blend-mode: normal; /* No blending with background */
+      background: none !important;
+      display: block !important; /* Force display */
+      transform: scale(1) translate(-165px, -160px);
+      transition: opacity 0.1s ease; /* Smooth transition when showing/hiding */
+    }
+    
+    .label-overlay-conditional {
+      opacity: 0; /* Hidden by default */
+    }
+
+    .teapot-video-container {
+      position: absolute;
+      width: 40%;
+      height: 35%;
+      top: 30%;
+      right: 20%;
+      z-index: 5;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -287,6 +325,11 @@
       <!-- Hotspot overlays inside the flipbook container so they're aligned with the model -->
       <img src="images/yaw-hotspot.png" alt="" class="hotspot-overlay yaw-hotspot" id="yawHotspot">
       <img src="images/pitchroll-hotspot.png" alt="" class="hotspot-overlay pitchroll-hotspot" id="pitchrollHotspot">
+      
+      <!-- Put the labels inside the flipbook container as the last elements so they stay on top -->
+      <img src="images/Wrist_Label.png" alt="" class="label-overlay" id="wristLabel">
+      <img src="images/Wrist_Label_Yaw.png" alt="" class="label-overlay label-overlay-conditional" id="wristLabelYaw">
+      <img src="images/Wrist_Label_PitchRoll.png" alt="" class="label-overlay label-overlay-conditional" id="wristLabelPitchRoll">
     </div>
     
     <!-- Navigation at bottom right -->
@@ -314,6 +357,11 @@
     // Get the hotspot overlays
     const yawHotspot = document.getElementById('yawHotspot');
     const pitchrollHotspot = document.getElementById('pitchrollHotspot');
+    
+    // Get the label overlays
+    const wristLabel = document.getElementById('wristLabel');
+    const wristLabelYaw = document.getElementById('wristLabelYaw');
+    const wristLabelPitchRoll = document.getElementById('wristLabelPitchRoll');
     
     // Create canvas for yaw hotspot PNG detection
     const yawHotspotCanvas = document.createElement('canvas');
@@ -698,26 +746,40 @@
     
     // Remove throttling for mousemove to improve responsiveness
     hoverArea.addEventListener('mousemove', function(event) {
+      // Check if over green area in yaw hotspot
+      const isYaw = isOverGreenArea(event.clientX, event.clientY);
       // Check if over blue area in pitchroll hotspot
       const isPitchRoll = isOverBlueArea(event.clientX, event.clientY);
       
-      // Re-enable yaw detection
-      const isYaw = isOverGreenArea(event.clientX, event.clientY);
+      // First, hide all labels
+      wristLabel.style.opacity = "0";
+      wristLabelYaw.style.opacity = "0";
+      wristLabelPitchRoll.style.opacity = "0";
       
+      // Then show only the appropriate label based on hover state
       if (isYaw) {
-        // Hovering over yaw area
+        // ONLY show Yaw label
+        wristLabelYaw.style.opacity = "1";
+        
+        // Highlight yaw hotspot
         yawHotspot.classList.add('hotspot-active');
         pitchrollHotspot.classList.remove('hotspot-active');
         startAnimation('yaw');
       } 
       else if (isPitchRoll) {
-        // Hovering over pitchroll area
+        // ONLY show PitchRoll label
+        wristLabelPitchRoll.style.opacity = "1";
+        
+        // Highlight pitchroll hotspot
         pitchrollHotspot.classList.add('hotspot-active');
         yawHotspot.classList.remove('hotspot-active');
         startAnimation('pitch-roll');
       }
       else {
-        // Not hovering over any active area
+        // Not hovering over any hotspot, ONLY show the default label
+        wristLabel.style.opacity = "1";
+        
+        // Remove highlights
         yawHotspot.classList.remove('hotspot-active');
         pitchrollHotspot.classList.remove('hotspot-active');
         
@@ -728,6 +790,11 @@
     });
     
     hoverArea.addEventListener('mouseleave', function() {
+      // Hide conditional labels and show only default label
+      wristLabel.style.opacity = "1";
+      wristLabelYaw.style.opacity = "0";
+      wristLabelPitchRoll.style.opacity = "0";
+      
       // Reset hotspot classes when leaving the area
       yawHotspot.classList.remove('hotspot-active');
       pitchrollHotspot.classList.remove('hotspot-active');

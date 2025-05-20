@@ -139,6 +139,7 @@
       transform-style: preserve-3d;
       perspective: 1500px;
       z-index: 4;
+      pointer-events: auto;
     }
     
     .carousel .slider {
@@ -147,6 +148,7 @@
       height: 100%;
       transform-style: preserve-3d;
       animation: autoRun 60s linear infinite;
+      pointer-events: auto;
     }
     
     @keyframes autoRun {
@@ -177,6 +179,7 @@
     .carousel .slider .item:hover {
       transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(460px) scale(1.1);
       z-index: 5;
+      pointer-events: auto;
     }
     
     /* Add click effect */
@@ -259,6 +262,7 @@
     .carousel .slider .item:hover img {
       opacity: 1;
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+      pointer-events: auto;
     }
     
     /* Head1 to Head_Open transition */
@@ -359,6 +363,7 @@
     /* Stop animation on hover */
     .carousel:hover .slider {
       animation-play-state: paused;
+      pointer-events: auto;
     }
     
     /* Layer2 image */
@@ -557,6 +562,7 @@
       let currentRotation = 0;
       let autoRotationSpeed = 6; // degrees per second (to match 60s full rotation)
       let lastFrameTime = Date.now();
+      let targetRotation = 0;
       
       // Set up animation frame
       function updateRotation() {
@@ -567,8 +573,17 @@
         if (isRotating) {
           currentRotation += autoRotationSpeed * deltaTime;
           currentRotation = currentRotation % 360; // keep within 0-360 range
-          slider.style.transform = `rotateX(-5deg) rotateY(${currentRotation}deg)`;
+        } else {
+          // Smooth rotation to target when manually rotating
+          const rotationDiff = targetRotation - currentRotation;
+          // Add a small smoothing factor
+          if (Math.abs(rotationDiff) > 0.1) {
+            currentRotation += rotationDiff * 0.1;
+          }
         }
+        
+        // Apply the rotation
+        slider.style.transform = `rotateX(-5deg) rotateY(${currentRotation}deg)`;
         
         requestAnimationFrame(updateRotation);
       }
@@ -583,6 +598,7 @@
       // Pause rotation on hover
       carousel.addEventListener('mouseenter', function() {
         isRotating = false;
+        targetRotation = currentRotation; // Prevent jumps
       });
       
       // Resume rotation on mouse leave
@@ -597,41 +613,71 @@
           event.preventDefault();
           
           // Reduce scroll sensitivity and add smoothing
-          const scrollAmount = event.deltaY > 0 ? 2 : -2; // Reduced from 5 to 2 degrees
-          const targetRotation = currentRotation + scrollAmount;
+          const scrollAmount = event.deltaY > 0 ? 5 : -5; // Increase sensitivity
+          targetRotation += scrollAmount;
           
-          // Smooth transition to target rotation
-          currentRotation = targetRotation;
-          
-          // Apply the new rotation
-          slider.style.transform = `rotateX(-5deg) rotateY(${currentRotation}deg)`;
+          // Apply the new rotation is handled in the animation frame
         }
       }, { passive: false });
       
       // Click handling for images
       const items = document.querySelectorAll('.carousel .slider .item');
-      items.forEach(item => {
-        item.addEventListener('click', function() {
-          const img = this.querySelector('img');
+      items.forEach((item, index) => {
+        item.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent event bubbling
           
-          if (img && img.src.toLowerCase().includes('mcw.png')) {
-            // Fade out before navigation
-            document.body.style.opacity = 0;
-            
-            // Navigate after fade completes
-            setTimeout(() => {
-              window.location.href = 'runaway-teapot-01.html';
-            }, 500);
+          // Get the image inside this item
+          const imgs = this.querySelectorAll('img');
+          let imgSrc = "";
+          
+          // Check if we have dual images (open/closed states)
+          if (imgs.length > 1) {
+            // Use the "open" state image that shows on hover
+            imgSrc = imgs[1].src;
+          } else if (imgs.length === 1) {
+            imgSrc = imgs[0].src;
           }
           
-          // Add navigation for ARM1/ARM2 images
-          else if (img && (img.src.toLowerCase().includes('arm1.png') || img.src.toLowerCase().includes('arm2.png'))) {
-            // Fade out before navigation
+          console.log("Clicked on item:", index + 1, "Image src:", imgSrc);
+          
+          // Determine which page to navigate to based on the item position or image
+          let targetPage = '';
+          
+          // Use position for navigation
+          switch(index + 1) {
+            case 1: // Path Finder
+              targetPage = 'path_finder.html';
+              break;
+            case 2: // Shelf
+              targetPage = 'shelf.html';
+              break;
+            case 3: // Head
+              targetPage = 'head.html';
+              break;
+            case 4: // ARM
+              targetPage = 'reverse-01.html';
+              break;
+            case 5: // Wrist
+              targetPage = 'Wrist1.html';
+              break;
+            case 6: // JAW
+              targetPage = 'jaw.html';
+              break;
+            case 7: // MCW
+            case 8:
+            case 9:
+            case 10:
+              targetPage = 'runaway-teapot-01.html';
+              break;
+            default:
+              return; // Don't navigate if no match
+          }
+          
+          // Fade out and navigate
+          if (targetPage) {
             document.body.style.opacity = 0;
-            
-            // Navigate after fade completes
             setTimeout(() => {
-              window.location.href = 'reverse-01.html';
+              window.location.href = targetPage;
             }, 500);
           }
         });
