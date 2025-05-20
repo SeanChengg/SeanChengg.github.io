@@ -756,32 +756,39 @@
       wristLabelYaw.style.opacity = "0";
       wristLabelPitchRoll.style.opacity = "0";
       
-      // Then show only the appropriate label based on hover state
-      if (isYaw) {
-        // ONLY show Yaw label
-        wristLabelYaw.style.opacity = "1";
+      // Reset active states
+      yawHotspot.classList.remove('hotspot-active');
+      pitchrollHotspot.classList.remove('hotspot-active');
+      
+      if (isPitchRoll) {
+        // When in pitchroll area, completely hide the yaw hotspot
+        yawHotspot.style.opacity = "0";
         
-        // Highlight yaw hotspot
-        yawHotspot.classList.add('hotspot-active');
-        pitchrollHotspot.classList.remove('hotspot-active');
-        startAnimation('yaw');
-      } 
-      else if (isPitchRoll) {
         // ONLY show PitchRoll label
         wristLabelPitchRoll.style.opacity = "1";
         
-        // Highlight pitchroll hotspot
+        // Highlight ONLY pitchroll hotspot
         pitchrollHotspot.classList.add('hotspot-active');
-        yawHotspot.classList.remove('hotspot-active');
         startAnimation('pitch-roll');
       }
-      else {
-        // Not hovering over any hotspot, ONLY show the default label
-        wristLabel.style.opacity = "1";
+      else if (isYaw) {
+        // Make sure yaw hotspot is visible
+        yawHotspot.style.opacity = "0.8"; // Reset to default opacity
         
-        // Remove highlights
-        yawHotspot.classList.remove('hotspot-active');
-        pitchrollHotspot.classList.remove('hotspot-active');
+        // ONLY show Yaw label
+        wristLabelYaw.style.opacity = "1";
+        
+        // Highlight ONLY yaw hotspot
+        yawHotspot.classList.add('hotspot-active');
+        startAnimation('yaw');
+      }
+      else {
+        // Not hovering over any hotspot
+        // Make sure yaw hotspot is visible with default opacity
+        yawHotspot.style.opacity = "0.8";
+        
+        // ONLY show the default label
+        wristLabel.style.opacity = "1";
         
         if (isHovering) {
           stopAnimation();
@@ -798,6 +805,10 @@
       // Reset hotspot classes when leaving the area
       yawHotspot.classList.remove('hotspot-active');
       pitchrollHotspot.classList.remove('hotspot-active');
+      
+      // Make sure yaw hotspot is back to default visibility
+      yawHotspot.style.opacity = "0.8";
+      
       stopAnimation();
     });
 
