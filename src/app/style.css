@@ -169,4 +169,24 @@ body::before{
     background-repeat: no-repeat;
     background-position: top center;
     pointer-events: none;
+}
+
+.teapot-video-container {
+  position: absolute;
+  width: 40%;
+  height: 35%;
+  top: 30%;
+  right: 20%;
+  z-index: 5;
+  /* other properties... */
+}
+
+function applyVideoContainerStyles() {
+  const videoContainer = document.querySelector('.teapot-video-container');
+  if (videoContainer) {
+    videoContainer.style.width = '40%';
+    videoContainer.style.height = '35%';
+    videoContainer.style.top = '40%';
+    videoContainer.style.right = '20%';
+  }
 } 

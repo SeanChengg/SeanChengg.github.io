@@ -6,6 +6,21 @@
   <title>LIMS2 Wrist - Page 2</title>
   
   <link rel="preload" href="images/Wrist2.jpg" as="image">
+  <link rel="preload" href="images/Wrist0.png" as="image">
+  <link rel="preload" href="images/yaw-hotspot.png" as="image">
+  <link rel="preload" href="images/pitchroll-hotspot.png" as="image">
+  <link rel="preload" href="images/Pitch1.png" as="image">
+  <link rel="preload" href="images/Pitch2.png" as="image">
+  <link rel="preload" href="images/Pitch3.png" as="image">
+  <link rel="preload" href="images/Pitch4.png" as="image">
+  <link rel="preload" href="images/Roll1.png" as="image">
+  <link rel="preload" href="images/Roll2.png" as="image">
+  <link rel="preload" href="images/Roll3.png" as="image">
+  <link rel="preload" href="images/Roll4.png" as="image">
+  <link rel="preload" href="images/Yaw1.png" as="image">
+  <link rel="preload" href="images/Yaw2.png" as="image">
+  <link rel="preload" href="images/Yaw3.png" as="image">
+  <link rel="preload" href="images/Yaw4.png" as="image">
   
   <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -48,6 +63,52 @@
       z-index: 0;
       margin: 0;
       padding: 0;
+    }
+    /* Flipbook animation container */
+    .flipbook-container {
+      position: absolute;
+      top: 52%;
+      left: 15%;
+      transform: translateY(-50%);
+      width: 650px;
+      height: 650px;
+      z-index: 5;
+      overflow: visible;
+      background: none;
+      pointer-events: none;
+      mix-blend-mode: normal;
+    }
+    .flipbook-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out; /* Faster default transition */
+      background: none !important;
+      mix-blend-mode: normal;
+      filter: none;
+    }
+    
+    /* Fast initial transition class */
+    .flipbook-image.fast-transition {
+      transition: opacity 0s !important; /* Instant transition - no delay */
+    }
+    
+    .flipbook-image.active {
+      opacity: 1;
+    }
+    /* Hover detection area */
+    .hover-detection {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      cursor: default;
     }
     /* Container for footer navigation */
     .nav-container {
@@ -137,6 +198,58 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    /* Remove detection area styles */
+    .detection-area {
+      display: none;
+    }
+
+    #yawArea, #pitchRollArea, #leftArea, #rightArea {
+      display: none;
+    }
+
+    /* Add styles for hotspots */
+    .hotspot-overlay {
+      position: absolute;
+      z-index: 6;
+      transition: opacity 0.1s ease, filter 0.1s ease;
+      opacity: 0.8;
+      pointer-events: none;
+      font-size: 0;
+      color: transparent;
+    }
+
+    .yaw-hotspot {
+      /* Match exactly the dimensions of animation images */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.8));
+      object-fit: contain;
+      display: block !important;
+    }
+
+    .pitchroll-hotspot {
+      /* Match exactly the dimensions of animation images */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 255, 0.8));
+      object-fit: contain;
+      display: block !important;
+    }
+
+    /* Hide broken image icons */
+    img.pitchroll-hotspot[src=""], 
+    img.pitchroll-hotspot:not([src]) {
+      visibility: hidden;
+    }
+
+    .hotspot-active {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+    }
   </style>
 </head>
 <body>
@@ -151,6 +264,30 @@
     
     <!-- Full page image -->
     <img src="images/Wrist2.jpg" alt="LIMS2 Wrist" class="full-page-image" id="mainImage">
+    
+    <!-- Hover detection area -->
+    <div class="hover-detection" id="hoverArea"></div>
+    
+    <!-- SVG Hotspot Overlays -->
+    <div class="flipbook-container" id="flipbookContainer" style="background: none !important;">
+      <img src="images/Wrist0.png" alt="Wrist Initial" class="flipbook-image active" id="initialImage" style="background: none !important;">
+      <img src="images/Pitch1.png" alt="Pitch 1" class="flipbook-image" data-sequence="1" style="background: none !important;">
+      <img src="images/Pitch2.png" alt="Pitch 2" class="flipbook-image" data-sequence="2" style="background: none !important;">
+      <img src="images/Pitch3.png" alt="Pitch 3" class="flipbook-image" data-sequence="3" style="background: none !important;">
+      <img src="images/Pitch4.png" alt="Pitch 4" class="flipbook-image" data-sequence="4" style="background: none !important;">
+      <img src="images/Roll1.png" alt="Roll 1" class="flipbook-image" data-sequence="5" style="background: none !important;">
+      <img src="images/Roll2.png" alt="Roll 2" class="flipbook-image" data-sequence="6" style="background: none !important;">
+      <img src="images/Roll3.png" alt="Roll 3" class="flipbook-image" data-sequence="7" style="background: none !important;">
+      <img src="images/Roll4.png" alt="Roll 4" class="flipbook-image" data-sequence="8" style="background: none !important;">
+      <img src="images/Yaw1.png" alt="Yaw 1" class="flipbook-image" data-sequence="9" style="background: none !important;">
+      <img src="images/Yaw2.png" alt="Yaw 2" class="flipbook-image" data-sequence="10" style="background: none !important;">
+      <img src="images/Yaw3.png" alt="Yaw 3" class="flipbook-image" data-sequence="11" style="background: none !important;">
+      <img src="images/Yaw4.png" alt="Yaw 4" class="flipbook-image" data-sequence="12" style="background: none !important;">
+      
+      <!-- Hotspot overlays inside the flipbook container so they're aligned with the model -->
+      <img src="images/yaw-hotspot.png" alt="" class="hotspot-overlay yaw-hotspot" id="yawHotspot">
+      <img src="images/pitchroll-hotspot.png" alt="" class="hotspot-overlay pitchroll-hotspot" id="pitchrollHotspot">
+    </div>
     
     <!-- Navigation at bottom right -->
     <div class="nav-container">
@@ -169,17 +306,433 @@
     // Hide loading screen when image is loaded
     const mainImage = document.getElementById('mainImage');
     const loadingScreen = document.getElementById('loadingScreen');
+    const hoverArea = document.getElementById('hoverArea');
+    const flipbookContainer = document.getElementById('flipbookContainer');
+    const initialImage = document.getElementById('initialImage');
+    const sequenceImages = document.querySelectorAll('.flipbook-image[data-sequence]');
     
-    mainImage.onload = function() {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
+    // Get the hotspot overlays
+    const yawHotspot = document.getElementById('yawHotspot');
+    const pitchrollHotspot = document.getElementById('pitchrollHotspot');
+    
+    // Create canvas for yaw hotspot PNG detection
+    const yawHotspotCanvas = document.createElement('canvas');
+    yawHotspotCanvas.width = 650; // Match the flipbook container width
+    yawHotspotCanvas.height = 650; // Match the flipbook container height
+    const yawHotspotCtx = yawHotspotCanvas.getContext('2d', { willReadFrequently: true });
+    
+    // Create canvas for pitchroll hotspot PNG detection
+    const pitchrollHotspotCanvas = document.createElement('canvas');
+    pitchrollHotspotCanvas.width = 650; // Match the flipbook container width
+    pitchrollHotspotCanvas.height = 650; // Match the flipbook container height
+    const pitchrollHotspotCtx = pitchrollHotspotCanvas.getContext('2d', { willReadFrequently: true });
+    
+    // Load the yaw hotspot image for detection
+    const yawHotspotImage = new Image();
+    yawHotspotImage.crossOrigin = "Anonymous";
+    yawHotspotImage.src = "images/yaw-hotspot.png";
+    let yawHotspotReady = false;
+    
+    yawHotspotImage.onload = function() {
+      console.log('Yaw hotspot image loaded');
+      yawHotspotReady = true;
+      yawHotspotCtx.drawImage(yawHotspotImage, 0, 0, yawHotspotCanvas.width, yawHotspotCanvas.height);
+      
+      // Debug - log the first few pixels to check for green
+      const pixels = yawHotspotCtx.getImageData(0, 0, 10, 10).data;
+      console.log('First 10 pixels of yaw hotspot:', pixels);
     };
     
-    // Fallback timeout to hide loading screen after max 2 seconds
+    // Load the pitchroll hotspot image for detection
+    const pitchrollHotspotImage = new Image();
+    pitchrollHotspotImage.crossOrigin = "Anonymous";
+    pitchrollHotspotImage.src = "images/pitchroll-hotspot.png";
+    let pitchrollHotspotReady = false;
+    
+    pitchrollHotspotImage.onload = function() {
+      pitchrollHotspotReady = true;
+      pitchrollHotspotCtx.drawImage(pitchrollHotspotImage, 0, 0, pitchrollHotspotCanvas.width, pitchrollHotspotCanvas.height);
+    };
+    
+    // Group the sequences by type
+    const pitchImages = [
+      document.querySelector('.flipbook-image[data-sequence="1"]'),
+      document.querySelector('.flipbook-image[data-sequence="2"]'),
+      document.querySelector('.flipbook-image[data-sequence="3"]'),
+      document.querySelector('.flipbook-image[data-sequence="4"]')
+    ];
+    
+    const rollImages = [
+      document.querySelector('.flipbook-image[data-sequence="5"]'),
+      document.querySelector('.flipbook-image[data-sequence="6"]'),
+      document.querySelector('.flipbook-image[data-sequence="7"]'),
+      document.querySelector('.flipbook-image[data-sequence="8"]')
+    ];
+    
+    const yawImages = [
+      document.querySelector('.flipbook-image[data-sequence="9"]'),
+      document.querySelector('.flipbook-image[data-sequence="10"]'),
+      document.querySelector('.flipbook-image[data-sequence="11"]'),
+      document.querySelector('.flipbook-image[data-sequence="12"]')
+    ];
+    
+    // Variables for the flipbook animation
+    let isHovering = false;
+    let animationFrame;
+    let currentFrame = 0;
+    let currentSequence = null; // Track which sequence is playing: 'pitch-roll' or 'yaw'
+    
+    // Different speeds for different animations
+    const frameDelays = {
+      'yaw': 350,       // 0.35 seconds between frames - slower but still smooth
+      'pitch-roll': 350 // Also set to 0.35 seconds for matching speed
+    };
+    
+    let lastFrameTime = 0;
+    
+    // Create canvas for color detection
+    const detectCanvas = document.createElement('canvas');
+    detectCanvas.width = 400; // Smaller canvas is more efficient
+    detectCanvas.height = 400;
+    const detectCtx = detectCanvas.getContext('2d', { willReadFrequently: true });
+    
+    // Load the robot model image
+    const modelImage = document.createElement('img');
+    modelImage.crossOrigin = "Anonymous";
+    modelImage.src = "images/Wrist0.png";
+    modelImage.style.display = 'none';
+    document.body.appendChild(modelImage);
+    
+    let modelImageReady = false;
+    modelImage.onload = function() {
+      modelImageReady = true;
+      detectCtx.drawImage(modelImage, 0, 0, detectCanvas.width, detectCanvas.height);
+    };
+    
+    // Load all images first
+    let imagesLoaded = 0;
+    const totalImages = sequenceImages.length + 2; // +2 for mainImage and initialImage
+    
+    function checkAllImagesLoaded() {
+      imagesLoaded++;
+      if (imagesLoaded >= totalImages) {
+        loadingScreen.style.opacity = 0;
+        loadingScreen.style.visibility = 'hidden';
+      }
+    }
+    
+    mainImage.onload = checkAllImagesLoaded;
+    initialImage.onload = checkAllImagesLoaded;
+    sequenceImages.forEach(img => {
+      img.onload = checkAllImagesLoaded;
+    });
+    
+    // Fallback timeout to hide loading screen after max 4 seconds
     setTimeout(() => {
       loadingScreen.style.opacity = 0;
       loadingScreen.style.visibility = 'hidden';
-    }, 2000);
+    }, 4000);
+    
+    // Get relative position in the model image
+    function getModelPosition(clientX, clientY) {
+      const rect = flipbookContainer.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      
+      // Scale to model coordinates
+      const modelX = Math.floor((x / rect.width) * detectCanvas.width);
+      const modelY = Math.floor((y / rect.height) * detectCanvas.height);
+      
+      return {x: modelX, y: modelY};
+    }
+    
+    // Improved color detection function
+    function detectColorArea(event) {
+      if (!modelImageReady) return 'none';
+      
+      try {
+        // Get position in the image
+        const pos = getModelPosition(event.clientX, event.clientY);
+        if (pos.x < 0 || pos.y < 0 || pos.x >= detectCanvas.width || pos.y >= detectCanvas.height) {
+          return 'none';
+        }
+        
+        // Get pixel color
+        const pixel = detectCtx.getImageData(pos.x, pos.y, 1, 1).data;
+        const [r, g, b, a] = pixel;
+        
+        // If transparent or background, return none
+        if (a < 30 || (r > 220 && g > 220 && b > 220)) {
+          return 'none';
+        }
+        
+        // Position-based detection for the center shaft (likely to be Yaw area)
+        // This targets the middle vertical part where the green shaft is typically located
+        const centerX = detectCanvas.width / 2;
+        const centerRegion = 20; // Width of center region
+        const isInCenterShaft = Math.abs(pos.x - centerX) < centerRegion && 
+                               pos.y > detectCanvas.height * 0.38 && 
+                               pos.y < detectCanvas.height * 0.65;
+                               
+        // Position-based detection for upper blue area (likely to be Pitch/Roll area)
+        const isInUpperJoint = Math.abs(pos.x - centerX) < 50 && 
+                              pos.y > detectCanvas.height * 0.25 && 
+                              pos.y < detectCanvas.height * 0.38;
+                               
+        // Super sensitive green detection - ANY hint of green in center area
+        if (isInCenterShaft && (g > 60 || (g >= r && g >= b))) {
+          return 'yaw';
+        }
+        
+        // Super sensitive blue detection in upper joint area
+        if (isInUpperJoint && (b > 60 || (b >= r))) {
+          return 'pitch-roll';
+        }
+        
+        // General color detection for other areas
+        if (g > r && g > b && g > 50) {
+          return 'yaw'; // Green dominance = Yaw
+        }
+        
+        if (b > r && b > 60) {
+          return 'pitch-roll'; // Blue dominance = Pitch/Roll
+        }
+        
+        // Any other colored part of the model (not white/transparent)
+        if (r > 50 || g > 50 || b > 50) {
+          // Default to pitch-roll for any visible part
+          return 'pitch-roll';
+        }
+        
+        return 'none';
+      } catch(e) {
+        return 'none';
+      }
+    }
+    
+    // Function to start animation with specific sequence
+    function startAnimation(sequence) {
+      // If already hovering on the same sequence, don't restart
+      if (isHovering && currentSequence === sequence) return;
+      
+      // Update current sequence
+      currentSequence = sequence;
+      isHovering = true;
+      currentFrame = 0;
+      
+      // Always use fast transition for instant response
+      sequenceImages.forEach(img => {
+        img.classList.add('fast-transition');
+      });
+      initialImage.classList.add('fast-transition');
+      
+      // Start animation immediately
+      if (!animationFrame) {
+        // Run first frame immediately instead of waiting for next animation frame
+        updateFlipbook(performance.now());
+      }
+      
+      // Keep fast transitions on for all animations for best responsiveness
+      // No need to remove fast-transition class
+    }
+    
+    // Function to stop animation
+    function stopAnimation() {
+      if (!isHovering) return; // Skip if already stopped
+      
+      isHovering = false;
+      currentSequence = null;
+      
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+      
+      // Apply fast transition for resetting to initial state - instant
+      sequenceImages.forEach(img => {
+        img.classList.add('fast-transition');
+        img.classList.remove('active');
+      });
+      initialImage.classList.add('fast-transition');
+      initialImage.classList.add('active');
+      currentFrame = 0;
+      
+      // Reset to normal transition speed after a very short delay
+      setTimeout(() => {
+        sequenceImages.forEach(img => {
+          img.classList.remove('fast-transition');
+        });
+        initialImage.classList.remove('fast-transition');
+      }, 5); // Ultra-short delay
+    }
+    
+    // Function to update the flipbook animation based on the current sequence
+    function updateFlipbook(timestamp) {
+      if (!isHovering || !currentSequence) {
+        stopAnimation();
+        return;
+      }
+      
+      // Get the frame delay based on the current sequence
+      const frameDelay = frameDelays[currentSequence] || 800;
+      
+      // Check if enough time has passed for the next frame
+      if (timestamp - lastFrameTime < frameDelay) {
+        animationFrame = requestAnimationFrame(updateFlipbook);
+        return;
+      }
+      
+      // Hide all images first
+      sequenceImages.forEach(img => img.classList.remove('active'));
+      initialImage.classList.remove('active');
+      
+      // Determine which sequence to use
+      let currentSequenceImages;
+      let maxFrames = 4;
+      
+      if (currentSequence === 'yaw') {
+        // For yaw, just use the 4 yaw images
+        currentSequenceImages = yawImages;
+      } else if (currentSequence === 'pitch-roll') {
+        // For pitch-roll, show both pitch and roll in sequence
+        // First 4 frames show pitch, next 4 frames show roll
+        maxFrames = 8;
+        
+        if (currentFrame < 4) {
+          // Show pitch images for the first 4 frames
+          currentSequenceImages = pitchImages;
+        } else {
+          // Show roll images for the next 4 frames
+          currentSequenceImages = rollImages;
+        }
+      } else {
+        // If no valid sequence, reset to initial image
+        initialImage.classList.add('active');
+        lastFrameTime = timestamp;
+        animationFrame = requestAnimationFrame(updateFlipbook);
+        return;
+      }
+      
+      // Show the current frame from the correct sequence
+      const adjustedFrame = currentSequence === 'pitch-roll' && currentFrame >= 4 
+        ? currentFrame % 4  // For roll images (frames 4-7), use 0-3 index
+        : currentFrame;     // For pitch or yaw images, use as is
+        
+      if (currentSequenceImages[adjustedFrame]) {
+        currentSequenceImages[adjustedFrame].classList.add('active');
+      }
+      
+      // Move to the next frame
+      currentFrame = (currentFrame + 1) % maxFrames;
+      lastFrameTime = timestamp;
+      
+      // Continue the animation
+      animationFrame = requestAnimationFrame(updateFlipbook);
+    }
+    
+    // Function to check if point is over a green pixel in the yaw hotspot image
+    function isOverGreenArea(clientX, clientY) {
+      if (!yawHotspotReady) return false;
+      
+      // Calculate the position of the mouse relative to the yaw hotspot
+      const rect = yawHotspot.getBoundingClientRect();
+      
+      // If not within the bounding box, return false
+      if (clientX < rect.left || clientX > rect.right || 
+          clientY < rect.top || clientY > rect.bottom) {
+        return false;
+      }
+      
+      // Calculate relative position within the hotspot image
+      const x = Math.floor(((clientX - rect.left) / rect.width) * yawHotspotCanvas.width);
+      const y = Math.floor(((clientY - rect.top) / rect.height) * yawHotspotCanvas.height);
+      
+      // Check if point is out of bounds
+      if (x < 0 || y < 0 || x >= yawHotspotCanvas.width || y >= yawHotspotCanvas.height) {
+        return false;
+      }
+      
+      // Get pixel color at that point
+      const pixel = yawHotspotCtx.getImageData(x, y, 1, 1).data;
+      const [r, g, b, a] = pixel;
+      
+      // If pixel is transparent, return false
+      if (a < 30) return false;
+      
+      // Use a more lenient check - any pixel with some green
+      return g > 50;
+    }
+    
+    // Function to check if point is over a blue pixel in the pitchroll hotspot image
+    function isOverBlueArea(clientX, clientY) {
+      if (!pitchrollHotspotReady) return false;
+      
+      // Calculate the position of the mouse relative to the pitchroll hotspot
+      const rect = pitchrollHotspot.getBoundingClientRect();
+      
+      // If not within the bounding box, return false
+      if (clientX < rect.left || clientX > rect.right || 
+          clientY < rect.top || clientY > rect.bottom) {
+        return false;
+      }
+      
+      // Calculate relative position within the hotspot image
+      const x = Math.floor(((clientX - rect.left) / rect.width) * pitchrollHotspotCanvas.width);
+      const y = Math.floor(((clientY - rect.top) / rect.height) * pitchrollHotspotCanvas.height);
+      
+      // Check if point is out of bounds
+      if (x < 0 || y < 0 || x >= pitchrollHotspotCanvas.width || y >= pitchrollHotspotCanvas.height) {
+        return false;
+      }
+      
+      // Get pixel color at that point
+      const pixel = pitchrollHotspotCtx.getImageData(x, y, 1, 1).data;
+      const [r, g, b, a] = pixel;
+      
+      // If pixel is transparent, return false
+      if (a < 30) return false;
+      
+      // Use a more lenient check - any pixel with some blue
+      return b > 50;
+    }
+    
+    // Remove throttling for mousemove to improve responsiveness
+    hoverArea.addEventListener('mousemove', function(event) {
+      // Check if over blue area in pitchroll hotspot
+      const isPitchRoll = isOverBlueArea(event.clientX, event.clientY);
+      
+      // Re-enable yaw detection
+      const isYaw = isOverGreenArea(event.clientX, event.clientY);
+      
+      if (isYaw) {
+        // Hovering over yaw area
+        yawHotspot.classList.add('hotspot-active');
+        pitchrollHotspot.classList.remove('hotspot-active');
+        startAnimation('yaw');
+      } 
+      else if (isPitchRoll) {
+        // Hovering over pitchroll area
+        pitchrollHotspot.classList.add('hotspot-active');
+        yawHotspot.classList.remove('hotspot-active');
+        startAnimation('pitch-roll');
+      }
+      else {
+        // Not hovering over any active area
+        yawHotspot.classList.remove('hotspot-active');
+        pitchrollHotspot.classList.remove('hotspot-active');
+        
+        if (isHovering) {
+          stopAnimation();
+        }
+      }
+    });
+    
+    hoverArea.addEventListener('mouseleave', function() {
+      // Reset hotspot classes when leaving the area
+      yawHotspot.classList.remove('hotspot-active');
+      pitchrollHotspot.classList.remove('hotspot-active');
+      stopAnimation();
+    });
 
     // Fade out before navigation
     document.querySelectorAll('.nav-btn').forEach(button => {
