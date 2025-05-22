@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breaking SVG</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #000;
+      overflow: hidden;
+    }
+    .svg-container {
+      width: 90%;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: sans-serif;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="svg-container">
+    <img src="images/Breaking.svg" alt="Breaking Mechanism" />
+  </div>
+  <a href="index.html" class="back-button">Back</a>
+  
+  <script>
+    // Fade out before navigation
+    document.querySelector('.back-button').addEventListener('click', function(event) {
+      event.preventDefault();
+      const href = this.getAttribute('href');
+      
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = href;
+      }, 200);
+    });
+    
+    // Fade in when page loads
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+      document.body.style.opacity = 1;
+    }, 100);
+  </script>
+</body>
+</html> 
