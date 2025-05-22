@@ -47,6 +47,16 @@
       object-fit: cover;
       display: block;
     }
+    .svg-frame {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
     /* Container for footer navigation */
     .nav-container {
       position: absolute;
@@ -147,7 +157,9 @@
   <div class="frame">
     <!-- SVG Content -->
     <div class="svg-container">
-      <img src="images/Breaking.svg" alt="Breaking Bad" class="svg-image" id="mainSvg">
+      <object data="images/Breaking.svg" type="image/svg+xml" class="svg-image" id="mainSvg">
+        Your browser does not support SVG
+      </object>
     </div>
     
     <!-- Navigation at bottom right -->
