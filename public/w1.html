@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breaking Bad - W1</title>
+  
+  <link rel="preload" href="images/Breaking.svg" as="image">
+  
+  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f2f1ec;
+      color: #333;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      opacity: 1;
+    }
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #333;
+      background-image: linear-gradient(45deg, #333, #111);
+      color: #fff;
+    }
+    .frame-number {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      color: #ccc;
+      font-size: 1.2rem;
+    }
+    /* SVG Main Image */
+    .svg-container {
+      width: 70%;
+      height: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .svg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.2));
+    }
+    /* Page Title */
+    .page-title {
+      position: absolute;
+      top: 50px;
+      text-align: center;
+      font-family: 'Zilla Slab', serif;
+      font-size: 3rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    /* Container for footer navigation */
+    .nav-container {
+      position: absolute;
+      bottom: 18px;
+      right: 32px;
+      z-index: 10;
+    }
+    .next-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 15px;
+      margin-right: 30px;
+    }
+    .prev-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .nav-btn {
+      display: inline-block;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      font-family: 'Zilla Slab', serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transform: translateY(0);
+    }
+    .nav-btn:hover {
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
+                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
+                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+    .nav-btn::after {
+      content: none;
+    }
+    .nav-line {
+      display: inline-block;
+      width: 120px;
+      height: 1px;
+      background-color: #777;
+      position: relative;
+      top: 6px;
+    }
+    .next-line {
+      margin-right: 5px;
+    }
+    .prev-line {
+      margin-left: 5px;
+    }
+    /* Description */
+    .description {
+      position: absolute;
+      bottom: 80px;
+      width: 70%;
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: #ccc;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    .loading-text {
+      color: #ccc;
+      font-family: 'Zilla Slab', serif;
+      font-size: 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading content...</div>
+  </div>
+
+  <div class="frame">
+    <div class="frame-number">01</div>
+    
+    <h1 class="page-title">Breaking Bad</h1>
+    
+    <!-- SVG Main Content -->
+    <div class="svg-container">
+      <img src="images/Breaking.svg" alt="Breaking Bad-themed Halloween project" class="svg-image" id="mainSvg">
+    </div>
+    
+    <div class="description">
+      Breaking Bad-themed Halloween project inspired by Walter White's trunk-mounted M60.
+    </div>
+    
+    <!-- Navigation at bottom right -->
+    <div class="nav-container">
+      <div class="next-container">
+        <span class="nav-line next-line"></span>
+        <a href="w2.html" class="nav-btn">Next</a>
+      </div>
+      <div class="prev-container">
+        <a href="index.html" class="nav-btn">Back</a>
+        <span class="nav-line prev-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hide loading screen when SVG is loaded
+    const mainSvg = document.getElementById('mainSvg');
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    mainSvg.onload = function() {
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    };
+    
+    // Fallback timeout to hide loading screen after max 2 seconds
+    setTimeout(() => {
+      loadingScreen.style.opacity = 0;
+      loadingScreen.style.visibility = 'hidden';
+    }, 2000);
+
+    // Fade out before navigation
+    document.querySelectorAll('.nav-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const href = this.getAttribute('href');
+        
+        document.body.style.opacity = 0;
+        setTimeout(() => {
+          window.location.href = href;
+        }, 200);
+      });
+    });
+  </script>
+</body>
+</html> 
