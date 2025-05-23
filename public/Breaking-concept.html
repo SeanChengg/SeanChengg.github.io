@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breaking Bad - Concept</title>
+  
+  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
+  
+  <style>
+    html, body {
+      background: #f2f1ec;
+      color: #333;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+    }
+    .frame {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    /* Container for footer navigation */
+    .nav-container {
+      position: absolute;
+      bottom: 18px;
+      right: 32px;
+      z-index: 10;
+    }
+    .next-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 15px;
+      margin-right: 30px;
+    }
+    .prev-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .nav-btn {
+      display: inline-block;
+      color: #777;
+      text-decoration: none;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      position: relative;
+      font-family: 'Zilla Slab', serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transform: translateY(0);
+    }
+    .nav-btn:hover {
+      color: #555;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
+                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
+                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+    .nav-btn::after {
+      content: none;
+    }
+    .nav-line {
+      display: inline-block;
+      width: 120px;
+      height: 1px;
+      background-color: #777;
+      position: relative;
+      top: 6px;
+    }
+    .next-line {
+      margin-right: 5px;
+    }
+    .prev-line {
+      margin-left: 5px;
+    }
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f2f1ec;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #777;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+    .loading-text {
+      color: #777;
+      font-family: 'Zilla Slab', serif;
+      font-size: 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Page specific styles */
+    .header {
+      position: relative;
+      margin-top: 50px;
+      margin-left: 25px;
+      font-size: 2.5rem;
+      font-family: 'ICA Rubrik Black', sans-serif;
+    }
+    .header h1 {
+      font-weight: normal;
+      margin: 0;
+    }
+    .header::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 363px;
+      height: 4px;
+      background-color: #101420;
+    }
+    .page-number {
+      position: absolute;
+      left: 140px;
+      top: 140px;
+      font-size: 10rem;
+      color: rgba(16, 20, 32, 0.1);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+    }
+    
+    .content {
+      display: flex;
+      margin-top: 120px;
+      padding: 0 80px;
+    }
+    
+    .left-column {
+      flex: 1;
+      padding-right: 50px;
+    }
+    
+    .right-column {
+      flex: 1;
+    }
+    
+    .concept-title {
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.5rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    
+    .concept-desc {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    
+    .model-image {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 30px;
+    }
+    
+    .design-features {
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.5rem;
+      color: #666;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .features-list {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    
+    .features-list li {
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading content...</div>
+  </div>
+
+  <div class="frame">
+    <div class="header">
+      <h1>Breaking Bad</h1>
+    </div>
+    
+    <div class="page-number">01</div>
+    
+    <div class="content">
+      <div class="left-column">
+        <div class="concept-title">Concept</div>
+        <p class="concept-desc">Breaking Bad-themed Halloween project inspired by Walter White's trunk-mounted M60.</p>
+        
+        <img src="images/w1.png" alt="Breaking Bad Project - Gold Model" class="model-image">
+      </div>
+      
+      <div class="right-column">
+        <img src="images/w2.png" alt="Breaking Bad Project - Purple Model" class="model-image">
+        
+        <div class="design-features">Design Features</div>
+        <ul class="features-list">
+          <li>Modified Gatling gun model equipped with a DC motor to spin gun barrels.</li>
+          <li>RC servo-driven 5-bar linkage mimics machine gun pivoting by a repurposed garage door opener.</li>
+          <li>IR remote (car key trigger), speed-adjusting potentiometer, and gunfire sound effects from a speaker.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Navigation at bottom right -->
+    <div class="nav-container">
+      <div class="next-container">
+        <span class="nav-line next-line"></span>
+        <a href="Breaking2-direct.html" class="nav-btn">Next</a>
+      </div>
+      <div class="prev-container">
+        <a href="index.html" class="nav-btn">Back</a>
+        <span class="nav-line prev-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hide loading screen when content is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      const loadingScreen = document.getElementById('loadingScreen');
+      
+      // Hide loading screen after short delay
+      setTimeout(() => {
+        loadingScreen.style.opacity = 0;
+        loadingScreen.style.visibility = 'hidden';
+      }, 500);
+    });
+
+    // Fade out before navigation
+    document.querySelectorAll('.nav-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const href = this.getAttribute('href');
+        
+        document.body.style.opacity = 0;
+        setTimeout(() => {
+          window.location.href = href;
+        }, 200);
+      });
+    });
+    
+    // Fade in when page loads
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+      document.body.style.opacity = 1;
+    }, 100);
+  </script>
+</body>
+</html> 
