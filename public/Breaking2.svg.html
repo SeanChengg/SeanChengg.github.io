@@ -259,33 +259,6 @@
       if (breakingVideo) {
         breakingVideo.play().catch(e => console.log('Autoplay prevented:', e));
       }
-      
-      // Request fullscreen button
-      const fullscreenBtn = document.createElement('button');
-      fullscreenBtn.textContent = 'Enter Fullscreen';
-      fullscreenBtn.style.position = 'absolute';
-      fullscreenBtn.style.top = '20px';
-      fullscreenBtn.style.right = '20px';
-      fullscreenBtn.style.zIndex = '100';
-      fullscreenBtn.style.padding = '8px 12px';
-      fullscreenBtn.style.background = 'rgba(0,0,0,0.5)';
-      fullscreenBtn.style.color = 'white';
-      fullscreenBtn.style.border = 'none';
-      fullscreenBtn.style.borderRadius = '4px';
-      fullscreenBtn.style.cursor = 'pointer';
-      
-      fullscreenBtn.addEventListener('click', function() {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-          elem.msRequestFullscreen();
-        }
-      });
-      
-      document.body.appendChild(fullscreenBtn);
     });
     
     // Fade out before navigation
