@@ -127,7 +127,7 @@
             
             const scaleX = window.innerWidth / originalWidth;
             const scaleY = window.innerHeight / originalHeight;
-            const scale = Math.min(scaleX, scaleY) * 1.03; // Scale at 103%
+            const scale = Math.min(scaleX, scaleY) * 0.95; // Scale at 95% to prevent overflow
             
             document.documentElement.style.setProperty('--scale-factor', scale);
             
