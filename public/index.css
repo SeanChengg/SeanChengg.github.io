@@ -1,0 +1,156 @@
+html {
+    background-color: #f6f2e8;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+  	margin: 0;
+  	line-height: normal;
+    overflow: hidden;
+    background-color: #f6f2e8;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+/* Add a wrapper to handle scaling */
+.group-parent {
+  	width: 1920px; /* Original design width */
+  	height: 1080px; /* Original design height */
+  	position: absolute;
+  	background-color: #f6f2e8;
+  	overflow: hidden;
+  	text-align: left;
+  	font-size: 18px;
+  	color: #101420;
+  	font-family: 'Open Sans';
+    transform-origin: top left;
+}
+
+/* Add scaling script to maintain aspect ratio */
+@media screen and (min-width: 0px) {
+    .group-parent {
+        transform: scale(calc(var(--scale-factor)));
+    }
+}
+
+.breaking-bad-themed-halloween {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	display: inline-block;
+  	width: 736px;
+  	height: 157px;
+}
+
+.blank-line {
+  	margin: 0;
+}
+
+.modified-gatling-gun {
+  	margin-bottom: 0px;
+}
+
+.rc-servo-driven-5-bar {
+  	margin-bottom: 0px;
+  	white-space: pre-wrap;
+}
+
+.modified-gatling-gun-model-equ {
+  	margin: 0;
+  	font-family: inherit;
+  	font-size: inherit;
+  	padding-left: 40px;
+}
+
+.modified-gatling-gun-container {
+  	position: absolute;
+  	top: 457px;
+  	left: 575px;
+  	display: inline-block;
+  	width: 794px;
+  	height: 302px;
+}
+
+.design-features {
+  	position: absolute;
+  	top: 438px;
+  	left: 587px;
+  	font-size: 45px;
+  	font-family: Wallpoet;
+  	color: #6d6d6d;
+  	text-align: justify;
+  	display: inline-block;
+  	width: 466px;
+  	height: 38px;
+}
+
+.breaking-bad-themed-halloween-parent {
+  	position: absolute;
+  	top: 207px;
+  	left: 385px;
+  	width: 1369px;
+  	height: 759px;
+  	font-size: 30px;
+  	color: #000;
+  	font-family: 'Zilla Slab';
+}
+
+.breaking-bad {
+  	position: absolute;
+  	top: 45px;
+  	left: 398px;
+  	font-size: 60px;
+  	font-family: 'Yeseva One';
+  	display: inline-block;
+  	width: 1462px;
+  	height: 99px;
+}
+
+.frame-inner {
+  	position: absolute;
+  	top: 96px;
+  	left: 35px;
+  	background-color: #101420;
+  	width: 363px;
+  	height: 4px;
+}
+
+.div {
+  	position: absolute;
+  	top: 140px;
+  	left: 130px;
+  	font-size: 120px;
+  	font-weight: 300;
+  	display: inline-block;
+  	width: 197.5px;
+  	height: 233.2px;
+  	opacity: 0.1;
+}
+
+.img-2782-1-icon {
+  	position: absolute;
+  	top: 45px;
+  	left: 1149px;
+  	width: 605px;
+  	height: 605px;
+  	object-fit: cover;
+}
+
+.concept {
+  	position: absolute;
+  	top: 146px;
+  	left: 385px;
+  	font-size: 45px;
+  	font-family: Wallpoet;
+  	color: #6d6d6d;
+}
+
+.walter-1-icon {
+  	position: absolute;
+  	top: 307px;
+  	left: 128px;
+  	width: 688px;
+  	height: 610px;
+  	object-fit: cover;
+} 

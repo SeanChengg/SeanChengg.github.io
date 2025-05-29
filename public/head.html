@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="initial-scale=1, width=device-width">
+  	
+  	<link rel="stylesheet"  href="./index.css" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400&display=swap" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" />
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+    <script>
+        function updateScale() {
+            const container = document.querySelector('.group-parent');
+            const originalWidth = 1920;
+            const originalHeight = 1080;
+            
+            const scaleX = window.innerWidth / originalWidth;
+            const scaleY = window.innerHeight / originalHeight;
+            const scale = Math.min(scaleX, scaleY) * 1.03; // Changed to 150% scale
+            
+            document.documentElement.style.setProperty('--scale-factor', scale);
+            
+            // Center the container
+            const scaledWidth = originalWidth * scale;
+            const scaledHeight = originalHeight * scale;
+            container.style.left = `${(window.innerWidth - scaledWidth) / 2}px`;
+            container.style.top = `${(window.innerHeight - scaledHeight) / 2}px`;
+        }
+
+        window.addEventListener('load', updateScale);
+        window.addEventListener('resize', updateScale);
+    </script>
+</head>
+<body>
+  	<div class="group-parent">
+    	<div class="breaking-bad-themed-halloween-parent">
+      		<div class="breaking-bad-themed-halloween">Breaking Bad-themed Halloween project inspired by Walter White's trunk-mounted M60.</div>
+      		<div class="modified-gatling-gun-container">
+        		<p class="blank-line">&nbsp;</p>
+        		<ul class="modified-gatling-gun-model-equ">
+          			<li class="modified-gatling-gun">Modified Gatling gun model equipped with a DC motor to spin gun barrels.</li>
+          			<li class="rc-servo-driven-5-bar">RC servo-driven 5-bar linkage mimics machine gun pivoting by a  repurposed garage door opener.</li>
+          			<li>IR remote (car key trigger), speed-adjusting potentiometer, and gunfire sound effects from a speaker.</li>
+        		</ul>
+      		</div>
+      		<div class="design-features">Design Features</div>
+    	</div>
+    	<div class="breaking-bad">Breaking Bad</div>
+    	<div class="frame-inner"></div>
+    	<div class="div">01</div>
+    	<img class="img-2782-1-icon" alt="" src="IMG_2782 1.png">
+    	<div class="concept">Concept</div>
+    	<img class="walter-1-icon" alt="" src="Walter 1.png">
+  	</div>
+</body>
+</html> 
