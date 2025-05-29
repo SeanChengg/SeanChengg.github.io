@@ -1,186 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Breaking Bad - Page 1</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    html, body {
-      background: #F6F2E8;
-      color: #333;
-      font-family: 'Poppins', sans-serif;
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      overflow: hidden;
-    }
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
     
-    .frame {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    
-    .svg-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      pointer-events: none;
-    }
-    
-    .embedded-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: block;
-    }
-    
-    .nav-container {
-      position: absolute;
-      bottom: 18px;
-      right: 32px;
-      z-index: 10;
-    }
-    
-    .next-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    
-    .prev-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    
-    .nav-btn {
-      display: inline-block;
-      color: #777;
-      text-decoration: none;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-      font-family: 'Zilla Slab', serif;
-      font-weight: 600;
-    }
-    
-    .nav-btn:hover {
-      color: #555;
-    }
-    
-    .nav-line {
-      display: inline-block;
-      width: 120px;
-      height: 1px;
-      background-color: #777;
-      margin: 0 5px;
-    }
-    
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #F6F2E8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: opacity 0.5s ease;
-    }
-    
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: #777;
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+    <style>
+        /* Reset all margins and paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            background: #F6F2E8;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            overflow: hidden;
+        }
+        
+        /* The frame that contains everything */
+        .frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Navigation container with scaling */
+        .nav-scale-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 1920px;  /* Same as original width */
+            height: 1080px; /* Same as original height */
+            pointer-events: none; /* Allow clicks to pass through to elements below */
+            transform-origin: bottom right;
+        }
+        
+        /* Navigation styles */
+        .nav-container {
+            position: absolute;
+            bottom: 40px;
+            right: 32px;
+            z-index: 10;
+            pointer-events: auto; /* Re-enable clicks for navigation */
+        }
+        
+        .next-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-right: 30px;
+        }
+        
+        .prev-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            display: inline-block;
+            color: #777;
+            text-decoration: none;
+            font-size: 1.4rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Zilla Slab', serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transform: translateY(0);
+        }
+        
+        .nav-btn:hover {
+            color: #555;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
+                        0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
+                        -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .nav-btn::after {
+            content: none;
+        }
+        
+        .nav-line {
+            display: inline-block;
+            width: 140px;
+            height: 1px;
+            background-color: #777;
+            position: relative;
+            top: 8px;
+        }
+        
+        .next-line {
+            margin-right: 8px;
+        }
+        
+        .prev-line {
+            margin-left: 8px;
+        }
+    </style>
+
+    <script>
+        function updateScale() {
+            const container = document.querySelector('.group-parent');
+            const navContainer = document.querySelector('.nav-scale-container');
+            const originalWidth = 1920;
+            const originalHeight = 1080;
+            
+            const scaleX = window.innerWidth / originalWidth;
+            const scaleY = window.innerHeight / originalHeight;
+            const scale = Math.min(scaleX, scaleY) * 1.03; // Scale at 103%
+            
+            document.documentElement.style.setProperty('--scale-factor', scale);
+            
+            // Center the main content container
+            const scaledWidth = originalWidth * scale;
+            const scaledHeight = originalHeight * scale;
+            container.style.left = `${(window.innerWidth - scaledWidth) / 2}px`;
+            container.style.top = `${(window.innerHeight - scaledHeight) / 2}px`;
+
+            // Scale the navigation container
+            navContainer.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener('load', updateScale);
+        window.addEventListener('resize', updateScale);
+    </script>
 </head>
 <body>
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-  </div>
+    <div class="frame">
+        <div class="group-parent">
+            <div class="breaking-bad-themed-halloween-parent">
+                <div class="breaking-bad-themed-halloween">Breaking Bad-themed Halloween project inspired by Walter White's trunk-mounted M60.</div>
+                <div class="modified-gatling-gun-container">
+                    <p class="blank-line">&nbsp;</p>
+                    <ul class="modified-gatling-gun-model-equ">
+                        <li class="modified-gatling-gun">Modified Gatling gun model equipped with a DC motor to spin gun barrels.</li>
+                        <li class="rc-servo-driven-5-bar">RC servo-driven 5-bar linkage mimics machine gun pivoting by a  repurposed garage door opener.</li>
+                        <li>IR remote (car key trigger), speed-adjusting potentiometer, and gunfire sound effects from a speaker.</li>
+                    </ul>
+                </div>
+                <div class="design-features">Design Features</div>
+            </div>
+            <div class="breaking-bad">Breaking Bad</div>
+            <div class="frame-inner"></div>
+            <div class="div">01</div>
+            <img class="img-2782-1-icon" alt="" src="IMG_2782 1.png">
+            <div class="concept">Concept</div>
+            <img class="walter-1-icon" alt="" src="Walter 1.png">
+        </div>
 
-  <div class="frame">
-    <div class="svg-container">
-      <svg class="embedded-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="1920" height="1080" fill="#F6F2E8"/>
-        <path d="M401 99.1L404.6 98.2V59.8L401 58.9V58H417.2C423.28 58 427.74 58.98 430.58 60.94C433.46 62.86 434.9 65.38 434.9 68.5C434.9 70.66 434.28 72.4 433.04 73.72C431.8 75.04 430.22 76.02 428.3 76.66C426.26 77.38 424.06 77.76 421.7 77.8V78.1C424.62 78.22 427.16 78.66 429.32 79.42C431.52 80.14 433.34 81.26 434.78 82.78C436.26 84.3 437 86.24 437 88.6C437 92.16 435.54 94.96 432.62 97C429.7 99 424.96 100 418.4 100H401V99.1ZM417.2 77.2C418.52 77.2 419.74 76.84 420.86 76.12C422.02 75.36 422.94 74.32 423.62 73C424.34 71.64 424.7 70.14 424.7 68.5C424.7 66.74 424.34 65.18 423.62 63.82C422.94 62.46 422.02 61.4 420.86 60.64C419.74 59.88 418.52 59.5 417.2 59.5H414.5V77.2H417.2ZM418.4 98.5C420.88 98.5 422.9 97.62 424.46 95.86C426.02 94.1 426.8 91.68 426.8 88.6C426.8 85.52 426.02 83.1 424.46 81.34C422.9 79.58 420.88 78.7 418.4 78.7H414.5V98.5H418.4Z" fill="#101420"/>
-        <rect x="35" y="96" width="363" height="4" fill="#101420"/>
-        <path opacity="0.1" d="M191.523 224.934C191.523 232.082 190.977 238.41 189.883 243.918C188.789 249.426 187.129 254.055 184.902 257.805C182.676 261.555 179.844 264.387 176.406 266.301C172.969 268.215 168.906 269.172 164.219 269.172C158.281 269.172 153.281 267.512 149.219 264.191C145.156 260.871 142.07 255.93 139.961 249.367C137.891 242.805 136.855 234.66 136.855 224.934C136.855 216.262 137.734 208.625 139.492 202.023C141.289 195.422 144.199 190.266 148.223 186.555C152.246 182.844 157.598 180.988 164.277 180.988C170.918 180.988 176.23 182.805 180.215 186.438C184.238 190.07 187.129 195.188 188.887 201.789C190.645 208.352 191.523 216.066 191.523 224.934ZM142.832 224.934C142.832 233.723 143.594 241.008 145.117 246.789C146.641 252.531 148.984 256.828 152.148 259.68C155.312 262.531 159.336 263.957 164.219 263.957C169.258 263.957 173.34 262.531 176.465 259.68C179.59 256.828 181.875 252.512 183.32 246.73C184.805 240.949 185.547 233.684 185.547 224.934C185.547 216.887 184.902 209.973 183.613 204.191C182.363 198.41 180.195 193.977 177.109 190.891C174.023 187.805 169.746 186.262 164.277 186.262C158.926 186.262 154.688 187.844 151.562 191.008C148.438 194.172 146.191 198.645 144.824 204.426C143.496 210.207 142.832 217.043 142.832 224.934ZM258.789 268H205.176V262.961L230.371 236.711C234.395 232.531 237.773 228.762 240.508 225.402C243.281 222.004 245.371 218.605 246.777 215.207C248.223 211.809 248.945 208 248.945 203.781C248.945 198.273 247.324 193.996 244.082 190.949C240.879 187.902 236.523 186.379 231.016 186.379C227.305 186.379 223.73 187.043 220.293 188.371C216.895 189.699 213.574 191.652 210.332 194.23L207.051 190.07C209.434 188.117 211.934 186.477 214.551 185.148C217.207 183.82 219.922 182.824 222.695 182.16C225.469 181.457 228.242 181.105 231.016 181.105C235.898 181.105 240.117 182.043 243.672 183.918C247.266 185.754 250.059 188.352 252.051 191.711C254.043 195.07 255.039 199.016 255.039 203.547C255.039 208.234 254.219 212.492 252.578 216.32C250.977 220.109 248.691 223.82 245.723 227.453C242.754 231.086 239.238 234.992 235.176 239.172L212.852 262.258V262.492H258.789V268Z" fill="#101420"/>
-      </svg>
+        <!-- Navigation with separate scaling -->
+        <div class="nav-scale-container">
+            <div class="nav-container">
+                <div class="next-container">
+                    <span class="nav-line next-line"></span>
+                    <a href="Breaking2.svg.html" class="nav-btn">Next</a>
+                </div>
+                <div class="prev-container">
+                    <a href="index.html" class="nav-btn">Back</a>
+                    <span class="nav-line prev-line"></span>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div class="nav-container">
-      <div class="next-container">
-        <span class="nav-line"></span>
-        <a href="Breaking2.svg.html" class="nav-btn">Next</a>
-      </div>
-      <div class="prev-container">
-        <a href="index.html" class="nav-btn">Back</a>
-        <span class="nav-line"></span>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    // Hide loading screen when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        document.getElementById('loadingScreen').style.opacity = 0;
-        setTimeout(function() {
-          document.getElementById('loadingScreen').style.display = 'none';
-        }, 500);
-      }, 500);
-    });
-    
-    // Page transitions
-    document.querySelectorAll('.nav-btn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
-        
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          window.location.href = href;
-        }, 300);
-      });
-    });
-    
-    // Fade in page
-    document.body.style.opacity = 0;
-    setTimeout(() => {
-      document.body.style.opacity = 1;
-    }, 100);
-  </script>
+    <script>
+        // Fade out before navigation
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                
+                document.body.style.opacity = 0;
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 200);
+            });
+        });
+    </script>
 </body>
 </html> 
