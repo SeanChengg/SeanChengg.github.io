@@ -1,197 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIMS2 Elbow Joint - Concept</title>
-  
-  <!-- Preload critical assets -->
-  <link rel="preload" href="images/Reverse01.jpg" as="image">
-  
-  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: #f2f1ec;
-      color: #333;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      opacity: 1; /* Start visible immediately */
-    }
-    .frame {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .frame-number {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      color: #888;
-      font-size: 1.2rem;
-    }
-    /* Full page background image */
-    .full-page-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: 0;
-      margin: 0;
-      padding: 0;
-      opacity: 1;
-    }
-    /* Container for footer navigation */
-    .nav-container {
-      position: absolute;
-      bottom: 18px;
-      right: 32px;
-      z-index: 10;
-    }
-    .next-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 15px;
-      margin-right: 30px;
-    }
-    .prev-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    .nav-btn {
-      display: inline-block;
-      color: #777;
-      text-decoration: none;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-      position: relative;
-      font-family: 'Zilla Slab', serif;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transform: translateY(0);
-    }
-    .nav-btn:hover {
-      color: #555;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
-                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
-                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
-      transform: translateY(-3px);
-    }
-    .nav-btn::after {
-      content: none;
-    }
-    .nav-line {
-      display: inline-block;
-      width: 120px;
-      height: 1px;
-      background-color: #777;
-      position: relative;
-      top: 6px;
-    }
-    .next-line {
-      margin-right: 5px;
-    }
-    .prev-line {
-      margin-left: 5px;
-    }
-    /* Loading screen */
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f2f1ec;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: #777;
-      animation: spin 1s ease-in-out infinite;
-      margin-bottom: 20px;
-    }
-    .loading-text {
-      color: #777;
-      font-family: 'Zilla Slab', serif;
-      font-size: 16px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="stylesheet" href="./shared.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400&display=swap" />
+    
+    <style>
+        .origin-1-icon {
+            position: absolute;
+            top: 560px;
+            left: 0px;
+            width: 600px;
+            height: 510px;
+            object-fit: cover;
+        }
+        .exab3f5x0aakkhj-1-icon {
+            position: absolute;
+            top: 191px;
+            left: 1315px;
+            width: 500px;
+            height: 310px;
+            object-fit: cover;
+        }
+        .img-2353-1-icon {
+            position: absolute;
+            top: 536px;
+            left: 573px;
+            width: 280px;
+            height: 535px;
+            object-fit: cover;
+            z-index: 2;
+        }
+        .this-project-involves {
+            position: absolute;
+            top: 92px;
+            left: 350px;
+            line-height: 36px;
+            display: inline-block;
+            width: 1435px;
+            height: 100px;
+        }
+        .my-interest-in {
+            position: absolute;
+            top: 488px;
+            left: 1274px;
+            font-size: 25px;
+            line-height: 36px;
+            display: inline-block;
+            width: 511px;
+            height: 510px;
+        }
+        .reverse-engineering-lims2 {
+            position: absolute;
+            top: 0px;
+            left: 350px;
+            font-size: 60px;
+            font-family: 'Yeseva One';
+            text-align: left;
+            display: inline-block;
+            width: 1554px;
+            height: 99px;
+        }
+        .group-child {
+            position: absolute;
+            top: 51px;
+            left: 0px;
+            background-color: #101420;
+            width: 350px;
+            height: 4px;
+        }
+        .background {
+            position: absolute;
+            top: 436px;
+            left: 1269px;
+            font-size: 48px;
+            font-family: Wallpoet;
+            color: #6d6d6d;
+            text-align: left;
+            display: inline-block;
+            width: 411px;
+            height: 79px;
+        }
+        .image44-1-icon {
+            position: absolute;
+            top: 192px;
+            left: 350px;
+            border-radius: 20px;
+            width: 870px;
+            height: 390px;
+            object-fit: cover;
+            z-index: 1;
+        }
+        .this-project-involves-reverse-parent {
+            position: absolute;
+            top: 49px;
+            left: 30px;
+            width: 1904px;
+            height: 998px;
+            text-align: justify;
+        }
+        .the-wrist-2024-1-icon {
+            position: absolute;
+            top: 648px;
+            left: 939px;
+            width: 255.8px;
+            height: 438px;
+            object-fit: contain;
+        }
+        .div {
+            position: absolute;
+            top: 144px;
+            left: 130px;
+            font-size: 120px;
+            font-weight: 300;
+            font-family: 'Open Sans';
+            color: #101420;
+            display: inline-block;
+            width: 197.5px;
+            height: 233.2px;
+            opacity: 0.1;
+        }
+        .source-references-quaternion {
+            margin: 0;
+        }
+        .source-references-quaternion-container {
+            position: absolute;
+            top: 996px;
+            left: 40px;
+            font-size: 16px;
+            font-family: 'Times New Roman';
+            display: inline-block;
+            width: 599px;
+            height: 55px;
+        }
+        .frame {
+            overflow: visible !important;
+        }
+        
+        .group-parent {
+            overflow: visible !important;
+        }
+        
+        .origin-1-parent {
+            width: 100%;
+            position: relative;
+            background: conic-gradient(from 180deg at 50% 50%, #f1f6f6 0deg, #faefdb 90deg, #f6f2e8 270.32deg, #f1f6f6 360deg, #faefdb 450deg);
+            height: 1200px;
+            overflow: visible;
+            text-align: left;
+            font-size: 30px;
+            color: #101420;
+            font-family: 'Zilla Slab';
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+            min-height: 1200px;
+            background: conic-gradient(from 180deg at 50% 50%, #f1f6f6 0deg, #faefdb 90deg, #f6f2e8 270.32deg, #f1f6f6 360deg, #faefdb 450deg);
+        }
+        
+        /* Independent Navigation Container */
+        .nav-container {
+            position: fixed !important;
+            bottom: calc(50vh - 540px * var(--scale-factor) + 40px * var(--scale-factor));
+            right: calc(50vw - 960px * var(--scale-factor) + 32px * var(--scale-factor));
+            z-index: 10;
+            pointer-events: auto;
+            transform-origin: bottom right;
+            transform: scale(var(--scale-factor));
+        }
+        
+        /* Responsive design and narrow screen message */
+        .narrow-screen-message {
+            display: none;
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 20px;
+            background: rgba(246, 242, 232, 0.9);
+            border-radius: 8px;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+        
+        @media screen and (max-width: 1024px) {
+            .narrow-screen-message {
+                display: block;
+            }
+            
+            .group-parent {
+                opacity: 0.7;
+                filter: blur(1px);
+                transition: all 0.3s ease;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .group-parent {
+                opacity: 0.5;
+                filter: blur(2px);
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Loading screen -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading page content...</div>
-  </div>
-
-  <div class="frame">
-    <div class="frame-number">Frame 1</div>
-    
-    <!-- Full page image (visible immediately) -->
-    <img src="images/Reverse01.jpg" alt="LIMS2 Elbow Joint" class="full-page-image" id="mainImage">
-    
-    <!-- Navigation at bottom right -->
-    <div class="nav-container">
-      <div class="next-container">
-        <span class="nav-line next-line"></span>
-        <a href="reverse-02.html" class="nav-btn">Next</a>
-      </div>
-      <div class="prev-container">
-        <a href="index.html" class="nav-btn">Back</a>
-        <span class="nav-line prev-line"></span>
-      </div>
+    <div class="frame">
+        <div class="group-parent">
+            <div class="origin-1-parent">
+                <img class="origin-1-icon" alt="" src="images/armll.png">
+                <img class="exab3f5x0aakkhj-1-icon" alt="" src="images/armur.png">
+                <img class="img-2353-1-icon" alt="" src="images/armlm2.png">
+                
+                <div class="this-project-involves-reverse-parent">
+                    <div class="this-project-involves">This project involves reverse engineering the robotic wrist joint of the LIMS2-AMBIDEX research robotic arm, developed by Prof. Yong-Jae Kim at KOREATECH.</div>
+                    <div class="my-interest-in">My interest in animatronics and compliant robotic systems began with early sculptural and design work. To better understand the mechanics behind dynamic movement, I analyzed several humanoid robotic arms and chose the LIMS2-AMBIDEX for reverse engineering. This project allowed me to study cable-driven actuation, lightweight joint design, and mechanical control systems that manage precise motion, focusing on solutions for human-safe robotic arm movement.</div>
+                    <div class="reverse-engineering-lims2">Reverse Engineering LIMS2</div>
+                    <div class="group-child"></div>
+                    <div class="background">BACKGROUND</div>
+                    <img class="image44-1-icon" alt="" src="images/armum.png">
+                </div>
+                
+                <img class="the-wrist-2024-1-icon" alt="" src="images/armlm1.png">
+                <div class="div">01</div>
+                <div class="source-references-quaternion-container">
+                    <p class="source-references-quaternion">Source References: "Quaternion Joint: Dexterous 3-DOF Joint Representing Quaternion Motion for High-Speed Safe Interaction." Yong-Jae Kim, Jong-In Kim, and Wooseok Jang </p>
+                    <p class="source-references-quaternion">Patent application publication: US2021/0197407 A1</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Hide loading screen immediately after page loads
-    window.addEventListener('load', function() {
-      document.getElementById('loadingScreen').style.opacity = 0;
-      document.getElementById('loadingScreen').style.visibility = 'hidden';
-    });
-    
-    // Backup timeout to hide loading screen after 1 second in case load event doesn't fire
-    setTimeout(function() {
-      document.getElementById('loadingScreen').style.opacity = 0;
-      document.getElementById('loadingScreen').style.visibility = 'hidden';
-    }, 1000);
-    
-    // Fade out before navigation
-    document.querySelectorAll('.nav-btn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
-        
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      });
-    });
-  </script>
+    <div class="nav-container">
+        <div class="next-container">
+            <span class="nav-line next-line"></span>
+            <a href="reverse-02.html" class="nav-btn">Next</a>
+        </div>
+        <div class="prev-container">
+            <a href="index.html" class="nav-btn">Back</a>
+            <span class="nav-line prev-line"></span>
+        </div>
+    </div>
+
+    <div class="narrow-screen-message">
+        View project details on a larger screen
+    </div>
+
+    <script src="shared.js"></script>
 </body>
 </html> 
