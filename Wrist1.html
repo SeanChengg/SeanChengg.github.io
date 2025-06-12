@@ -1,158 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIMS2 Wrist - Page 1</title>
-  
-  <link rel="preload" href="images/Wrist1.jpg" as="image">
-  
-  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="stylesheet" href="./shared.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400&display=swap" />
+    
   <style>
-    body {
-      background: #f2f1ec;
-      color: #333;
-      font-family: 'Poppins', sans-serif;
+        .this-project-extends {
+            position: absolute;
+            top: 101px;
+            left: 415px;
+            line-height: 36px;
+            text-align: justify;
+            display: inline-block;
+            width: 1036px;
+            height: 324px;
+        }
+        .arduino-driven-lims2 {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 60px;
+            font-family: 'Yeseva One';
+            color: #0d0c0c;
+            white-space: pre-wrap;
+            display: inline-block;
+            width: 1295px;
+            height: 99px;
+        }
+        .physical-prototype {
+      position: absolute;
+            top: 344px;
+            left: 769px;
+            font-size: 48px;
+            font-family: Wallpoet;
+            color: #6d6d6d;
+            display: inline-block;
+            width: 663px;
+            height: 121px;
+        }
+        .this-project-extends-the-lims-parent {
+      position: absolute;
+            top: 49px;
+            left: 380px;
+            width: 1451px;
+            height: 465px;
+        }
+        .p {
       margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      opacity: 1;
-    }
-    .frame {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .frame-number {
+        }
+        .div {
+            position: absolute;
+            top: 750px;
+            left: 130px;
+            font-size: 120px;
+            font-weight: 300;
+            font-family: 'Open Sans';
+            display: inline-block;
+            width: 197.5px;
+            height: 233.2px;
+            opacity: 0.1;
+        }
+        .frame-child {
+            position: absolute;
+            top: 100px;
+            left: 30px;
+            background-color: #101420;
+            width: 350px;
+            height: 4px;
+        }
+        .due-to-limitations {
       position: absolute;
-      top: 15px;
-      left: 15px;
-      color: #888;
-      font-size: 1.2rem;
-    }
-    /* Full page background image */
-    .full-page-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: 0;
-      margin: 0;
-      padding: 0;
-    }
-    /* Container for footer navigation */
-    .nav-container {
-      position: absolute;
-      bottom: 18px;
-      right: 32px;
-      z-index: 10;
-    }
-    .next-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 15px;
-      margin-right: 30px;
-    }
-    .prev-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    .nav-btn {
+            top: 450px;
+            left: 1148px;
+            color: #000;
+            text-align: justify;
+            display: inline-block;
+            width: 683px;
+            height: 224px;
+        }
+        .img-2227-1-icon {
+            position: absolute;
+            top: 709px;
+            left: 1149px;
+            border-radius: 10px;
+            width: 450px;
+            height: 261px;
+            object-fit: cover;
+        }
+        .screenshot-2023-10-08-at-408 {
+            position: absolute;
+            top: 139px;
+            left: 88px;
+            width: 606px;
+            height: 570px;
+            object-fit: cover;
+        }
+        .source-references-quaternion-container {
+            position: absolute;
+            top: 996px;
+            left: 40px;
+            font-size: 16px;
+            font-family: 'Times New Roman';
       display: inline-block;
-      color: #777;
-      text-decoration: none;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      transition: all 0.3s ease;
+            width: 599px;
+            height: 55px;
+        }
+        .screenshot-2023-10-08-at-402 {
+            position: absolute;
+            top: 440px;
+            left: 503px;
+            width: 587px;
+            height: 552px;
+            object-fit: cover;
+        }
+        
+        .frame {
+            overflow: visible !important;
+        }
+        
+        .group-parent {
+            width: 1920px;
       position: relative;
-      font-family: 'Zilla Slab', serif;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transform: translateY(0);
-    }
-    .nav-btn:hover {
-      color: #555;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
-                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
-                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
-      transform: translateY(-3px);
-    }
-    .nav-btn::after {
-      content: none;
-    }
-    .nav-line {
-      display: inline-block;
-      width: 120px;
-      height: 1px;
-      background-color: #777;
-      position: relative;
-      top: 6px;
-    }
-    .next-line {
-      margin-right: 5px;
-    }
-    .prev-line {
-      margin-left: 5px;
-    }
-    /* Loading screen */
-    .loading-screen {
+            background: conic-gradient(from 180deg at 50% 50%, #f1f6f6 0deg, #faefdb 90deg, #f9f1db 179.03deg, #f6f2e8 294.88deg, #f1f6f6 360deg, #faefdb 450deg);
+            height: 1080px;
+            overflow: visible;
+            text-align: left;
+            font-size: 30px;
+            color: #101420;
+            font-family: 'Zilla Slab';
+            transform: scale(var(--scale-factor));
+            transform-origin: top left;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+            min-height: 1200px;
+            background: conic-gradient(from 180deg at 50% 50%, #f1f6f6 0deg, #faefdb 90deg, #f9f1db 179.03deg, #f6f2e8 294.88deg, #f1f6f6 360deg, #faefdb 450deg);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.loaded {
+            opacity: 1;
+        }
+        
+        /* Initial scale factor to prevent flash */
+        :root {
+            --scale-factor: 1;
+        }
+        
+        /* Independent Navigation Container */
+        .nav-container {
+            position: fixed !important;
+            bottom: calc(50vh - 540px * var(--scale-factor) + 40px * var(--scale-factor));
+            right: calc(50vw - 960px * var(--scale-factor) + 32px * var(--scale-factor));
+            z-index: 10;
+            pointer-events: auto;
+            transform-origin: bottom right;
+            transform: scale(var(--scale-factor));
+        }
+        
+        /* Responsive design and narrow screen message */
+        .narrow-screen-message {
+            display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f2f1ec;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 20px;
+            background: rgba(246, 242, 232, 0.9);
+            border-radius: 8px;
       z-index: 1000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: #777;
-      animation: spin 1s ease-in-out infinite;
-      margin-bottom: 20px;
-    }
-    .loading-text {
-      color: #777;
-      font-family: 'Zilla Slab', serif;
-      font-size: 16px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+            white-space: nowrap;
+        }
+        
+        @media screen and (max-width: 1024px) {
+            .narrow-screen-message {
+                display: block;
+            }
+            
+            .group-parent {
+                opacity: 0.7;
+                filter: blur(1px);
+                transition: all 0.3s ease;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .group-parent {
+                opacity: 0.5;
+                filter: blur(2px);
+            }
     }
   </style>
 </head>
 <body>
-  <!-- Loading screen -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading page content...</div>
+    <div class="frame">
+        <div class="group-parent">
+            <div class="this-project-extends-the-lims-parent">
+                <div class="this-project-extends">This project extends the LIMS Elbow with a wrist prototype featuring a spherical rolling joint ("quaternion wrist") that mimics natural motion through quaternion-based cable tendon control. By eliminating singularities, the design achieves organic, fluid movement. The 1:1 replica combines 3D-printed PLA parts, machined components, and Arduino Uno-driven continuous servos, controlled via a dual-axis joystick.</div>
+                <div class="arduino-driven-lims2">Arduino Driven LIMS2 Wrist Prototype</div>
+                <div class="physical-prototype">
+                    <p class="p">Physical Prototype</p>
+                </div>
+            </div>
+            <div class="div">
+                <p class="p">03</p>
+            </div>
+            <div class="frame-child"></div>
+            <div class="due-to-limitations">Due to limitations in simulating the joint's full motion range in CAD, this functional prototype validates kinematics and prevents mechanical conflicts. Programmed with Arduino, it demonstrates precise pitch/yaw/roll control, ensuring reliability for high-speed human-robot interactions.</div>
+            <img class="img-2227-1-icon" alt="" src="images/wrist1l.png">
+            <img class="screenshot-2023-10-08-at-408" alt="" src="images/wrist1r.png">
+            <div class="source-references-quaternion-container">
+                <p class="p">Source References: "Quaternion Joint: Dexterous 3-DOF Joint Representing Quaternion Motion for High-Speed Safe Interaction." Yong-Jae Kim, Jong-In Kim, and Wooseok Jang</p>
+                <p class="p">Patent application publication: US2021/0197407 A1</p>
+            </div>
+            <img class="screenshot-2023-10-08-at-402" alt="" src="images/wrist1m.png">
+        </div>
   </div>
 
-  <div class="frame">
-    <div class="frame-number">Wrist 1</div>
-    
-    <!-- Full page image -->
-    <img src="images/Wrist1.jpg" alt="LIMS2 Wrist" class="full-page-image" id="mainImage">
-    
-    <!-- Navigation at bottom right -->
     <div class="nav-container">
       <div class="next-container">
         <span class="nav-line next-line"></span>
@@ -163,35 +244,24 @@
         <span class="nav-line prev-line"></span>
       </div>
     </div>
+
+    <div class="narrow-screen-message">
+        View project details on a larger screen
   </div>
 
+    <script src="shared.js"></script>
   <script>
-    // Hide loading screen when image is loaded
-    const mainImage = document.getElementById('mainImage');
-    const loadingScreen = document.getElementById('loadingScreen');
-    
-    mainImage.onload = function() {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-    };
-    
-    // Fallback timeout to hide loading screen after max 2 seconds
-    setTimeout(() => {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-    }, 2000);
-
-    // Fade out before navigation
-    document.querySelectorAll('.nav-btn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
+        // Ensure smooth loading without flash
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force immediate scale calculation
+            updateScale();
+            // Show the page
+            document.body.classList.add('loaded');
+        });
         
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      });
+        // Additional load event for safety
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
     });
   </script>
 </body>

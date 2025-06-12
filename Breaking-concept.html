@@ -34,6 +34,25 @@
                 font-size: 32px;
             }
         }
+
+        /* Initial scale factor to prevent flash */
+        :root {
+            --scale-factor: 1;
+        }
+        
+        body {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.loaded {
+            opacity: 1;
+        }
+        
+        .group-parent {
+            transform: scale(var(--scale-factor));
+            transform-origin: top left;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +76,7 @@
             <img class="img-2782-1-icon" alt="" src="images/Gatling.png">
             <div class="concept">Concept</div>
             <img class="walter-1-icon" alt="" src="images/Walter.png">
-            
+
             <div class="nav-container">
                 <div class="next-container">
                     <span class="nav-line next-line"></span>
@@ -76,5 +95,19 @@
     </div>
 
     <script src="shared.js"></script>
+    <script>
+        // Ensure smooth loading without flash
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force immediate scale calculation
+            updateScale();
+            // Show the page
+            document.body.classList.add('loaded');
+        });
+        
+        // Additional load event for safety
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+    </script>
 </body>
 </html> 

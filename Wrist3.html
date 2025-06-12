@@ -1,192 +1,294 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LIMS2 Wrist - Video Demo</title>
-  
-  <!-- Optimized preloads -->
-  <link rel="preload" href="images/Wrist3.jpg" as="image" fetchpriority="high">
-  <!-- Defer video preload for faster initial page render -->
-  
-  <link href="https://fonts.cdnfonts.com/css/ica-rubrik-black" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    
+    <link rel="stylesheet" href="./shared.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coda:wght@400&display=swap" />
+    
   <style>
-    body {
-      background: #f2f1ec;
-      color: #333;
-      font-family: 'Poppins', sans-serif;
+        .arduino-uno-1 {
+            position: absolute;
+            top: -15px;
+            left: 885px;
+            width: 882px;
+            height: 804px;
+            object-fit: cover;
+        }
+        .to-control-pitch {
+            margin: 0;
+        }
+        .first-click {
+            margin-bottom: 0px;
+        }
+        .first-click-counter-clockwis {
       margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      opacity: 1;
-    }
-    .frame {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .frame-number {
+            font-family: inherit;
+            font-size: inherit;
+            padding-left: 40px;
+        }
+        .to-control-pitch-container {
+            position: absolute;
+            top: 521px;
+            left: 801px;
+            text-align: justify;
+            display: inline-block;
+            width: 790px;
+            height: 400px;
+        }
+        .div {
       position: absolute;
-      top: 15px;
-      left: 15px;
-      color: #888;
-      font-size: 1.2rem;
-    }
-    /* Full page background image */
-    .full-page-image {
+            top: 8px;
+            left: 0px;
+            font-size: 120px;
+            font-weight: 300;
+            font-family: 'Open Sans';
+            color: #101420;
+            display: inline-block;
+            width: 197.5px;
+            height: 229.4px;
+            opacity: 0.1;
+        }
+        .schematic {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: 0;
-      margin: 0;
-      padding: 0;
-    }
-    /* Video container - positioned on the left */
-    .teapot-video-container {
+            top: 0px;
+            left: 802px;
+            font-size: 48px;
+            font-family: Wallpoet;
+            color: #6d6d6d;
+            display: inline-block;
+            width: 506px;
+            height: 54.1px;
+        }
+        .to-control-pitch-servo-2-pull-parent {
       position: absolute;
-      width: 27%;
-      height: 83%;
-      top: 52%;
-      left: 31%;
-      transform: translate(-50%, -50%);
-      z-index: 5;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      background-color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .video-player {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background-color: #000;
-    }
-    /* Container for footer navigation */
-    .nav-container {
+            top: 132px;
+            left: 130px;
+            width: 1591px;
+            height: 921px;
+            text-align: left;
+            font-size: 30px;
+            color: #112010;
+            font-family: 'Zilla Slab';
+        }
+        .frame-child {
+            position: absolute;
+            top: 86px;
+            left: 42px;
+            background-color: #101420;
+            width: 350px;
+            height: 4px;
+        }
+        .prototype-schematic {
       position: absolute;
-      bottom: 18px;
-      right: 32px;
-      z-index: 10;
-    }
-    .next-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 15px;
-      margin-right: 30px;
-    }
-    .prev-container {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-    .nav-btn {
+            top: 33px;
+            left: 392px;
+            font-size: 60px;
+            font-family: 'Yeseva One';
+            color: #0d0c0c;
+            text-align: left;
+            display: inline-block;
+            width: 1295px;
+            height: 99px;
+        }
+        .servo-1 {
+            position: absolute;
+            top: 617px;
+            left: 1562px;
+            display: inline-block;
+            width: 99px;
+            height: 30px;
+            color: #0043BA;
+            font-family: Coda;
+            font-size: 20px;
+        }
+        .servo-2 {
+            position: absolute;
+            top: 414px;
+            left: 1535px;
+            display: inline-block;
+            width: 99px;
+            height: 30px;
+        }
+        .servo-3 {
+            position: absolute;
+            top: 260px;
+            left: 1530px;
       display: inline-block;
-      color: #777;
-      text-decoration: none;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      transition: all 0.3s ease;
+            width: 99px;
+            height: 30px;
+        }
+        .img-0338-1 {
+            position: absolute;
+            top: 152px;
+            left: 315px;
+            border-radius: 20px;
+            width: 570px;
+            height: 817px;
+        }
+        
+        /* Video element for wrist3l.mp4 - positioned where img-0338-1 should be */
+        .wrist3l-video {
+            position: absolute;
+            top: 152px;
+            left: 315px;
+            border-radius: 20px;
+            width: 570px;
+            height: 817px;
+            object-fit: cover;
+            z-index: 5;
+        }
+        
+        /* Ensure video controls are visible */
+        .wrist3l-video::-webkit-media-controls-panel {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+        
+        .wrist3l-video::-webkit-media-controls {
+            opacity: 1 !important;
+        }
+        
+        /* Image element for wrist3r.png */
+        .wrist3r-image {
+            position: absolute;
+            top: -15px;
+            left: 885px;
+            width: 882px;
+            height: 804px;
+            object-fit: cover;
+        }
+        
+        .frame {
+            overflow: visible !important;
+        }
+        
+        .group-parent {
+            width: 1920px;
       position: relative;
-      font-family: 'Zilla Slab', serif;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transform: translateY(0);
-    }
-    .nav-btn:hover {
-      color: #555;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 
-                  0.5px 0px 0.5px rgba(0, 0, 0, 0.1), 
-                  -0.5px 0px 0.5px rgba(0, 0, 0, 0.1);
-      transform: translateY(-3px);
-    }
-    .nav-btn::after {
-      content: none;
-    }
-    .nav-line {
-      display: inline-block;
-      width: 120px;
-      height: 1px;
-      background-color: #777;
-      position: relative;
-      top: 6px;
-    }
-    .next-line {
-      margin-right: 5px;
-    }
-    .prev-line {
-      margin-left: 5px;
-    }
-    /* Loading screen */
-    .loading-screen {
+            background: linear-gradient(180deg, #FDF1DB, #F5F1EA 48%, #FFF8E9);
+            height: 1080px;
+            overflow: visible;
+            text-align: justify;
+            font-size: 20px;
+            color: #0043BA;
+            font-family: Coda;
+            transform: scale(var(--scale-factor));
+            transform-origin: top left;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+            min-height: 1200px;
+            background: linear-gradient(180deg, #FDF1DB, #F5F1EA 48%, #FFF8E9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.loaded {
+            opacity: 1;
+        }
+        
+        /* Initial scale factor to prevent flash */
+        :root {
+            --scale-factor: 1;
+        }
+        
+        /* Navigation Container */
+        .nav-container {
+            position: fixed !important;
+            bottom: calc(50vh - 540px * var(--scale-factor) + 40px * var(--scale-factor));
+            right: calc(50vw - 960px * var(--scale-factor) + 32px * var(--scale-factor));
+            z-index: 10;
+            pointer-events: auto;
+            transform-origin: bottom right;
+            transform: scale(var(--scale-factor));
+        }
+        
+        /* Responsive design and narrow screen message */
+        .narrow-screen-message {
+            display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f2f1ec;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 20px;
+            background: rgba(245, 241, 234, 0.9);
+            border-radius: 8px;
       z-index: 1000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: #777;
-      animation: spin 1s ease-in-out infinite;
-      margin-bottom: 20px;
-    }
-    .loading-text {
-      color: #777;
-      font-family: 'Zilla Slab', serif;
-      font-size: 16px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+            white-space: nowrap;
+        }
+        
+        @media screen and (max-width: 1024px) {
+            .narrow-screen-message {
+                display: block;
+            }
+            
+            .group-parent {
+                opacity: 0.7;
+                filter: blur(1px);
+                transition: all 0.3s ease;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .group-parent {
+                opacity: 0.5;
+                filter: blur(2px);
+            }
     }
   </style>
 </head>
 <body>
-  <!-- Loading screen -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading page content...</div>
-  </div>
-
   <div class="frame">
-    <div class="frame-number">Wrist 3</div>
-    
-    <!-- Full page image -->
-    <img src="images/Wrist3.jpg" alt="LIMS2 Wrist" class="full-page-image" id="mainImage">
-    
-    <!-- Video container with video element directly -->
-    <div class="teapot-video-container" id="videoContainer">
-      <video controls class="video-player" id="lims2-video" preload="metadata" playsinline>
-        <source src="videos/LIMS2_Wrist.mov" type="video/quicktime">
-        <source src="videos/LIMS2_Wrist.mov" type="video/mp4">
+        <div class="group-parent">
+            <!-- Video element for wrist3l.mp4 -->
+            <video class="wrist3l-video" controls preload="metadata" playsinline>
+                <source src="videos/wrist3l.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+            
+            <!-- Image element for wrist3r.png -->
+            <img class="wrist3r-image" alt="" src="images/wrist3r.png">
+            
+            <div class="to-control-pitch-servo-2-pull-parent">
+                <div class="to-control-pitch-container">
+                    <p class="to-control-pitch">To control pitch, Servo 2 pulls the wires while Servo 3 feeds them, both running at the same speed according to the joystick input. Pushing the joystick left moves the joint one way; pushing it right moves it the opposite way.</p>
+                    <p class="to-control-pitch">For yaw, a modulo routine drives Servo 1 in a four-step cycle:</p>
+                    <ol class="first-click-counter-clockwis">
+                        <li class="first-click">first click → counter-clockwise rotation,</li>
+                        <li class="first-click">second click → stop,</li>
+                        <li class="first-click">third click → clockwise rotation,</li>
+                        <li>fourth click → stop again.</li>
+                    </ol>
+                </div>
+                <div class="div">05</div>
+                <div class="schematic">Schematic</div>
+            </div>
+            <div class="frame-child"></div>
+            <div class="prototype-schematic">Prototype Schematic</div>
+            <div class="servo-1">Servo 1</div>
+            <div class="servo-2">Servo 2</div>
+            <div class="servo-3">
+                <p class="to-control-pitch">Servo 3</p>
+            </div>
+            <div class="img-0338-1"></div>
+        </div>
     </div>
     
-    <!-- Navigation at bottom right with Back/Home navigation -->
     <div class="nav-container">
       <div class="next-container">
         <span class="nav-line next-line"></span>
@@ -197,51 +299,24 @@
         <span class="nav-line prev-line"></span>
       </div>
     </div>
+
+    <div class="narrow-screen-message">
+        View project details on a larger screen
   </div>
 
+    <script src="shared.js"></script>
   <script>
-    // Hide loading screen when image is loaded and handle video
-    const mainImage = document.getElementById('mainImage');
-    const loadingScreen = document.getElementById('loadingScreen');
-    const video = document.getElementById('lims2-video');
-    
-    // Improved loading strategy
-    mainImage.onload = function() {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-      
-      // Only load video after page is visible
-      setTimeout(() => {
-        if (video) {
-          video.preload = "auto";
-          video.play().catch(e => console.log('Autoplay prevented:', e));
-        }
-      }, 300);
-    };
-    
-    // Fallback timeout to hide loading screen after max 2 seconds
-    setTimeout(() => {
-      loadingScreen.style.opacity = 0;
-      loadingScreen.style.visibility = 'hidden';
-      
-      // Also try to load video if image load event didn't fire
-      if (video && video.preload !== "auto") {
-        video.preload = "auto";
-        video.play().catch(e => console.log('Autoplay prevented:', e));
-      }
-    }, 2000);
-
-    // Fade out before navigation
-    document.querySelectorAll('.nav-btn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
+        // Ensure smooth loading without flash
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force immediate scale calculation
+            updateScale();
+            // Show the page
+            document.body.classList.add('loaded');
+        });
         
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      });
+        // Additional load event for safety
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
     });
   </script>
 </body>
