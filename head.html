@@ -52,8 +52,8 @@
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 2px solid #f39c12;
-            padding-bottom: 8px;
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
         .slider-group {
@@ -431,20 +431,20 @@
             font-weight: bold;
             color: #f39c12;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             backface-visibility: hidden;
+            z-index: 2;
+        }
+
+        .cube-face.hovered {
+            background: rgba(243, 156, 18, 0.7) !important;
+            border: 3px solid #e67e22 !important;
+            box-shadow: 0 0 20px 5px #f39c12 !important;
+            color: #222 !important;
         }
 
         .cube-face:hover {
-            background: rgba(243, 156, 18, 0.3);
-            border-color: #e67e22;
-            box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
-        }
-
-        .cube-face.active {
-            background: rgba(44, 62, 80, 0.95); /* REMOVED orange background - use same as normal face */
-            color: #f39c12; /* CHANGED back to normal text color */
-            border-color: #f39c12; /* CHANGED back to normal border color */
+            /* Remove old hover effect, now handled by JS */
         }
 
         /* Cube Face Positions */
@@ -525,6 +525,55 @@
         .cube-arrow:hover {
             border-color: #f39c12 !important;
         }
+
+        .mouth-title {
+            position: relative;
+            height: 40px; /* Increase height for better alignment */
+            display: flex;
+            align-items: flex-end; /* Align children to the bottom */
+            justify-content: center;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            background: none;
+            border: none;
+        }
+        .mouth-caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 8px; /* Place text just above the divider */
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #f39c12;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .toggle-btn {
+            position: absolute;
+            right: 0;
+            bottom: 4px; /* Place triangle flush with divider */
+            font-size: 22px;
+            color: #f39c12;
+            cursor: pointer;
+            margin-left: 0;
+            line-height: 1;
+            padding: 0;
+            height: 22px;
+            width: 22px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 2;
+        }
+        .mouth-divider {
+            border-bottom: 4px solid #f39c12;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -568,18 +617,27 @@
             </div>
 
             <!-- Mouth Control -->
-            <div class="servo-section">
-                <div class="servo-title" style="display: flex; align-items: center; justify-content: space-between;">
-                    MOUTH
-                    <button id="mouthToggleBtn" onclick="toggleMouthPanel()" style="background: none; border: none; color: #f39c12; font-size: 18px; cursor: pointer; padding: 0; margin: 0; transition: transform 0.3s ease;">
-                        ▼
-                    </button>
+            <div class="servo-section" id="mouthPanel">
+                <div class="servo-title mouth-title">
+                    <span class="mouth-caption">MOUTH</span>
+                    <span id="mouthToggleBtn" class="toggle-btn" onclick="toggleMouthPanel()">&#9660;</span>
                 </div>
-                
-                <!-- Trajectory Controls -->
-                <div id="mouthFullPanel" style="display: none; margin-top: 20px; padding-top: 15px; border-top: 1px solid #5d6d7e;">
-                    <div style="color: #2ecc71; font-size: 14px; font-weight: bold; margin-bottom: 10px; text-align: center;">📈 Advanced Trajectory</div>
-                    
+                <div class="mouth-divider"></div>
+                <!-- Animate Button always at the top -->
+                <button id="animateBtn" class="preset-btn" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #f39c12, #e67e22);">Animate</button>
+                <!-- Collapsed Panel - Only Progress Slider -->
+                <div id="mouthCollapsedPanel" style="display: block; margin-top: 10px;">
+                    <!-- Trajectory Progress (Duplicate for collapsed view) -->
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Progress</span>
+                            <span class="slider-value" id="trajectoryProgressValueCollapsed">0%</span>
+                        </div>
+                        <input type="range" id="trajectoryProgressSliderCollapsed" class="servo-slider" min="0" max="100" value="0" step="1">
+                    </div>
+                </div>
+                <!-- Full Panel - Advanced Controls (hidden by default) -->
+                <div id="mouthFullPanel" style="display: none;">
                     <!-- Trajectory Progress -->
                     <div class="slider-group">
                         <div class="slider-label">
@@ -604,18 +662,6 @@
                         <span class="slider-value" id="trajectoryDirectionValue">0°</span>
                     </div>
                     <input type="range" id="trajectoryDirectionSlider" class="servo-slider" min="-90" max="90" value="0" step="5">
-                </div>
-                
-                <!-- Collapsed Panel - Only Progress Slider -->
-                <div id="mouthCollapsedPanel" style="display: block; margin-top: 20px; padding-top: 15px; border-top: 1px solid #5d6d7e;">
-                    <!-- Trajectory Progress (Duplicate for collapsed view) -->
-                    <div class="slider-group">
-                        <div class="slider-label">
-                            <span>Progress</span>
-                            <span class="slider-value" id="trajectoryProgressValueCollapsed">0%</span>
-                        </div>
-                        <input type="range" id="trajectoryProgressSliderCollapsed" class="servo-slider" min="0" max="100" value="0" step="1">
-                    </div>
                 </div>
                 
                 <!-- Individual Dot Position Controls (Full Panel Only) -->
@@ -692,7 +738,6 @@
                 <div id="mouthButtonControls" style="display: none; gap: 5px; margin-top: 10px;">
                     <button onclick="toggleTrajectoryPath()" class="preset-btn" style="font-size: 10px; flex: 1; background: linear-gradient(135deg, #2ecc71, #27ae60);">Hide Path</button>
                     <button onclick="resetTrajectory()" class="preset-btn" style="font-size: 10px; flex: 1;">Reset</button>
-                    <button onclick="toggleAnimation()" class="preset-btn" style="font-size: 10px; flex: 1; background: linear-gradient(135deg, #9b59b6, #8e44ad);">Animate</button>
                 </div>
             </div>
         </div>
@@ -1075,6 +1120,9 @@
                 this.addSimpleTrajectoryVisualization();
                 
                 console.log('Left Face Panel Physics Engine Initialized');
+                // Hide trajectory line and debug markers by default
+                if (this.trajectoryLine) this.trajectoryLine.visible = false;
+                if (this.trajectoryDebugMarkers) this.trajectoryDebugMarkers.forEach(marker => marker.visible = false);
             }
             
             // Unity Update method - HEAD UPRIGHT WITH Z-AXIS ROTATION ONLY
@@ -1718,24 +1766,25 @@
             // ========================================
             
             initOrientationCube() {
-                const cube = document.getElementById('orientationCube'); console.log("DEBUG: cube element found:", !!cube, cube);
+                const cube = document.getElementById('orientationCube');
                 const arrows = document.getElementById('cubeArrows');
-                
-                if (!cube || !arrows) {
-                    console.log('Orientation cube elements not found');
-                    return;
-                }
-                
-                // Cube face click handlers
+                if (!cube || !arrows) return;
+                // Add hover effect for all faces
                 const faces = cube.querySelectorAll('.cube-face');
                 faces.forEach(face => {
+                    face.addEventListener('mouseenter', () => {
+                        face.classList.add('hovered');
+                    });
+                    face.addEventListener('mouseleave', () => {
+                        face.classList.remove('hovered');
+                    });
+                    // Restore click-to-face functionality
                     face.addEventListener('click', (e) => {
                         e.stopPropagation();
                         const viewName = face.getAttribute('data-face');
                         this.setCameraView(viewName);
                     });
                 });
-                
                 // Cube drag handlers
                 cube.addEventListener('mousedown', (e) => {
                     this.isDraggingCube = true;
@@ -1769,6 +1818,9 @@
                 document.addEventListener('mouseup', () => {
                     if (this.isDraggingCube) {
                         this.isDraggingCube = false;
+                        // Do NOT snap to a face or call setCameraView here!
+                        // Only update highlights and triangle visibility:
+                        this.updateActiveFaceFromRotation();
                     }
                 });
                 
@@ -1891,7 +1943,7 @@
             }
             
             updateCubeRotation() {
-                const cube = document.getElementById('orientationCube'); console.log("DEBUG: cube element found:", !!cube, cube);
+                const cube = document.getElementById('orientationCube');
                 if (cube) {
                     cube.style.transform = `rotateX(${this.cubeRotation.x}deg) rotateY(${this.cubeRotation.y}deg)`;
                 }
@@ -1948,7 +2000,7 @@
                 });
                 
                 // Show/hide triangles based on STRICT alignment - like Fusion 360
-                const cube = document.getElementById('orientationCube'); console.log("DEBUG: cube element found:", !!cube, cube);
+                const cube = document.getElementById('orientationCube');
                 if (cube) {
                     if (isPerfectlyAligned) {
                         cube.classList.add('face-perfectly-aligned'); document.querySelectorAll(".cube-arrow").forEach(arrow => arrow.style.opacity = "1");
@@ -2105,6 +2157,10 @@
                     if (element) element.style.display = 'block';
                 });
                 
+                // Show trajectory line and debug markers
+                if (electronBotStudio && electronBotStudio.trajectoryLine) electronBotStudio.trajectoryLine.visible = true;
+                if (electronBotStudio && electronBotStudio.trajectoryDebugMarkers) electronBotStudio.trajectoryDebugMarkers.forEach(marker => marker.visible = true);
+                
                 // When expanded, arrow points UP (▲) to indicate it can collapse UP
                 toggleBtn.textContent = '▲';
                 toggleBtn.style.transform = 'rotate(0deg)';
@@ -2121,6 +2177,10 @@
                     const element = document.getElementById(id);
                     if (element) element.style.display = 'none';
                 });
+                
+                // Hide trajectory line and debug markers
+                if (electronBotStudio && electronBotStudio.trajectoryLine) electronBotStudio.trajectoryLine.visible = false;
+                if (electronBotStudio && electronBotStudio.trajectoryDebugMarkers) electronBotStudio.trajectoryDebugMarkers.forEach(marker => marker.visible = false);
                 
                 // When collapsed, arrow points DOWN (▼) to indicate it can expand DOWN
                 toggleBtn.textContent = '▼';
@@ -2201,7 +2261,7 @@
                     electronBotStudio.animationId = null;
                 }
                 animateBtn.textContent = 'Animate';
-                animateBtn.style.background = 'linear-gradient(135deg, #9b59b6, #8e44ad)';
+                animateBtn.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
                 console.log('Animation stopped');
             } else {
                 // Start animation
@@ -2233,6 +2293,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             electronBotStudio = new ElectronBotStudio();
             electronBotStudio.updateSliderDisplays();
+            // Animate button event
+            document.getElementById('animateBtn').addEventListener('click', function() {
+                if (!electronBotStudio) return;
+                const animateBtn = this;
+                if (electronBotStudio.isAnimating) {
+                    // Stop animation
+                    electronBotStudio.isAnimating = false;
+                    if (electronBotStudio.animationId) {
+                        cancelAnimationFrame(electronBotStudio.animationId);
+                        electronBotStudio.animationId = null;
+                    }
+                    animateBtn.textContent = 'Animate';
+                    animateBtn.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+                    // Reset mouth to closed
+                    electronBotStudio.trajectoryParams.progress = 0;
+                    electronBotStudio.setMouthTrajectoryPosition(0);
+                    document.getElementById('trajectoryProgressSlider').value = 0;
+                    document.getElementById('trajectoryProgressSliderCollapsed').value = 0;
+                    document.getElementById('trajectoryProgressValue').textContent = '0%';
+                    document.getElementById('trajectoryProgressValueCollapsed').textContent = '0%';
+                } else {
+                    // Start animation
+                    electronBotStudio.isAnimating = true;
+                    electronBotStudio.animationStartTime = Date.now();
+                    animateBtn.textContent = 'STOP';
+                    animateBtn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                    // Animation loop
+                    function animateMouth() {
+                        if (!electronBotStudio.isAnimating) return;
+                        const elapsed = Date.now() - electronBotStudio.animationStartTime;
+                        const duration = 2000; // 2 seconds for full open/close cycle
+                        // Calculate progress (0 to 1 and back)
+                        const cycle = (elapsed % duration) / duration;
+                        const progress = cycle <= 0.5 ? cycle * 2 : (1 - cycle) * 2;
+                        electronBotStudio.trajectoryParams.progress = progress;
+                        electronBotStudio.setMouthTrajectoryPosition(progress);
+                        // Update both progress sliders and values
+                        const percent = Math.round(progress * 100);
+                        document.getElementById('trajectoryProgressSlider').value = percent;
+                        document.getElementById('trajectoryProgressSliderCollapsed').value = percent;
+                        document.getElementById('trajectoryProgressValue').textContent = percent + '%';
+                        document.getElementById('trajectoryProgressValueCollapsed').textContent = percent + '%';
+                        electronBotStudio.animationId = requestAnimationFrame(animateMouth);
+                    }
+                    animateMouth();
+                }
+            });
         });
     </script>
 </body>
