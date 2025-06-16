@@ -980,10 +980,13 @@
                 }
                 this.robot = new THREE.Group();
                 
-                // Load OBJ component files from models directory (use existing files)
+                // Load OBJ component files from models directory (using ACTUAL files that exist)
                 const componentFiles = [
                     'models/Head3.obj',
-                    'models/Face.obj'
+                    'models/Face.obj',
+                    'models/Body1.obj',
+                    'models/Body2.obj',
+                    'models/Base.obj'
                 ];
                 
                 let loadedComponents = 0;
@@ -991,12 +994,9 @@
                 
                 console.log(`Loading ${totalComponents} OBJ component files...`);
                 
-                // Use OBJLoader instead of GLTFLoader
-                const objLoader = new THREE.OBJLoader();
-                
                 componentFiles.forEach((filename, index) => {
-                    objLoader.load(filename, (object) => {
-                        console.log(`Loaded OBJ component: ${filename}`);
+                    loader.load(filename, (object) => {
+                        console.log(`✅ Successfully loaded: ${filename}`);
                         
                         // Add each component to the robot group
                         const component = object;
@@ -1053,7 +1053,7 @@
                         }
                         
                     }, undefined, (error) => {
-                        console.error(`Error loading OBJ component ${filename}:`, error);
+                        console.error(`❌ Error loading OBJ component ${filename}:`, error);
                         loadedComponents++;
                         
                         // Continue even if one component fails
