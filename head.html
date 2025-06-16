@@ -1003,13 +1003,17 @@
                 // Load GLTF component files from correct directory
                 const componentFiles = [
                     'west_world/4.CAD-Model/Head3.0/Cranium.gltf',
-                    'west_world/4.CAD-Model/Head3.0/Mouth.gltf'
+                    'west_world/4.CAD-Model/Head3.0/Mouth.gltf',
+                    'west_world/4.CAD-Model/Head3.0/Lower_Cheek.gltf',
+                    'west_world/4.CAD-Model/Head3.0/Upper_Cheek.gltf',
+                    'west_world/4.CAD-Model/Head3.0/Left_Face.gltf'
                 ];
                 
                 let loadedComponents = 0;
-                const totalComponents = componentFiles.length;
+                this.totalComponents = componentFiles.length; // Make it a class property
+                this.componentFiles = componentFiles; // Store for debugging
                 
-                console.log(`Loading ${totalComponents} GLTF component files...`);
+                console.log(`Loading ${this.totalComponents} GLTF component files...`);
                 
                 componentFiles.forEach((filename, index) => {
                     loader.load(filename, (gltf) => {
@@ -1030,6 +1034,9 @@
                                     // Force material update
                                     child.material.needsUpdate = true;
                                     
+                                    // DISABLE FACE CULLING - Show both sides of triangles
+                                    child.material.side = THREE.DoubleSide;
+                                    
                                     // If material is too dark, brighten it slightly
                                     if (child.material.color) {
                                         const hsl = {};
@@ -1049,6 +1056,14 @@
                                     if (child.material.roughness !== undefined && child.material.roughness > 0.8) {
                                         child.material.roughness = 0.5;
                                     }
+                                    
+                                    // Ensure material is not transparent unless intended
+                                    if (child.material.transparent === undefined) {
+                                        child.material.transparent = false;
+                                    }
+                                    if (child.material.opacity === undefined) {
+                                        child.material.opacity = 1.0;
+                                    }
                                 }
                             }
                         });
@@ -1057,10 +1072,10 @@
                         this.robot.add(component);
                         
                         loadedComponents++;
-                        console.log(`Component ${loadedComponents}/${totalComponents} loaded: ${filename}`);
+                        console.log(`Component ${loadedComponents}/${this.totalComponents} loaded: ${filename}`);
                         
                         // When all components are loaded
-                        if (loadedComponents === totalComponents) {
+                        if (loadedComponents === this.totalComponents) {
                             this.onAllComponentsLoaded();
                         }
                         
@@ -1069,7 +1084,7 @@
                         loadedComponents++;
                         
                         // Continue even if one component fails
-                        if (loadedComponents === totalComponents) {
+                        if (loadedComponents === this.totalComponents) {
                             this.onAllComponentsLoaded();
                         }
                     });
@@ -1093,6 +1108,8 @@
                 
                 // DEBUG: List all components and their names
                 console.log('=== LOADED COMPONENTS DEBUG ===');
+                console.log(`Total components loaded: ${this.totalComponents}`);
+                console.log('Component files loaded:', this.componentFiles);
                 this.robot.traverse((child) => {
                     if (child.isMesh || child.isGroup || child.isObject3D) {
                         console.log('Component found:', {
@@ -1100,7 +1117,9 @@
                             type: child.type,
                             isMesh: child.isMesh,
                             isGroup: child.isGroup,
-                            parent: child.parent ? child.parent.name : 'root'
+                            parent: child.parent ? child.parent.name : 'root',
+                            position: child.position,
+                            rotation: child.rotation
                         });
                     }
                 });
@@ -1118,7 +1137,14 @@
                 
                 // Camera setup - Make head bigger from the start
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const distance = 0.5; // MUCH CLOSER distance - make head bigger from start
+                const distance = maxDim * 2; // Better distance calculation based on model size
+                
+                console.log('Camera setup:', {
+                    maxDim: maxDim,
+                    distance: distance,
+                    modelCenter: center,
+                    modelSize: size
+                });
                 
                 // Position camera SQUARE FRONT - no angles, straight ahead
                 this.camera.position.set(0, 0, distance);
@@ -1127,6 +1153,9 @@
                 this.camera.lookAt(0, 0, 0);
                 this.controls.target.set(0, 0, 0);
                 this.controls.update();
+                
+                console.log('Camera positioned at:', this.camera.position);
+                console.log('Camera looking at:', this.controls.target);
                 
                 // Hide loading indicator
                 document.querySelector('.loading').style.display = 'none';
