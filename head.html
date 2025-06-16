@@ -596,21 +596,26 @@
     <div class="main-container">
         <!-- Left Panel - Servo Controls -->
         <div class="left-panel">
+            <!-- Back to Homepage Button -->
+            <div class="servo-section" style="margin-bottom: 25px;">
+                <button class="back-btn" onclick="backToMain()" style="width: 100%; margin: 0;">Homepage</button>
+            </div>
+            
             <!-- Head Control -->
             <div class="servo-section">
-                <div class="servo-title">Head</div>
+                <div class="servo-title">Head Turn</div>
                 <div class="slider-group">
                     <div class="slider-label">
                         <span>Angle</span>
                         <span class="slider-value" id="headValue">0°</span>
       		</div>
-                    <input type="range" id="headSlider" class="servo-slider" min="-30" max="30" value="0" step="1">
+                    <input type="range" id="headSlider" class="servo-slider" min="-90" max="90" value="0" step="1">
     	</div>
   	</div>
 
             <!-- Body Control -->
             <div class="servo-section">
-                <div class="servo-title">Body</div>
+                <div class="servo-title">Body Turn</div>
                 <div class="slider-group">
                     <div class="slider-label">
                         <span>Angle</span>
@@ -762,8 +767,7 @@
         <div class="center-panel">
             <div class="viewport-controls">
                 <div class="control-panel">
-                    <button class="reset-btn" onclick="resetPose()">重置姿态</button>
-                    <button class="back-btn" onclick="backToMain()">返回</button>
+                    <button class="reset-btn" onclick="resetPose()">Reset</button>
                 </div>
             </div>
             <div id="robot-viewport">
@@ -797,7 +801,7 @@
                     <div class="camera-feed">📹 Camera Simulation</div>
                 </div>
                 <div class="preset-controls">
-                    <button class="preset-btn" onclick="resetPose()">重置姿态</button>
+                    <button class="preset-btn" onclick="resetPose()">Reset</button>
                     <button class="preset-btn" onclick="wavePose()">Wave</button>
                     <button class="preset-btn" onclick="dancePose()">Dance</button>
                     <button class="preset-btn" onclick="pointPose()">Point</button>
@@ -1146,15 +1150,17 @@
             update() {
                 if (!this.robot) return;
                 
-                // Find head and mouth components - target parent groups, not individual meshes
-                let headComponent = null;
-                let mouthComponent = null;
+                // HEAD ROTATION - Apply to entire robot so all parts (cranium + mouth) move together
+                const headTargetRotZ = this.targetAngleHead * Math.PI / 180;
+                this.robot.rotation.z = THREE.MathUtils.lerp(this.robot.rotation.z, headTargetRotZ, this.slerpRatio);
                 
+                // BODY ROTATION - Apply Y-axis rotation (separate from head)
+                const bodyTargetRotY = this.targetAngleBody * Math.PI / 180;
+                this.robot.rotation.y = THREE.MathUtils.lerp(this.robot.rotation.y, bodyTargetRotY, this.slerpRatio);
+                
+                // MOUTH INDIVIDUAL CONTROL - Find and control mouth component separately for jaw movement
+                let mouthComponent = null;
                 this.robot.traverse((child) => {
-                    // Look for the main component groups (not individual meshes)
-                    if (child.name && child.name.includes('Cranium') && !child.name.includes('_')) {
-                        headComponent = child;
-                    }
                     // Look for the main Mouth component group (the parent of all Mouth_XX meshes)
                     if (child.name && child.name === 'Mouth') {
                         mouthComponent = child;
@@ -1179,21 +1185,11 @@
                     });
                 }
                 
-                if (headComponent) {
-                    // HEAD UPRIGHT - Only Z-axis rotation (left/right turn)
-                    const headTargetRotZ = this.targetAngleHead * Math.PI / 180;
-                    headComponent.rotation.z = THREE.MathUtils.lerp(headComponent.rotation.z, headTargetRotZ, this.slerpRatio);
-                }
-                
                 if (mouthComponent) {
-                    // MOUTH ROTATION - Simple X-axis rotation (jaw movement)
+                    // MOUTH ROTATION - Simple X-axis rotation (jaw movement) - separate from head rotation
                     const mouthTargetRotX = this.targetAngleMouth * Math.PI / 180;
                     mouthComponent.rotation.x = THREE.MathUtils.lerp(mouthComponent.rotation.x, mouthTargetRotX, this.slerpRatio);
                 }
-                
-                // Body rotation (Y-axis)
-                const bodyTargetRot = new THREE.Euler(0, this.targetAngleBody * Math.PI / 180, 0);
-                this.robot.rotation.y = THREE.MathUtils.lerp(this.robot.rotation.y, bodyTargetRot.y, this.slerpRatio);
                 
                 // Update slider values if playing
                 if (this.isPlaying) {
@@ -1228,6 +1224,88 @@
                 document.getElementById('headSlider').value = 0;
                 document.getElementById('bodySlider').value = 0;
                 this.updateSliderDisplays();
+                
+                // Reset all mouth trajectory controls
+                this.resetAllMouthControls();
+            }
+            
+            // New method to reset all mouth trajectory controls
+            resetAllMouthControls() {
+                // Reset all trajectory sliders to center (0)
+                document.getElementById('trajectoryProgressSlider').value = 0;
+                document.getElementById('trajectoryProgressValue').textContent = '0%';
+                
+                // Reset collapsed progress slider too
+                document.getElementById('trajectoryProgressSliderCollapsed').value = 0;
+                document.getElementById('trajectoryProgressValueCollapsed').textContent = '0%';
+                
+                document.getElementById('trajectoryHeightSlider').value = 0;
+                document.getElementById('trajectoryHeightValue').textContent = '0';
+                
+                document.getElementById('trajectoryDirectionSlider').value = 0;
+                document.getElementById('trajectoryDirectionValue').textContent = '0°';
+                
+                // Reset all dot control sliders to 0
+                document.getElementById('greenDotSlider').value = 0;
+                document.getElementById('greenDotValue').textContent = '0';
+                document.getElementById('greenVerticalSlider').value = 0;
+                document.getElementById('greenVerticalValue').textContent = '0';
+                
+                document.getElementById('yellowDotSlider').value = 0;
+                document.getElementById('yellowDotValue').textContent = '0';
+                document.getElementById('yellowVerticalSlider').value = 0;
+                document.getElementById('yellowVerticalValue').textContent = '0';
+                
+                document.getElementById('orangeDotSlider').value = 0;
+                document.getElementById('orangeDotValue').textContent = '0';
+                document.getElementById('orangeVerticalSlider').value = 0;
+                document.getElementById('orangeVerticalValue').textContent = '0';
+                
+                document.getElementById('blueDotSlider').value = 0;
+                document.getElementById('blueDotValue').textContent = '0';
+                document.getElementById('blueVerticalSlider').value = 0;
+                document.getElementById('blueVerticalValue').textContent = '0';
+                
+                // Reset trajectory parameters to baseline values
+                this.trajectoryParams.height = 0.04; // Baseline + 0
+                this.trajectoryParams.direction = 0;
+                this.trajectoryParams.progress = 0;
+                this.trajectoryParams.greenDot = 0.05; // Baseline + 0
+                this.trajectoryParams.yellowDot = 0.15; // Baseline + 0
+                this.trajectoryParams.orangeDot = 0.4; // Baseline + 0
+                this.trajectoryParams.blueDot = 0.75; // Baseline + 0
+                this.trajectoryParams.greenVertical = -0.3; // Baseline + 0
+                this.trajectoryParams.yellowVertical = -0.6; // Baseline + 0
+                this.trajectoryParams.orangeVertical = -0.9; // Baseline + 0
+                this.trajectoryParams.blueVertical = -1.0; // Baseline + 0
+                
+                // Update trajectory and mouth position
+                this.updateTrajectoryPath();
+                this.setMouthTrajectoryPosition(0);
+                
+                // Hide trajectory line and debug markers after reset
+                if (this.trajectoryLine) {
+                    this.trajectoryLine.visible = false;
+                }
+                if (this.trajectoryDebugMarkers) {
+                    this.trajectoryDebugMarkers.forEach(marker => marker.visible = false);
+                }
+                
+                // Stop any running animation
+                if (this.isAnimating) {
+                    this.isAnimating = false;
+                    if (this.animationId) {
+                        cancelAnimationFrame(this.animationId);
+                        this.animationId = null;
+                    }
+                    const animateBtn = document.getElementById('animateBtn');
+                    if (animateBtn) {
+                        animateBtn.textContent = 'Animate';
+                        animateBtn.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+                    }
+                }
+                
+                console.log('All trajectory controls reset to center (0) - mouth returned to baseline position - trajectory visualization hidden');
             }
             
             updateSliderDisplays() {
@@ -2262,7 +2340,7 @@
                 electronBotStudio.updateTrajectoryDisplays();
             }
             
-            console.log('All trajectory controls reset to center (0) - mouth returned to baseline position');
+            console.log('All trajectory controls reset to center (0) - mouth returned to baseline position - trajectory visualization hidden');
         }
         
         function toggleAnimation() {
