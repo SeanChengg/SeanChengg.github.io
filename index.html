@@ -822,7 +822,7 @@
     <!-- Three.js and GLTF Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     
     <script>
         // ElectronBot Studio - Exact Unity Implementation
@@ -971,7 +971,7 @@
             }
             
             loadElectronBotModel() {
-                const loader = new THREE.GLTFLoader();
+                const loader = new THREE.OBJLoader();
                 
                 // Remove old robot if present
                 if (this.robot) {
@@ -979,26 +979,31 @@
                 }
                 this.robot = new THREE.Group();
                 
-                // Load GLTF component files from correct directory
+                // Load OBJ component files from correct directory
                 const componentFiles = [
-                    'ElectronBot/4.CAD-Model/Head3.0/Cranium.gltf',
-                    'ElectronBot/4.CAD-Model/Head3.0/Mouth.gltf'
+                    'models/Head1.obj',
+                    'models/Head2.obj',
+                    'models/Head3.obj',
+                    'models/Face.obj',
+                    'models/Body1.obj',
+                    'models/Body2.obj',
+                    'models/Base.obj'
                 ];
                 
                 let loadedComponents = 0;
                 const totalComponents = componentFiles.length;
                 
-                console.log(`Loading ${totalComponents} GLTF component files...`);
+                console.log(`Loading ${totalComponents} OBJ component files...`);
                 
                 componentFiles.forEach((filename, index) => {
-                    loader.load(filename, (gltf) => {
-                        console.log(`Loaded GLTF component: ${filename}`);
+                    loader.load(filename, (obj) => {
+                        console.log(`Loaded OBJ component: ${filename}`);
                         
                         // Add each component to the robot group
-                        const component = gltf.scene;
-                        component.name = filename.replace('.gltf', ''); // Clean name
+                        const component = obj;
+                        component.name = filename.replace('.obj', ''); // Clean name
                         
-                        // Enhanced material processing for GLTF files
+                        // Enhanced material processing for OBJ files
                         component.traverse((child) => {
                             if (child.isMesh) {
                                 child.castShadow = true;
@@ -1044,7 +1049,7 @@
                         }
                         
                     }, undefined, (error) => {
-                        console.error(`Error loading GLTF component ${filename}:`, error);
+                        console.error(`Error loading OBJ component ${filename}:`, error);
                         loadedComponents++;
                         
                         // Continue even if one component fails
@@ -1144,7 +1149,7 @@
                     }
                 });
                 
-                // If we didn't find the main Mouth group, look for the GLTF scene containing mouth meshes
+                // If we didn't find the main Mouth group, look for the OBJ scene containing mouth meshes
                 if (!mouthComponent) {
                     this.robot.traverse((child) => {
                         // Look for a group that contains multiple mouth meshes
