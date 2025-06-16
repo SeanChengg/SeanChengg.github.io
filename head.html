@@ -528,20 +528,18 @@
 
         .mouth-title {
             position: relative;
-            height: 40px; /* Increase height for better alignment */
-            display: flex;
-            align-items: flex-end; /* Align children to the bottom */
-            justify-content: center;
             margin-bottom: 0;
             padding-bottom: 0;
             background: none;
             border: none;
+            height: 32px;
         }
         .mouth-caption {
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 8px; /* Place text just above the divider */
+            top: 50%;
+            transform: translateY(-50%);
             text-align: center;
             font-size: 16px;
             font-weight: bold;
@@ -550,24 +548,23 @@
             text-transform: uppercase;
             margin: 0 auto;
             pointer-events: none;
-            z-index: 1;
         }
         .toggle-btn {
             position: absolute;
-            right: 0;
-            bottom: 4px; /* Place triangle flush with divider */
-            font-size: 22px;
-            color: #f39c12;
+            right: 10px;
+            top: 8px;
+            background: none;
+            border: none;
+            color: #ff8c00;
+            font-size: 16px;
             cursor: pointer;
-            margin-left: 0;
-            line-height: 1;
             padding: 0;
-            height: 22px;
-            width: 22px;
+            width: 20px;
+            height: 20px;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
-            z-index: 2;
+            line-height: 1;
         }
         .mouth-divider {
             border-bottom: 4px solid #f39c12;
@@ -823,7 +820,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     
     <script>
         // ElectronBot Studio - Exact Unity Implementation
@@ -972,7 +968,7 @@
             }
             
             loadElectronBotModel() {
-                const loader = new THREE.OBJLoader();
+                const loader = new THREE.GLTFLoader();
                 
                 // Remove old robot if present
                 if (this.robot) {
@@ -980,42 +976,34 @@
                 }
                 this.robot = new THREE.Group();
                 
-                // Load OBJ component files from models directory (using ACTUAL files that exist)
+                // Load GLTF component files from correct directory
                 const componentFiles = [
-                    'models/Head3.obj',
-                    'models/Face.obj',
-                    'models/Body1.obj',
-                    'models/Body2.obj',
-                    'models/Base.obj'
+                    'west_world/4.CAD-Model/Head3.0/Cranium.gltf',
+                    'west_world/4.CAD-Model/Head3.0/Mouth.gltf'
                 ];
                 
                 let loadedComponents = 0;
                 const totalComponents = componentFiles.length;
                 
-                console.log(`Loading ${totalComponents} OBJ component files...`);
+                console.log(`Loading ${totalComponents} GLTF component files...`);
                 
                 componentFiles.forEach((filename, index) => {
-                    loader.load(filename, (object) => {
-                        console.log(`✅ Successfully loaded: ${filename}`);
+                    loader.load(filename, (gltf) => {
+                        console.log(`Loaded GLTF component: ${filename}`);
                         
                         // Add each component to the robot group
-                        const component = object;
-                        component.name = filename.replace('.obj', '').replace('models/', ''); // Clean name
+                        const component = gltf.scene;
+                        component.name = filename.replace('.gltf', ''); // Clean name
                         
-                        // Enhanced material processing for OBJ files
+                        // Enhanced material processing for GLTF files
                         component.traverse((child) => {
                             if (child.isMesh) {
                                 child.castShadow = true;
                                 child.receiveShadow = true;
                                 
-                                // Apply a default material if none exists
-                                if (!child.material) {
-                                    child.material = new THREE.MeshLambertMaterial({ 
-                                        color: 0xcccccc,
-                                        side: THREE.DoubleSide
-                                    });
-                                } else {
-                                    // Ensure materials are bright and visible
+                                // Ensure materials are bright and visible
+                                if (child.material) {
+                                    // Force material update
                                     child.material.needsUpdate = true;
                                     
                                     // If material is too dark, brighten it slightly
@@ -1053,7 +1041,7 @@
                         }
                         
                     }, undefined, (error) => {
-                        console.error(`❌ Error loading OBJ component ${filename}:`, error);
+                        console.error(`Error loading GLTF component ${filename}:`, error);
                         loadedComponents++;
                         
                         // Continue even if one component fails
@@ -1144,14 +1132,32 @@
                 
                 this.robot.traverse((child) => {
                     // Look for the main component groups (not individual meshes)
-                    if (child.name && child.name.includes('Head3')) {
+                    if (child.name && child.name.includes('Cranium') && !child.name.includes('_')) {
                         headComponent = child;
                     }
                     // Look for the main Mouth component group (the parent of all Mouth_XX meshes)
-                    if (child.name && child.name === 'Face') {
+                    if (child.name && child.name === 'Mouth') {
                         mouthComponent = child;
                     }
                 });
+                
+                // If we didn't find the main Mouth group, look for the GLTF scene containing mouth meshes
+                if (!mouthComponent) {
+                    this.robot.traverse((child) => {
+                        // Look for a group that contains multiple mouth meshes
+                        if (child.isGroup || child.isObject3D) {
+                            let mouthMeshCount = 0;
+                            child.traverse((subChild) => {
+                                if (subChild.name && subChild.name.includes('Mouth_')) {
+                                    mouthMeshCount++;
+                                }
+                            });
+                            if (mouthMeshCount > 5) { // If this group contains multiple mouth meshes
+                                mouthComponent = child;
+                            }
+                        }
+                    });
+                }
                 
                 if (headComponent) {
                     // HEAD UPRIGHT - Only Z-axis rotation (left/right turn)
