@@ -893,10 +893,9 @@
 
             resetLeftFacePanel(){
                 // FIX: First, physically reset the component to its "Frame 0" position.
-                // This is the critical step that was missing. It ensures that when we
-                // re-initialize the physics, the start point is calculated from the correct origin.
                 if (this.leftFaceComponent && this.leftFaceComponent.userData.originalPosition) {
                     this.leftFaceComponent.position.copy(this.leftFaceComponent.userData.originalPosition);
+                    this.leftFaceComponent.updateMatrixWorld(true);
                 }
 
                 // New baseline parameters from user adjustment - set as permanent reset state
