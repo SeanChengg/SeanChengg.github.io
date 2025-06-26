@@ -892,7 +892,7 @@
                 // New baseline parameters from user adjustment - set as permanent reset state
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
-                    direction: 180,
+                    direction: 0,
                     greenLat: 0.45,
                     yellowLat: 0.6,
                     orangeLat: 0.7,
@@ -939,9 +939,9 @@
                 document.getElementById('leftTrajectoryHeightSlider').value = 0;
                 document.getElementById('leftTrajectoryHeightValue').textContent = '0';
                 
-                // Reset direction to its specific default of -45
-                document.getElementById('leftTrajectoryDirectionSlider').value = -45;
-                document.getElementById('leftTrajectoryDirectionValue').textContent = '-45°';
+                // Reset direction to its specific default of 0
+                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
+                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
 
                 // Reset all dot control sliders to 0
                 const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
