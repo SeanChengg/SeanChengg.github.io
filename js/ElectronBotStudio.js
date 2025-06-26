@@ -753,19 +753,10 @@
                 if (!comp) { console.warn('Left_Face component not found'); return; }
                 this.leftFaceComponent = comp;
                 
-                // --- NEW LOGIC: Account for pivot vs. center ---
-                // 1. Get the initial world position of the component's pivot.
-                const initialWorldPosition = new THREE.Vector3();
-                comp.getWorldPosition(initialWorldPosition);
+                // Calculate start point for trajectory visualization from the component's stable world position
+                this.leftFaceTrajectoryStartPoint = this.leftFaceComponent.getWorldPosition(new THREE.Vector3());
 
-                // 2. Get the initial world position of the component's geometric center.
-                const initialCenter = new THREE.Box3().setFromObject(comp).getCenter(new THREE.Vector3());
-
-                // 3. Store the offset between them. This is constant.
-                this.pivotToCenterOffset = initialCenter.clone().sub(initialWorldPosition);
-
-                // 4. The trajectory is based on moving the CENTER of the object.
-                this.leftFaceTrajectoryStartPoint = initialCenter;
+                // Generate the trajectory path with the new start point
                 this.updateLeftFaceTrajectoryPath();
             }
 
