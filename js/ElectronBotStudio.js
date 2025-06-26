@@ -36,7 +36,7 @@
                 // Baseline parameters for LEFT FACE diagonal trajectory
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,      // New baseline from user adjustment
-                    direction: 0,
+                    direction: 180,
                     
                     // HORIZONTAL-only params (the OLD depth values). NOT connected to sliders.
                     // This preserves the user's desired horizontal positions permanently.
@@ -892,7 +892,7 @@
                 // New baseline parameters from user adjustment - set as permanent reset state
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
-                    direction: 0,
+                    direction: 180,
                     greenLat: 0.45,
                     yellowLat: 0.6,
                     orangeLat: 0.7,
