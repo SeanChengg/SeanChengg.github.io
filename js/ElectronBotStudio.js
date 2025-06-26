@@ -36,7 +36,7 @@
                 // Baseline parameters for LEFT FACE diagonal trajectory
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,      // New baseline from user adjustment
-                    direction: 0,
+                    direction: 180,
                     
                     // HORIZONTAL-only params (the OLD depth values). NOT connected to sliders.
                     // This preserves the user's desired horizontal positions permanently.
@@ -778,9 +778,9 @@
                         
                         // --- DEFINITIVE, SIMPLIFIED FIX & 180-DEGREE VERTICAL ROTATION ---
                         // Replicate mouth logic, but rotate trajectory 180 deg vertically.
-                        const offsetX = p.height * dot.lat;       // Horizontal (unaffected by vertical rotation)
-                        const offsetY = -p.height * dot.vert;      // Vertical (flipped from -p.height to p.height)
-                        const offsetZ = p.height * dot.depth;      // Depth (flipped from p.height to -p.height)
+                        const offsetX = -p.height * dot.lat;       // Horizontal (unaffected by vertical rotation)
+                        const offsetY = p.height * dot.vert;      // Vertical (flipped from -p.height to p.height)
+                        const offsetZ = -p.height * dot.depth;      // Depth (flipped from p.height to -p.height)
                         
                         // Apply the direction rotation to the XZ plane.
                         const dirRad = p.direction * Math.PI / 180;
@@ -814,9 +814,9 @@
                 
                 dotPositions.forEach(dot => {
                     // --- APPLYING THE SAME 180-DEGREE ROTATION FOR FULL REGENERATION ---
-                    const offsetX = p.height * dot.lat;
-                    const offsetY = -p.height * dot.vert;
-                    const offsetZ = p.height * dot.depth;
+                    const offsetX = -p.height * dot.lat;
+                    const offsetY = p.height * dot.vert;
+                    const offsetZ = -p.height * dot.depth;
 
                     // Apply the direction rotation to the XZ plane.
                     const dirRad = p.direction * Math.PI / 180;
@@ -892,7 +892,7 @@
                 // New baseline parameters from user adjustment - set as permanent reset state
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
-                    direction: 0,
+                    direction: 180,
                     greenLat: 0.45,
                     yellowLat: 0.6,
                     orangeLat: 0.7,
@@ -906,6 +906,28 @@
                     orangeVertical: -0.65,
                     blueVertical: -0.9
                 };
+
+                // NEW: Reset all UI sliders and displays to their default (0) state
+                document.getElementById('leftTrajectoryProgressSlider').value = 0;
+                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
+                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
+                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
+                document.getElementById('leftTrajectoryHeightSlider').value = 0;
+                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
+                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
+                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
+                const dotSliderIds = [
+                    'leftOrangeDotSlider', 'leftOrangeVerticalSlider',
+                    'leftYellowDotSlider', 'leftYellowVerticalSlider',
+                    'leftGreenDotSlider', 'leftGreenVerticalSlider',
+                    'leftBlueDotSlider', 'leftBlueVerticalSlider'
+                ];
+                dotSliderIds.forEach(id => {
+                    const slider = document.getElementById(id);
+                    const valueDisplay = document.getElementById(id.replace('Slider', 'Value'));
+                    if (slider) slider.value = 0;
+                    if (valueDisplay) valueDisplay.textContent = '0';
+                });
 
                 // Stop any running animation for the left face
                 if (this.isLeftFaceAnimating) {
@@ -928,36 +950,6 @@
                 this.setLeftFaceTrajectoryPosition(0);
                 
                 console.log('RESET: State permanently wiped. Dots forced back to baseline positions.');
-            
-                // ADDED: Reset all UI sliders and displays for the Left Face panel
-                // Reset trajectory sliders
-                document.getElementById('leftTrajectoryProgressSlider').value = 0;
-                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
-                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
-                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
-                
-                document.getElementById('leftTrajectoryHeightSlider').value = 0;
-                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
-                
-                // Reset direction to its specific default of 0
-                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
-                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
-
-                // Reset all dot control sliders to 0
-                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
-                dots.forEach(dot => {
-                    // Reset Depth slider (e.g., 'leftOrangeDotSlider')
-                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
-                    if (depthSlider) depthSlider.value = 0;
-                    const depthValue = document.getElementById(`left${dot}DotValue`);
-                    if (depthValue) depthValue.textContent = '0';
-                    
-                    // Reset Vertical slider (e.g., 'leftOrangeVerticalSlider')
-                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
-                    if (verticalSlider) verticalSlider.value = 0;
-                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
-                    if (verticalValue) verticalValue.textContent = '0';
-                });
             }
             
             // ========================================
