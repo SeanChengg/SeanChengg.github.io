@@ -436,11 +436,18 @@
             
             // Unity ResetPose method
             resetPose() {
-                // Instantly snap all rotating parts back to 0 before doing anything else.
-                // This ensures all coordinate systems are in their default state before
-                // any trajectory recalculations happen.
-                if (this.head) this.head.rotation.y = 0;
-                if (this.body) this.body.rotation.y = 0;
+                // Instantly snap all rotating parts back to 0 AND FORCE A MATRIX UPDATE.
+                // This is the critical step that was missing. It ensures all child
+                // components have their world coordinates updated before any other
+                // logic (like trajectory calculation) runs.
+                if (this.head) {
+                    this.head.rotation.y = 0;
+                    this.head.updateMatrixWorld(true); // Force update for all children
+                }
+                if (this.body) {
+                    this.body.rotation.y = 0;
+                    this.body.updateMatrixWorld(true); // Force update for all children
+                }
 
                 this.targetAngleHead = 0;
                 this.targetAngleBody = 0;
