@@ -922,7 +922,7 @@
                 }
 
                 // Force regenerate trajectory with the now-clean, permanent values
-                this.updateLeftFaceTrajectoryPath();
+                this.initializeLeftFacePanelPhysics();   // NEW WAY - re-calcs start point
                 
                 // Reset Left Face position to 0%
                 this.setLeftFaceTrajectoryPosition(0);
