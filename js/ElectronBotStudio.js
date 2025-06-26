@@ -757,7 +757,10 @@
             }
 
             updateLeftFaceTrajectoryPath(dotKeyToUpdate = null) {
-                if (!this.leftFaceTrajectoryStartPoint) return;
+                if (!this.leftFaceTrajectoryStartPoint) {
+                    console.warn('Cannot update Left Face trajectory: start point not initialized.');
+                    return;
+                }
                 const p = this.leftFaceTrajectoryParams;
                 const start = this.leftFaceTrajectoryStartPoint.clone();
                 const diagOffset = new THREE.Vector3(-0.02, -0.06, 0.04);
@@ -889,6 +892,13 @@
             }
 
             resetLeftFacePanel(){
+                // FIX: First, physically reset the component to its "Frame 0" position.
+                // This is the critical step that was missing. It ensures that when we
+                // re-initialize the physics, the start point is calculated from the correct origin.
+                if (this.leftFaceComponent && this.leftFaceComponent.userData.originalPosition) {
+                    this.leftFaceComponent.position.copy(this.leftFaceComponent.userData.originalPosition);
+                }
+
                 // New baseline parameters from user adjustment - set as permanent reset state
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
@@ -921,8 +931,8 @@
                     }
                 }
 
-                // Force regenerate trajectory with the now-clean, permanent values
-                this.initializeLeftFacePanelPhysics();   // NEW WAY - re-calcs start point
+                // Force regenerate trajectory from the now-reset component position
+                this.initializeLeftFacePanelPhysics();
                 
                 // Reset Left Face position to 0%
                 this.setLeftFaceTrajectoryPosition(0);
