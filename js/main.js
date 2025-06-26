@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (lDirSlider && lDirValue) lDirSlider.addEventListener('input', e => {
-        studio.leftFaceTrajectoryParams.direction = 180 + parseInt(e.target.value); // baseline 180°
+        studio.leftFaceTrajectoryParams.direction = parseInt(e.target.value); // baseline 180°
         lDirValue.textContent = e.target.value + '°';
         studio.updateLeftFaceTrajectoryPath();
     });
