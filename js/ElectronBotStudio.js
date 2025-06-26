@@ -895,17 +895,36 @@
                 this.leftFaceComponent.position.copy(targetLocalPosition);
             }
 
-            resetLeftFacePanel(){
-                // FIX: First, physically reset the component to its "Frame 0" position.
-                if (this.leftFaceComponent && this.leftFaceComponent.userData.originalPosition) {
-                    this.leftFaceComponent.position.copy(this.leftFaceComponent.userData.originalPosition);
-                    this.leftFaceComponent.updateMatrixWorld(true);
-                }
+            resetLeftFacePanel() {
+                // --- THIS FUNCTION IS NOW A DIRECT COPY OF THE WORKING MOUTH RESET LOGIC ---
 
-                // New baseline parameters from user adjustment - set as permanent reset state
+                // 1. Reset all UI sliders and their text displays to their default values.
+                document.getElementById('leftTrajectoryProgressSlider').value = 0;
+                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
+                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
+                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
+                document.getElementById('leftTrajectoryHeightSlider').value = 0;
+                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
+                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
+                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
+
+                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
+                dots.forEach(dot => {
+                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
+                    if (depthSlider) depthSlider.value = 0;
+                    const depthValue = document.getElementById(`left${dot}DotValue`);
+                    if (depthValue) depthValue.textContent = '0';
+                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
+                    if (verticalSlider) verticalSlider.value = 0;
+                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
+                    if (verticalValue) verticalValue.textContent = '0';
+                });
+
+                // 2. Reset all internal trajectory parameters to their default baseline values.
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
-                    direction: 180,
+                    direction: 0,
+                    progress: 0,
                     greenLat: 0.45,
                     yellowLat: 0.6,
                     orangeLat: 0.7,
@@ -920,7 +939,13 @@
                     blueVertical: -0.9
                 };
 
-                // Stop any running animation for the left face
+                // 3. Redraw the 3D trajectory path with the fresh default values.
+                this.updateLeftFaceTrajectoryPath();
+
+                // 4. Move the 3D object to the start of the newly drawn path.
+                this.setLeftFaceTrajectoryPosition(0);
+
+                // 5. Stop any running animations on this panel.
                 if (this.isLeftFaceAnimating) {
                     this.isLeftFaceAnimating = false;
                     if (this.leftFaceAnimationId) {
@@ -933,44 +958,8 @@
                         animateBtn.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
                     }
                 }
-
-                // Force regenerate trajectory from the now-reset component position
-                this.initializeLeftFacePanelPhysics();
                 
-                // Reset Left Face position to 0%
-                this.setLeftFaceTrajectoryPosition(0);
-                
-                console.log('RESET: State permanently wiped. Dots forced back to baseline positions.');
-            
-                // ADDED: Reset all UI sliders and displays for the Left Face panel
-                // Reset trajectory sliders
-                document.getElementById('leftTrajectoryProgressSlider').value = 0;
-                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
-                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
-                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
-                
-                document.getElementById('leftTrajectoryHeightSlider').value = 0;
-                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
-                
-                // Reset direction to its specific default of 0
-                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
-                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
-
-                // Reset all dot control sliders to 0
-                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
-                dots.forEach(dot => {
-                    // Reset Depth slider (e.g., 'leftOrangeDotSlider')
-                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
-                    if (depthSlider) depthSlider.value = 0;
-                    const depthValue = document.getElementById(`left${dot}DotValue`);
-                    if (depthValue) depthValue.textContent = '0';
-                    
-                    // Reset Vertical slider (e.g., 'leftOrangeVerticalSlider')
-                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
-                    if (verticalSlider) verticalSlider.value = 0;
-                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
-                    if (verticalValue) verticalValue.textContent = '0';
-                });
+                console.log('Left Face Panel reset to default state.');
             }
             
             // ========================================
