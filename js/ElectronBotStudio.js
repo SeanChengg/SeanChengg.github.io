@@ -898,6 +898,11 @@
             resetLeftFacePanel() {
                 // --- THIS FUNCTION IS NOW A DIRECT COPY OF THE WORKING MOUTH RESET LOGIC ---
 
+                // 0. CRITICAL FIX: Recalculate the trajectory's start point from the reset model.
+                if (this.leftFaceComponent) {
+                    this.leftFaceTrajectoryStartPoint = this.leftFaceComponent.getWorldPosition(new THREE.Vector3());
+                }
+
                 // 1. Reset all UI sliders and their text displays to their default values.
                 document.getElementById('leftTrajectoryProgressSlider').value = 0;
                 document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
