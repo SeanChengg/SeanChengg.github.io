@@ -36,7 +36,7 @@
                 // Baseline parameters for LEFT FACE diagonal trajectory
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,      // New baseline from user adjustment
-                    direction: 180,
+                    direction: 0,
                     
                     // HORIZONTAL-only params (the OLD depth values). NOT connected to sliders.
                     // This preserves the user's desired horizontal positions permanently.
@@ -436,19 +436,6 @@
             
             // Unity ResetPose method
             resetPose() {
-                // Instantly snap all rotating parts back to 0 AND FORCE A MATRIX UPDATE.
-                // This is the critical step that was missing. It ensures all child
-                // components have their world coordinates updated before any other
-                // logic (like trajectory calculation) runs.
-                if (this.head) {
-                    this.head.rotation.y = 0;
-                    this.head.updateMatrixWorld(true); // Force update for all children
-                }
-                if (this.body) {
-                    this.body.rotation.y = 0;
-                    this.body.updateMatrixWorld(true); // Force update for all children
-                }
-
                 this.targetAngleHead = 0;
                 this.targetAngleBody = 0;
                 this.targetAngleMouth = 0; // Reset mouth
@@ -753,18 +740,24 @@
                 if (!comp) { console.warn('Left_Face component not found'); return; }
                 this.leftFaceComponent = comp;
                 
-                // Calculate start point for trajectory visualization from the component's stable world position
-                this.leftFaceTrajectoryStartPoint = this.leftFaceComponent.getWorldPosition(new THREE.Vector3());
+                // --- NEW LOGIC: Account for pivot vs. center ---
+                // 1. Get the initial world position of the component's pivot.
+                const initialWorldPosition = new THREE.Vector3();
+                comp.getWorldPosition(initialWorldPosition);
 
-                // Generate the trajectory path with the new start point
+                // 2. Get the initial world position of the component's geometric center.
+                const initialCenter = new THREE.Box3().setFromObject(comp).getCenter(new THREE.Vector3());
+
+                // 3. Store the offset between them. This is constant.
+                this.pivotToCenterOffset = initialCenter.clone().sub(initialWorldPosition);
+
+                // 4. The trajectory is based on moving the CENTER of the object.
+                this.leftFaceTrajectoryStartPoint = initialCenter;
                 this.updateLeftFaceTrajectoryPath();
             }
 
             updateLeftFaceTrajectoryPath(dotKeyToUpdate = null) {
-                if (!this.leftFaceTrajectoryStartPoint) {
-                    console.warn('Cannot update Left Face trajectory: start point not initialized.');
-                    return;
-                }
+                if (!this.leftFaceTrajectoryStartPoint) return;
                 const p = this.leftFaceTrajectoryParams;
                 const start = this.leftFaceTrajectoryStartPoint.clone();
                 const diagOffset = new THREE.Vector3(-0.02, -0.06, 0.04);
@@ -785,9 +778,9 @@
                         
                         // --- DEFINITIVE, SIMPLIFIED FIX & 180-DEGREE VERTICAL ROTATION ---
                         // Replicate mouth logic, but rotate trajectory 180 deg vertically.
-                        const offsetX = -p.height * dot.lat;       // Horizontal (unaffected by vertical rotation)
-                        const offsetY = p.height * dot.vert;      // Vertical (flipped from -p.height to p.height)
-                        const offsetZ = -p.height * dot.depth;      // Depth (flipped from p.height to -p.height)
+                        const offsetX = p.height * dot.lat;       // Horizontal (unaffected by vertical rotation)
+                        const offsetY = -p.height * dot.vert;      // Vertical (flipped from -p.height to p.height)
+                        const offsetZ = p.height * dot.depth;      // Depth (flipped from p.height to -p.height)
                         
                         // Apply the direction rotation to the XZ plane.
                         const dirRad = p.direction * Math.PI / 180;
@@ -821,9 +814,9 @@
                 
                 dotPositions.forEach(dot => {
                     // --- APPLYING THE SAME 180-DEGREE ROTATION FOR FULL REGENERATION ---
-                    const offsetX = -p.height * dot.lat;
-                    const offsetY = p.height * dot.vert;
-                    const offsetZ = -p.height * dot.depth;
+                    const offsetX = p.height * dot.lat;
+                    const offsetY = -p.height * dot.vert;
+                    const offsetZ = p.height * dot.depth;
 
                     // Apply the direction rotation to the XZ plane.
                     const dirRad = p.direction * Math.PI / 180;
@@ -895,36 +888,11 @@
                 this.leftFaceComponent.position.copy(targetLocalPosition);
             }
 
-            resetLeftFacePanel() {
-                // --- THIS FUNCTION IS NOW A DIRECT COPY OF THE WORKING MOUTH RESET LOGIC ---
-
-                // 1. Reset all UI sliders and their text displays to their default values.
-                document.getElementById('leftTrajectoryProgressSlider').value = 0;
-                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
-                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
-                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
-                document.getElementById('leftTrajectoryHeightSlider').value = 0;
-                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
-                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
-                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
-
-                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
-                dots.forEach(dot => {
-                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
-                    if (depthSlider) depthSlider.value = 0;
-                    const depthValue = document.getElementById(`left${dot}DotValue`);
-                    if (depthValue) depthValue.textContent = '0';
-                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
-                    if (verticalSlider) verticalSlider.value = 0;
-                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
-                    if (verticalValue) verticalValue.textContent = '0';
-                });
-
-                // 2. Reset all internal trajectory parameters to their default baseline values.
+            resetLeftFacePanel(){
+                // New baseline parameters from user adjustment - set as permanent reset state
                 this.leftFaceTrajectoryParams = {
                     height: -0.04,
                     direction: 0,
-                    progress: 0,
                     greenLat: 0.45,
                     yellowLat: 0.6,
                     orangeLat: 0.7,
@@ -939,13 +907,7 @@
                     blueVertical: -0.9
                 };
 
-                // 3. Redraw the 3D trajectory path with the fresh default values.
-                this.updateLeftFaceTrajectoryPath();
-
-                // 4. Move the 3D object to the start of the newly drawn path.
-                this.setLeftFaceTrajectoryPosition(0);
-
-                // 5. Stop any running animations on this panel.
+                // Stop any running animation for the left face
                 if (this.isLeftFaceAnimating) {
                     this.isLeftFaceAnimating = false;
                     if (this.leftFaceAnimationId) {
@@ -958,8 +920,44 @@
                         animateBtn.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
                     }
                 }
+
+                // Force regenerate trajectory with the now-clean, permanent values
+                this.updateLeftFaceTrajectoryPath();
                 
-                console.log('Left Face Panel reset to default state.');
+                // Reset Left Face position to 0%
+                this.setLeftFaceTrajectoryPosition(0);
+                
+                console.log('RESET: State permanently wiped. Dots forced back to baseline positions.');
+            
+                // ADDED: Reset all UI sliders and displays for the Left Face panel
+                // Reset trajectory sliders
+                document.getElementById('leftTrajectoryProgressSlider').value = 0;
+                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
+                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
+                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
+                
+                document.getElementById('leftTrajectoryHeightSlider').value = 0;
+                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
+                
+                // Reset direction to its specific default of 0
+                document.getElementById('leftTrajectoryDirectionSlider').value = 0;
+                document.getElementById('leftTrajectoryDirectionValue').textContent = '0°';
+
+                // Reset all dot control sliders to 0
+                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
+                dots.forEach(dot => {
+                    // Reset Depth slider (e.g., 'leftOrangeDotSlider')
+                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
+                    if (depthSlider) depthSlider.value = 0;
+                    const depthValue = document.getElementById(`left${dot}DotValue`);
+                    if (depthValue) depthValue.textContent = '0';
+                    
+                    // Reset Vertical slider (e.g., 'leftOrangeVerticalSlider')
+                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
+                    if (verticalSlider) verticalSlider.value = 0;
+                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
+                    if (verticalValue) verticalValue.textContent = '0';
+                });
             }
             
             // ========================================
