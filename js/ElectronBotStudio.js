@@ -436,6 +436,12 @@
             
             // Unity ResetPose method
             resetPose() {
+                // Instantly snap all rotating parts back to 0 before doing anything else.
+                // This ensures all coordinate systems are in their default state before
+                // any trajectory recalculations happen.
+                if (this.head) this.head.rotation.y = 0;
+                if (this.body) this.body.rotation.y = 0;
+
                 this.targetAngleHead = 0;
                 this.targetAngleBody = 0;
                 this.targetAngleMouth = 0; // Reset mouth
