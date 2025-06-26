@@ -928,6 +928,36 @@
                 this.setLeftFaceTrajectoryPosition(0);
                 
                 console.log('RESET: State permanently wiped. Dots forced back to baseline positions.');
+            
+                // ADDED: Reset all UI sliders and displays for the Left Face panel
+                // Reset trajectory sliders
+                document.getElementById('leftTrajectoryProgressSlider').value = 0;
+                document.getElementById('leftTrajectoryProgressValue').textContent = '0%';
+                document.getElementById('leftTrajectoryProgressSliderCollapsed').value = 0;
+                document.getElementById('leftTrajectoryProgressValueCollapsed').textContent = '0%';
+                
+                document.getElementById('leftTrajectoryHeightSlider').value = 0;
+                document.getElementById('leftTrajectoryHeightValue').textContent = '0';
+                
+                // Reset direction to its specific default of -45
+                document.getElementById('leftTrajectoryDirectionSlider').value = -45;
+                document.getElementById('leftTrajectoryDirectionValue').textContent = '-45°';
+
+                // Reset all dot control sliders to 0
+                const dots = ['Orange', 'Yellow', 'Green', 'Blue'];
+                dots.forEach(dot => {
+                    // Reset Depth slider (e.g., 'leftOrangeDotSlider')
+                    const depthSlider = document.getElementById(`left${dot}DotSlider`);
+                    if (depthSlider) depthSlider.value = 0;
+                    const depthValue = document.getElementById(`left${dot}DotValue`);
+                    if (depthValue) depthValue.textContent = '0';
+                    
+                    // Reset Vertical slider (e.g., 'leftOrangeVerticalSlider')
+                    const verticalSlider = document.getElementById(`left${dot}VerticalSlider`);
+                    if (verticalSlider) verticalSlider.value = 0;
+                    const verticalValue = document.getElementById(`left${dot}VerticalValue`);
+                    if (verticalValue) verticalValue.textContent = '0';
+                });
             }
             
             // ========================================
