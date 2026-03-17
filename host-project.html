@@ -232,7 +232,7 @@
              onclick="galleryNav(1)"/>
 
         <!-- Thumbnail strip -->
-        <div style="position:absolute;top:840px;left:50%;transform:translateX(-50%);height:223px;display:flex;align-items:center;justify-content:center;gap:8px">
+        <div style="position:absolute;top:840px;left:50%;transform:translateX(-50%);height:223px;display:flex;align-items:center;justify-content:center;gap:20px">
 
             <!-- Thumb 1 -->
             <div class="gallery-thumb" data-index="0" onclick="galleryGo(0)" 
@@ -488,7 +488,7 @@
     function scaleSidebar() {
         var s = Math.min(window.innerWidth / 1920, 1);
         // Scale all dimensions proportionally
-        sidebar.style.left = (95 * s) + 'px';
+        sidebar.style.left = (72 * s) + 'px';
         sidebar.style.width = (240 * s) + 'px';
         sidebar.style.gap = (24 * s) + 'px';
 
