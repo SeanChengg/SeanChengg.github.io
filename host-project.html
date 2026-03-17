@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Host — A West World Inspired Mechatronic Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700&family=Inter:wght@200;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'zihunaotushijieti_T'; src: url('fonts/zihunaotushijieti_T.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            overflow-x: hidden;
+            background-color: #F3F3F3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-blend-mode: multiply;
+            background-size: 512px 512px;
+        }
+        .page-scale-wrapper { width: 1920px; transform-origin: top left; }
+        #sidebar-nav .sn-link,
+        #sidebar-nav .sn-studio {
+            transition: color 0.2s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+        #sidebar-nav .sn-link:hover,
+        #sidebar-nav .sn-studio:hover {
+            color: #212121 !important;
+            transform: scale(1.05);
+        }
+        @keyframes button-glow-pulse {
+            0%, 100% {
+                box-shadow: 8px 8px 10px 3px #C2B075 inset, -50px -30px 20px #D4C89F inset,
+                            0 -20px 60px 20px rgba(255,255,255,0.18), 0 -20px 120px 40px rgba(255,255,255,0.08);
+            }
+            50% {
+                box-shadow: 8px 8px 10px 3px #C2B075 inset, -50px -30px 20px #D4C89F inset,
+                            0 -20px 80px 30px rgba(255,255,255,0.28), 0 -20px 160px 60px rgba(255,255,255,0.12);
+            }
+        }
+
+        @keyframes button-wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-6deg); }
+            40% { transform: rotate(6deg); }
+            60% { transform: rotate(-4deg); }
+            80% { transform: rotate(4deg); }
+        }
+
+        .host-button-orb {
+            animation: button-glow-pulse 3s ease-in-out infinite;
+            transform-origin: center center;
+        }
+
+        .host-button-link {
+            transition: transform 0.15s ease;
+            transform-origin: center center;
+        }
+
+        .host-button-link:hover {
+            animation: button-wiggle 0.5s ease-in-out;
+        }
+
+        .host-button-link:active {
+            transform: scale(0.88);
+            animation: none;
+        }
+        .ns{position:relative;width:1823px;height:1398px;background:#383838;border-radius:24px;overflow:hidden}
+        .gw{position:absolute;overflow:visible}
+        .gw .gbg{position:absolute;inset:-4px;border-radius:12px;background:rgba(255,255,255,.12);filter:url(#liquid-glass);z-index:0}
+        .gw .gfr{position:absolute;inset:0;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.08) 40%,rgba(255,255,255,.1) 60%,rgba(255,255,255,.15));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);border:1px solid rgba(255,255,255,.15);box-shadow:0 4px 24px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.2),inset 0 .5px 0 rgba(255,255,255,.2);z-index:1}
+        .gw .gc{position:relative;z-index:2;height:100%}
+        .gw-sm .gbg{inset:-3px;border-radius:9px;filter:url(#liquid-glass-sm)}
+        .gw-sm .gfr{border-radius:6px}
+        .ns .rect-bg{position:absolute;overflow:visible;pointer-events:none;z-index:1;opacity:0.8}
+        .ns .rect-bg img{position:absolute;display:block;max-width:none;filter:blur(20px) brightness(1.2)}
+        .ns .wire-img{position:absolute;pointer-events:none;z-index:1}
+        .ns .wire-img img{position:absolute;display:block;width:100%;height:100%}
+        .ns .lbl-blue{position:absolute;color:#5985AD;font-size:20px;font-family:Arial;font-weight:700;white-space:nowrap;z-index:5}
+        .ns .lbl-gold{position:absolute;color:#B8A977;font-size:20px;font-family:Arial;font-weight:700;white-space:nowrap;z-index:5}
+        .gallery-thumb{transition:transform .2s ease,box-shadow .2s ease,border .2s ease}
+        .gallery-thumb:hover{transform:scale(1.08);z-index:10}
+    </style>
+    <script>
+        function scalePage() { var w = document.querySelector('.page-scale-wrapper'); if (!w) return; var s = Math.min(window.innerWidth / 1920, 1); w.style.transform = 'scale(' + s + ')'; document.body.style.height = (9062 * s) + 'px'; }
+        window.addEventListener('resize', scalePage);
+        window.addEventListener('DOMContentLoaded', scalePage);
+    </script>
+</head>
+<body>
+
+<div id="sidebar-nav" style="position:fixed;top:-9999px;left:0;flex-direction:column;justify-content:flex-start;align-items:flex-start;display:inline-flex;z-index:1000;pointer-events:auto;transition:opacity 0.3s ease">
+     <div class="sn-title" style="color:#212121;font-family:'zihunaotushijieti_T',Georgia,serif;font-weight:400">The Host</div>
+     <div class="sn-sub" style="color:#737373;font-family:Arial,sans-serif;font-weight:400">A Westworld-Inspired<br/>Mechatronic Design</div>
+     <div class="sn-sub" style="color:#737373;font-family:Arial,sans-serif;font-weight:400">Ongoing project since 2024</div>
+     <a href="#top" class="sn-link" style="color:#686868;font-family:'Zilla Slab',serif;font-weight:500;text-decoration:none">Overview</a>
+     <a href="#panel-architecture" class="sn-link" style="color:#686868;font-family:'Zilla Slab',serif;font-weight:500;text-decoration:none">Panel Architecture</a>
+     <a href="#core-mechanism" class="sn-link" style="color:#686868;font-family:'Zilla Slab',serif;font-weight:500;text-decoration:none">Core Mechanism</a>
+     <a href="#technical-workflow" class="sn-link" style="color:#686868;font-family:'Zilla Slab',serif;font-weight:500;text-decoration:none">Technical Design & Production Workflow</a>
+     <a href="#next-stage" class="sn-link" style="color:#686868;font-family:'Zilla Slab',serif;font-weight:500;text-decoration:none">Next Stage</a>
+     <a href="#host-studio" class="sn-studio" style="color:#686868;font-family:'zihunaotushijieti_T',Georgia,serif;font-weight:400;text-decoration:none">The Host Studio</a>
+</div>
+<svg width="0" height="0" style="position:absolute"><defs><filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/><feSpecularLighting in="blur" surfaceScale="4" specularConstant="0.8" specularExponent="30" lighting-color="white" result="spec"><fePointLight x="150" y="-60" z="200"/></feSpecularLighting><feComposite in="spec" in2="SourceGraphic" operator="in" result="specOut"/><feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.6" k4="0" result="litShape"/><feGaussianBlur in="SourceAlpha" stdDeviation="6" result="shadowBlur"/><feOffset in="shadowBlur" dx="2" dy="3" result="shadow"/><feFlood flood-color="rgba(0,0,0,0.12)" result="shadowColor"/><feComposite in="shadowColor" in2="shadow" operator="in" result="dropShadow"/><feMerge><feMergeNode in="dropShadow"/><feMergeNode in="litShape"/></feMerge></filter><filter id="liquid-glass-sm" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/><feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.7" specularExponent="25" lighting-color="white" result="spec"><fePointLight x="140" y="-40" z="160"/></feSpecularLighting><feComposite in="spec" in2="SourceGraphic" operator="in" result="specOut"/><feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.5" k4="0" result="litShape"/><feGaussianBlur in="SourceAlpha" stdDeviation="4" result="shadowBlur"/><feOffset in="shadowBlur" dx="1" dy="2" result="shadow"/><feFlood flood-color="rgba(0,0,0,0.1)" result="shadowColor"/><feComposite in="shadowColor" in2="shadow" operator="in" result="dropShadow"/><feMerge><feMergeNode in="dropShadow"/><feMergeNode in="litShape"/></feMerge></filter></defs></svg>
+
+<div class="page-scale-wrapper" style="width:1920px;position:relative;background:transparent">
+ <div style="width:1919px;height:9062px;left:-0.25px;top:0.37px;position:absolute;background:transparent">
+  <div style="width:1947px;height:8925px;left:0;top:137px;position:absolute;overflow:hidden">
+
+   <!-- ==================== HERO ==================== -->
+   <div style="width:1823px;height:820.94px;left:48.75px;top:93.37px;position:absolute">
+    <img style="width:520px;height:832px;left:1275px;top:-92.63px;position:absolute;object-fit:cover" src="images/schematic/Head_YB_Money_Shot.png"/>
+    <div style="width:998px;height:262px;left:413px;top:426px;position:absolute">
+     <div style="width:759.31px;height:305.59px;left:101.59px;top:-326.57px;position:absolute">
+      <div style="width:757.25px;height:122px;left:-119.58px;top:30.57px;position:absolute;overflow:hidden"><div style="left:18.5px;top:0;position:absolute;color:#212121;font-size:120px;font-family:'zihunaotushijieti_T',Georgia,serif;font-weight:400;line-height:121.6px;letter-spacing:1px">Interaction</div></div>
+      <div style="width:394.15px;height:167px;left:-101.58px;top:165px;position:absolute;overflow:hidden"><div style="width:394.15px;height:167.01px;left:0;top:0;position:absolute;color:#212121;font-size:100px;font-family:Inter,sans-serif;font-style:italic;font-weight:200;line-height:125px">without</div></div>
+      <div style="width:619.49px;height:122px;left:193.66px;top:152.2px;position:absolute;overflow:hidden"><div style="width:626.99px;left:0;top:-1px;position:absolute;text-align:center;color:#212121;font-size:120px;font-family:'zihunaotushijieti_T',Georgia,serif;font-weight:400;line-height:125px;letter-spacing:1px">Imitation</div></div>
+     </div>
+     <div style="width:958px;height:184px;left:0.25px;top:38.63px;position:absolute;color:#212121;font-size:30px;font-family:'Zilla Slab',serif;font-weight:400;line-height:45px;letter-spacing:0.6px">Most social robots imitate human anatomy to communicate, this project takes a different path. Instead of mimicking skin and facial muscles, it uses panel-based mechanical head to show that a robot's physical structure can be its own form of language.</div>
+    </div>
+    <div style="width:50px;height:64px;left:413px;top:0;position:absolute;overflow:hidden"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+    <div style="width:890.78px;height:28.8px;left:443px;top:21px;position:absolute;overflow:hidden"><div style="width:870.92px;height:33.02px;left:38px;top:-3px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:30px">The Host - A West World Inspired Mechatronic Design</div></div>
+   </div>
+
+   <!-- ==================== PANEL ARCHITECTURE ==================== -->
+   <div id="panel-architecture" style="width:1919px;height:1499px;left:1px;top:818px;position:absolute">
+    <div style="width:50px;height:64px;left:452px;top:-1px;position:absolute;overflow:hidden"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+    <div style="width:328px;height:28px;left:515px;top:20px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:28.8px">Panel Architecture</div>
+    <div style="width:1300px;height:356px;left:452px;top:84px;position:absolute;text-align:justify;color:black;font-size:30px;font-family:'Zilla Slab',serif;font-weight:400;line-height:45px;letter-spacing:0.6px">Most humanoid robots try to replicate human appearance — silicone skins, dense actuator arrays, complex control systems — only to land in the uncanny valley. Inspired by the panel-based synthetic hosts in HBO's "West World", this design takes the opposite approach: seven independently actuated face panels form a humanoid robotic head that is deliberately mechanical. No skin, no realism. The panels slide open and closed — mechanical motion instead of simulated facial expression.</div>
+    <div style="width:1199px;height:38px;left:453px;top:402px;position:absolute;color:rgba(0,0,0,0.5);font-size:25px;font-family:'Zilla Slab',serif;font-weight:400;line-height:38.4px">Panel groups actuates independently. Watch the automated sequence, or drag to control it</div>
+    <div style="width:644px;height:492px;left:452px;top:456px;position:absolute;background:rgba(255,255,255,0.5);border-radius:8px"><div style="left:24px;top:20px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:38.4px">Midface Panels</div><img class="panel-viewer" data-panel="midface" data-base="images/schematic/Head_YB_Midface/Head_Midface_Frame" data-frames="10" src="images/schematic/Head_YB_Midface/Head_Midface_Frame1.png" style="width:713px;height:401px;left:-34px;top:45px;position:absolute;object-fit:contain;cursor:grab;user-select:none;-webkit-user-drag:none"/><div style="left:251px;top:428px;position:absolute"><span style="color:#8C8C8C;font-size:20px;font-family:Arial;font-weight:400">↔ </span><span style="color:#8C8C8C;font-size:18px;font-family:Arial;font-weight:400">Drag to control</span></div></div>
+    <div style="width:644px;height:492px;left:1107px;top:456px;position:absolute;background:rgba(255,255,255,0.5);border-radius:8px"><div style="left:24px;top:20px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:38.4px">Cheek Panels</div><img class="panel-viewer" data-panel="cheek" data-base="images/schematic/Head_YB_Cheek/Head_Cheek_Frame" data-frames="9" src="images/schematic/Head_YB_Cheek/Head_Cheek_Frame1.png" style="width:713px;height:401px;left:-34px;top:45px;position:absolute;object-fit:contain;cursor:grab;user-select:none;-webkit-user-drag:none"/><div style="left:251px;top:428px;position:absolute"><span style="color:#8C8C8C;font-size:20px;font-family:Arial;font-weight:400">↔ </span><span style="color:#8C8C8C;font-size:18px;font-family:Arial;font-weight:400">Drag to control</span></div></div>
+    <div style="width:644px;height:492px;left:452px;top:959px;position:absolute;background:rgba(255,255,255,0.5);border-radius:8px"><div style="left:24px;top:20px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:38.4px">Jaw Panel</div><img class="panel-viewer" data-panel="jaw" data-base="images/schematic/Head_YB_Jaw/Head_Jaw_Frame" data-frames="9" src="images/schematic/Head_YB_Jaw/Head_Jaw_Frame1.png" style="width:713px;height:401px;left:-34px;top:45px;position:absolute;object-fit:contain;cursor:grab;user-select:none;-webkit-user-drag:none"/><div style="left:251px;top:428px;position:absolute"><span style="color:#8C8C8C;font-size:20px;font-family:Arial;font-weight:400">↔ </span><span style="color:#8C8C8C;font-size:18px;font-family:Arial;font-weight:400">Drag to control</span></div></div>
+    <div style="width:644px;height:492px;left:1107px;top:959px;position:absolute;background:rgba(255,255,255,0.5);border-radius:8px"><div style="left:24px;top:20px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:38.4px">Full Panels</div><img class="panel-viewer" data-panel="full" data-base="images/schematic/Head_YB_Full/Head_Full_Frame" data-frames="9" src="images/schematic/Head_YB_Full/Head_Full_Frame1.png" style="width:713px;height:401px;left:-34px;top:45px;position:absolute;object-fit:contain;cursor:grab;user-select:none;-webkit-user-drag:none"/><div style="left:251px;top:428px;position:absolute"><span style="color:#8C8C8C;font-size:20px;font-family:Arial;font-weight:400">↔ </span><span style="color:#8C8C8C;font-size:18px;font-family:Arial;font-weight:400">Drag to control</span></div></div>
+    <script>
+(function() {
+    var panels = document.querySelectorAll('.panel-viewer');
+    var active = null;
+
+    panels.forEach(function(img) {
+        var base = img.getAttribute('data-base');
+        var total = parseInt(img.getAttribute('data-frames'));
+        var frameSrcs = [];
+        for (var i = 1; i <= total; i++) frameSrcs.push(base + i + '.png');
+
+        // Preload
+        frameSrcs.forEach(function(s) { var p = new Image(); p.src = s; });
+
+        var current = 0;
+        var playing = true;
+
+        function show(n) {
+            n = ((n % total) + total) % total;
+            img.src = frameSrcs[n];
+            current = n;
+        }
+
+        // Auto-play
+        var lastTime = 0;
+        function tick(time) {
+            if (playing && !active) {
+                if (time - lastTime > 150) {
+                    show(current + 1);
+                    lastTime = time;
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+
+        // Drag
+        img.addEventListener('mousedown', function(e) {
+            var wrapper = document.querySelector('.page-scale-wrapper');
+            var scale = wrapper ? (wrapper.getBoundingClientRect().width / 1920) : 1;
+            active = {
+                img: img,
+                show: show,
+                startX: e.clientX,
+                startFrame: current,
+                scale: scale,
+                getCurrent: function() { return current; },
+                setPlaying: function(v) { playing = v; }
+            };
+            playing = false;
+            e.preventDefault();
+        });
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!active) return;
+        var dx = (e.clientX - active.startX) / active.scale;
+        var frameDelta = Math.round(dx / 20);
+        active.show(active.startFrame + frameDelta);
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (!active) return;
+        active.setPlaying(true);
+        active.img.style.cursor = 'grab';
+        active = null;
+    });
+})();
+</script>
+   </div>
+
+   <!-- ==================== CORE MECHANISM ==================== -->
+   <div id="core-mechanism" style="width:1919px;height:2135px;left:0.75px;top:2269.37px;position:absolute">
+    <div style="width:50px;height:64px;left:460px;top:103px;position:absolute;overflow:hidden"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+    <div style="width:328px;height:28px;left:523px;top:124px;position:absolute;color:#212121;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:28.8px">Core Mechanism</div>
+    <div style="width:1284px;height:450px;left:460px;top:187px;position:absolute;text-align:justify;color:black;font-size:30px;font-family:'Zilla Slab',serif;font-weight:400;line-height:45px;letter-spacing:0.6px">The head is divided into six regions — mid face (forehead to cheekbone to upper lip), left and right cheeks, and lower jaw — with 7 panels driven by 5 mechanism sets. Each set uses the same principle: an RDS3225 dual-axle digital servo drives custom-profiled linkage arms, with meshed spur gears at the panel-end pivots — where the arms meet the panel connector — to keep them synchronized and prevent the panel from twisting or drifting under load. The RDS3225 was chosen for its availability, low cost, dual-shaft U-bracket mounting, and 25 kg·cm torque at 6V — more than sufficient for the loads involved. Three mechanism variants — mid face, cheek and jaw — each use a different number of linkage arms and gears, with arm profiles custom-shaped to suit each region's confined geometry and required panel trajectory, but all share the same servo-linkage-gear architecture.</div>
+    <!-- Scrolling Background Gallery -->
+    <div id="scroll-gallery" style="width:1289px;height:1100px;left:460px;top:672px;position:absolute;background:rgba(25,25,25,0.03);border-radius:16px;overflow:hidden">
+
+        <!-- Main display area (iframe loads the HTML animations) -->
+        <iframe id="gallery-display" 
+                src="images/schematic/Head3.2_Nobackground/Head3.2_Nobackground.html" 
+                style="position:absolute;top:30px;left:141px;width:1007.9px;height:780px;border:none;pointer-events:none"
+                scrolling="no" frameborder="0"></iframe>
+
+        <!-- Previous Arrow -->
+        <img id="gallery-prev" src="images/schematic/Previous_Page_Arrow.svg" 
+             style="position:absolute;top:350px;left:0;width:61px;height:140px;cursor:pointer;z-index:10;object-fit:contain"
+             onclick="galleryNav(-1)"/>
+
+        <!-- Next Arrow -->
+        <img id="gallery-next" src="images/schematic/Next_Page_Arrow.svg" 
+             style="position:absolute;top:350px;right:0;width:61px;height:140px;cursor:pointer;z-index:10;object-fit:contain"
+             onclick="galleryNav(1)"/>
+
+        <!-- Thumbnail strip -->
+        <div style="position:absolute;top:840px;left:50%;transform:translateX(-50%);height:223px;display:flex;align-items:center;justify-content:center;gap:20px">
+
+            <!-- Thumb 1 -->
+            <div class="gallery-thumb" data-index="0" onclick="galleryGo(0)" 
+                 style="width:220px;height:220px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;background:rgba(200,200,200,0.3);border:3px solid transparent">
+                <img src="images/schematic/Head3.2_Nobackground.png" 
+                     style="position:absolute;top:17px;left:-10px;width:240px;height:186px;object-fit:cover;pointer-events:none"/>
+            </div>
+
+            <!-- Thumb 2 -->
+            <div class="gallery-thumb" data-index="1" onclick="galleryGo(1)" 
+                 style="width:220px;height:220px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;background:rgba(200,200,200,0.3);border:3px solid transparent">
+                <img src="images/schematic/Head3.2_Rendered.png" 
+                     style="position:absolute;top:-5.5px;left:-44px;width:308px;height:231px;object-fit:cover;pointer-events:none"/>
+            </div>
+
+            <!-- Thumb 3 -->
+            <div class="gallery-thumb" data-index="2" onclick="galleryGo(2)" 
+                 style="width:225px;height:225px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;background:rgba(200,200,200,0.3);border:3px solid transparent">
+                <img src="images/schematic/Head3.2_Half.png" 
+                     style="position:absolute;top:-8px;left:-49px;width:323px;height:242px;object-fit:cover;pointer-events:none"/>
+            </div>
+
+            <!-- Thumb 4 -->
+            <div class="gallery-thumb" data-index="3" onclick="galleryGo(3)" 
+                 style="width:220px;height:220px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;background:rgba(200,200,200,0.3);border:3px solid transparent">
+                <img src="images/schematic/Head_Trans_6:6.png" 
+                     style="position:absolute;top:0;left:-90px;width:400px;height:225px;object-fit:cover;pointer-events:none"/>
+            </div>
+
+            <!-- Thumb 5 -->
+            <div class="gallery-thumb" data-index="4" onclick="galleryGo(4)" 
+                 style="width:220px;height:220px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;background:rgba(200,200,200,0.3);border:3px solid transparent">
+                <img src="images/schematic/Head_Trans_4:6.png" 
+                     style="position:absolute;top:3px;left:-85px;width:390px;height:219px;object-fit:cover;pointer-events:none"/>
+            </div>
+
+        </div>
+    </div>
+    <script>
+(function() {
+    var slides = [
+        { src: 'images/schematic/Head3.2_Nobackground/Head3.2_Nobackground.html', scale: 1 },
+        { src: 'images/schematic/Head3.2_Rendered/Head3.2_Rendered.html', scale: 1.5, offsetX: 25 },
+        { src: 'images/schematic/Head3.2＿Half/Head3.2_Half.html', scale: 1.5 },
+        { src: 'images/schematic/Head_Trans_6:6/Head_Trans_6:6.html', scale: 1.5 },
+        { src: 'images/schematic/Head_Trans_4:6/Head_Trans_4:6.html', scale: 1.5 }
+    ];
+    var currentIndex = 0;
+    var display = document.getElementById('gallery-display');
+    var thumbs = document.querySelectorAll('.gallery-thumb');
+
+    function updateGallery() {
+        display.src = slides[currentIndex].src;
+        var slide = slides[currentIndex];
+        var s = slide.scale;
+        var tx = slide.offsetX || 0;
+        display.style.transform = 'scale(' + s + ') translateX(' + tx + 'px)';
+        display.style.transformOrigin = 'center center';
+
+        thumbs.forEach(function(thumb, i) {
+            if (i === currentIndex) {
+                thumb.style.border = '2px solid rgba(255,216,48,0.25)';
+                thumb.style.boxShadow = '0 0 15px rgba(255,216,48,0.35), 0 0 30px rgba(255,216,48,0.2)';
+                thumb.style.opacity = '1';
+            } else {
+                thumb.style.border = '3px solid transparent';
+                thumb.style.boxShadow = 'none';
+                thumb.style.opacity = '0.6';
+            }
+        });
+    }
+
+    window.galleryGo = function(index) {
+        currentIndex = index;
+        updateGallery();
+    };
+
+    window.galleryNav = function(direction) {
+        currentIndex = (currentIndex + direction + slides.length) % slides.length;
+        updateGallery();
+    };
+
+    updateGallery();
+})();
+    </script>
+   </div>
+
+   <!-- ==================== TECHNICAL DESIGN & PRODUCTION WORKFLOW ==================== -->
+   <div id="technical-workflow" style="width:1919px;height:1973px;left:0.75px;top:4040.37px;position:absolute">
+    <div style="width:50px;height:64px;left:460px;top:95px;position:absolute;overflow:hidden"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+    <div style="width:614px;height:28px;left:523px;top:116px;position:absolute;color:black;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:28.8px">Technical Design & Production Workflow</div>
+    <div style="width:1290px;left:460px;top:180px;position:absolute;text-align:justify;color:black;font-size:30px;font-family:'Zilla Slab',serif;font-weight:400;line-height:45px;letter-spacing:0.6px">To optimize production, the jaw mechanism utilizes 5052 aluminum (3-4mm) for its primary structure, providing the ductility required for cold-formed bends. The process is streamlined to 9 profile-cut parts and 4 precision bends, with secondary work consisting of 23 drilled holes in various sizes and 5 threaded points.<br/><br/>The design replaces expensive CNC-milled bearing seats with 3D-printed hard plastic housings. Two of these components each hold three bearings, providing the precise internal spacing required for gear train alignment. Additionally, two 2D-cut aluminum components are TIG welded to two rods to form sub-assemblies prior to final construction.<br/><br/>This strategy maintains mechanical accuracy while reducing machining overhead. The per-joint cost currently is around $270:</div>
+    <!-- Cost Table -->
+    <div style="width:1290px;left:460px;top:740px;position:absolute;background:#F7F7F7;overflow:hidden;border-radius:8px;flex-direction:column;justify-content:flex-start;align-items:flex-start;display:inline-flex">
+     <div style="align-self:stretch;padding:16px 24px;background:#F0F0F0;overflow:hidden;outline:1px #E0E0E0 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:219px;height:18px;color:#666;font-size:15px;font-family:Arial;font-weight:700">CATEGORY</div><div style="width:379px;height:18px;color:#666;font-size:15px;font-family:Arial;font-weight:700">COMPONENT DETAILS</div><div style="width:378px;height:18px;color:#666;font-size:15px;font-family:Arial;font-weight:700">MATERIAL / PROCESS</div><div style="width:261px;height:18px;color:#666;font-size:15px;font-family:Arial;font-weight:700">UNIT COST</div></div>
+     <div style="align-self:stretch;padding:14px 24px;background:#FBFBFB;outline:1px #E6E6E6 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:220px;color:#121212;font-size:14px;font-family:Arial;font-weight:700">Linkage Components</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">9 Profile-cut parts + 2 rods</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">5052 Aluminum (TIG Welded)</div><div style="width:262px;color:#121212;font-size:14px;font-family:Inter;font-weight:600">$150.00*</div></div>
+     <div style="align-self:stretch;padding:14px 24px;background:#FBFBFB;outline:1px #E6E6E6 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:220px;color:#121212;font-size:14px;font-family:Arial;font-weight:700">Linkage Components</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">2 Bearing housings (3 bearings each)</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">3D-Printed Hard Plastic</div><div style="width:262px;color:#121212;font-size:14px;font-family:Inter;font-weight:600">$20.00</div></div>
+     <div style="align-self:stretch;padding:14px 24px;background:#FBFBFB;outline:1px #E6E6E6 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:220px;color:#121212;font-size:14px;font-family:Arial;font-weight:700">Hardware</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">Industrial fasteners, spur gears and bearings</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">Standardized Steel / Chrome</div><div style="width:262px;color:#121212;font-size:14px;font-family:Inter;font-weight:600">$82.75</div></div>
+     <div style="align-self:stretch;padding:14px 24px;background:#FBFBFB;outline:1px #E6E6E6 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:220px;color:#121212;font-size:14px;font-family:Arial;font-weight:700">Actuation</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">RDS3225 digital actuator</div><div style="width:380px;color:#404040;font-size:14px;font-family:Arial;font-weight:400">Pre-assembled Module</div><div style="width:262px;color:#121212;font-size:14px;font-family:Inter;font-weight:600">$18.50</div></div>
+     <div style="align-self:stretch;padding:18px 24px 19px;background:#F0F0F0;outline:1px #E6E6E6 solid;outline-offset:-1px;justify-content:flex-start;align-items:center;display:inline-flex"><div style="width:220px;color:black;font-size:14px;font-family:Arial;font-weight:700">Total Per Joint</div><div style="width:380px"></div><div style="width:380px"></div><div style="width:262px;color:black;font-size:16px;font-family:Inter;font-weight:700">$271.25</div></div>
+    </div>
+
+    <iframe src="images/schematic/Jaw_Mechanism/Jaw_Mechanism.html" style="width:1920px;height:1080px;left:0px;top:1000px;position:absolute;border:none;pointer-events:none" scrolling="no" frameborder="0"></iframe>
+    <img src="images/schematic/Jaw_Illustrate.png" style="position:absolute;left:1550px;top:1060px;width:180px;height:274px;object-fit:cover"/>
+
+    <div id="next-stage" class="ns" style="left:47.25px;top:2028.63px;position:absolute">
+
+ <!-- Title icon -->
+ <div style="position:absolute;left:515px;top:126px;width:50px;height:64px;z-index:5"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+ <!-- Title text -->
+ <div style="width:737px;height:28px;left:571px;top:147px;position:absolute;text-align:center;color:#fff;font-size:30px;font-family:Arial,sans-serif;font-weight:700;line-height:28.8px;z-index:5">Next Stage - Mechatronics System-level Overview</div>
+ <!-- Description -->
+ <div style="width:1600px;left:112px;top:250px;position:absolute;text-align:justify;color:rgba(255,255,255,.85);font-size:30px;font-family:'Zilla Slab',serif;font-weight:400;line-height:45px;z-index:5">The block diagram maps the electronics architecture of the Panel Head — from the control interface down to the five face panel actuators. The ESP32 handles serial communication and translates commands into I²C signals for the PCA9685, which manages independent PWM output for each servo. The 6V power rail, buffered through a capacitor bank and stepped down for the logic side, ensures servos can draw peak current without destabilising the microcontroller. This is a system-level overview; the detailed connection work comes next — physically connecting the components, validating each servo channel, completing the control interface and its communication with the hardware, then installing the servos into the skull and calibrating each panel's range of motion.</div>
+
+ <!-- ═══ WIRES ═══ -->
+ <div class="wire-img" style="left:302px;top:807px;width:120px;height:17px"><img src="images/schematic/Wire_USB-ESP.svg"/></div>
+ <div class="wire-img" style="left:722px;top:807px;width:130px;height:17px"><img src="images/schematic/Wire_I²C_Bus_SDA+SCL.svg"/></div>
+ <div class="wire-img" style="left:1152px;top:730px;width:130px;height:6px"><img src="images/schematic/Wire_PWM_Bus(PCA-Servos)2.svg"/></div>
+ <div class="wire-img" style="left:1152px;top:810px;width:130px;height:6px"><img src="images/schematic/Wire_PWM_Bus(PCA-Servos)3.svg"/></div>
+ <div class="wire-img" style="left:1152px;top:890px;width:130px;height:6px"><img src="images/schematic/Wire_PWM_Bus(PCA-Servos)4.svg"/></div>
+ <div class="wire-img" style="left:1090px;top:652px;width:199px;height:35px"><img src="images/schematic/Wire_PWM_Bus(PCA-Servos)1.svg"/></div>
+ <div class="wire-img" style="left:1090px;top:937px;width:199px;height:35px"><img src="images/schematic/Wire_PWM_Bus(PCA-Servos)5.svg"/></div>
+ <div class="wire-img" style="left:1565px;top:652px;width:36px;height:321px"><img src="images/schematic/Wire_6VServo_Power_Rail.svg"/></div>
+ <div class="wire-img" style="left:564px;top:937px;width:17px;height:130px"><img src="images/schematic/Wire_5VPower(PSU-ESP_V-).svg"/></div>
+ <div class="wire-img" style="left:722px;top:1125px;width:130px;height:17px"><img src="images/schematic/Wire_6V_Power(PSU-Caps).svg"/></div>
+ <div class="wire-img" style="left:993px;top:937px;width:17px;height:130px"><img src="images/schematic/Wire_6VPower(Caps_PCA_V+).svg"/></div>
+ <div class="wire-img" style="left:1152px;top:1125px;width:130px;height:17px"><img src="images/schematic/Wire_6VPower(Caps-LM).svg"/></div>
+
+ <!-- ═══ HOST PC ═══ -->
+ <div class="rect-bg" style="left:0px;top:689px;width:384px;height:250px;opacity:1"><img src="images/schematic/Host_PC_Rectangle.png" style="top:0;left:0;width:100%;height:100%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="gw gw-sm" style="left:82px;top:754px;width:220px;height:120px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 16px"><img src="images/schematic/PC_Icon.png" style="width:25px;height:19px"/><div style="font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:16px;white-space:nowrap">HOST PC</div><div style="font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:12px;text-align:center">ElectronBotStudio<br/>USB Serial / Wi-Fi</div></div></div>
+
+ <!-- ═══ ESP32 ═══ -->
+ <div class="rect-bg" style="left:437px;top:712px;width:270px;height:200px"><img src="images/schematic/ESP32_blue_rectangle.png" style="top:-6%;left:-5%;width:110%;height:112%;filter:blur(30px) brightness(1.2)"/></div>
+ <div class="rect-bg" style="left:442px;top:717px;width:260px;height:190px"><img src="images/schematic/ESP32_white_rectangle.png" style="top:-1%;left:-1%;width:102%;height:102%;filter:blur(30px) brightness(1.2)"/></div>
+ <div class="gw" style="left:422px;top:687px;width:300px;height:250px"><div class="gbg"></div><div class="gfr"></div><div class="gc"><div style="position:absolute;left:67px;top:37px;width:165px;height:32px;display:flex;align-items:center;font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:16px">ESP32-WROOM-32D</div><p style="position:absolute;left:67px;top:67px;width:165px;font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:15px;line-height:1.4;margin:0"><span style="font-weight:500;color:#666666">Microcontroller</span><br/><br/>GPIO21 → SDA<br/>GPIO22 → SCL<br/>USB → Programming<br/>3.3V Logic Level<br/>Wi-Fi / Bluetooth</p><img src="images/schematic/ESP32.png" style="position:absolute;top:100px;left:calc(50% + 28px);width:60px;height:45px;object-fit:cover"/></div></div>
+
+ <!-- ═══ PCA9685 ═══ -->
+ <div class="rect-bg" style="left:867px;top:712px;width:270px;height:200px"><img src="images/schematic/PCA9685_blue_rectangle.png" style="top:-6%;left:-5%;width:110%;height:112%;filter:blur(30px) brightness(1.2)"/></div>
+ <div class="rect-bg" style="left:872px;top:717px;width:260px;height:190px"><img src="images/schematic/PCA9685_white_rectangle.png" style="top:-1%;left:-1%;width:102%;height:102%;filter:blur(30px) brightness(1.2)"/></div>
+ <div class="gw" style="left:852px;top:687px;width:300px;height:250px"><div class="gbg"></div><div class="gfr"></div><div class="gc"><div style="position:absolute;top:63px;left:calc(50% - 39px);font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:16px;text-align:center;white-space:nowrap">PCA9685</div><p style="position:absolute;top:89px;left:77px;font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:12px;line-height:1.5;margin:0"><span style="font-weight:500;color:#666666">16-Channels PWM Servo Driver</span><br/><br/>I²C Address: 0x40<br/>SDA ← ESP32 GPIO21<br/>SCL ← ESP32 GPIO22<br/>V+ ← 6V Servo Power<br/>Ch 0–4 → 5 Servos</p><img src="images/schematic/PCA9685.png" style="position:absolute;top:113px;right:46px;width:66px;height:50px;object-fit:cover"/></div></div>
+
+ <!-- ═══ SERVOS ═══ -->
+ <div style="position:absolute;left:1314px;top:599px;color:#fff;font-size:12px;font-family:Arial;font-weight:700;white-space:nowrap;z-index:5">5× RDS3225 SERVOS (25 kg·cm, 270°)</div>
+
+ <!-- Servo #1 — Jaw -->
+ <div class="rect-bg" style="left:1295px;top:638px;width:255px;height:28px;opacity:1"><img src="images/schematic/servo_blue_rectangle.png" style="top:-6%;left:-3%;width:106%;height:112%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="rect-bg" style="left:1300px;top:640px;width:245px;height:24px;opacity:1"><img src="images/schematic/servo_white_rectangle.png" style="top:-2%;left:-1%;width:102%;height:104%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:622px;width:280px;height:60px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 12px"><div style="font-family:Arial,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">RDS3225 #1 — Jaw</div><div style="width:141px;font-family:'Zilla Slab',serif;font-weight:500;color:#808080;font-size:11px;text-align:center">PWM Ch 0 · 25kg·cm · 270°</div><img src="images/schematic/RDS3225.png" style="position:absolute;top:11px;left:219px;width:55px;height:38px;object-fit:cover"/></div></div>
+
+ <!-- Servo #2 — Left Midface -->
+ <div class="rect-bg" style="left:1295px;top:718px;width:255px;height:28px;opacity:1"><img src="images/schematic/servo_blue_rectangle.png" style="top:-6%;left:-3%;width:106%;height:112%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="rect-bg" style="left:1300px;top:720px;width:245px;height:24px;opacity:1"><img src="images/schematic/servo_white_rectangle.png" style="top:-2%;left:-1%;width:102%;height:104%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:702px;width:280px;height:60px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 12px"><div style="font-family:Arial,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">RDS3225 #2 — Left Midface</div><div style="font-family:'Zilla Slab',serif;font-weight:500;color:#808080;font-size:11px;text-align:center;white-space:nowrap">PWM Ch 1 · 25kg·cm · 270°</div><img src="images/schematic/RDS3225.png" style="position:absolute;top:11px;left:219px;width:55px;height:38px;object-fit:cover"/></div></div>
+
+ <!-- Servo #3 — Right Midface -->
+ <div class="rect-bg" style="left:1295px;top:798px;width:255px;height:28px;opacity:1"><img src="images/schematic/servo_blue_rectangle.png" style="top:-6%;left:-3%;width:106%;height:112%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="rect-bg" style="left:1300px;top:800px;width:245px;height:24px;opacity:1"><img src="images/schematic/servo_white_rectangle.png" style="top:-2%;left:-1%;width:102%;height:104%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:782px;width:280px;height:60px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 12px"><div style="font-family:Arial,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">RDS3225 #3 — Right Midface</div><div style="font-family:'Zilla Slab',serif;font-weight:500;color:#808080;font-size:11px;text-align:center;white-space:nowrap">PWM Ch 2 · 25kg·cm · 270°</div><img src="images/schematic/RDS3225.png" style="position:absolute;top:11px;left:219px;width:55px;height:38px;object-fit:cover"/></div></div>
+
+ <!-- Servo #4 — Left Cheek -->
+ <div class="rect-bg" style="left:1295px;top:878px;width:255px;height:28px;opacity:1"><img src="images/schematic/servo_blue_rectangle.png" style="top:-6%;left:-3%;width:106%;height:112%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="rect-bg" style="left:1300px;top:880px;width:245px;height:24px;opacity:1"><img src="images/schematic/servo_white_rectangle.png" style="top:-2%;left:-1%;width:102%;height:104%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:862px;width:280px;height:60px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 12px"><div style="font-family:Arial,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">RDS3225 #4 — Left Cheek</div><div style="font-family:'Zilla Slab',serif;font-weight:500;color:#808080;font-size:11px;text-align:center;white-space:nowrap">PWM Ch 3 · 25kg·cm · 270°</div><img src="images/schematic/RDS3225.png" style="position:absolute;top:11px;left:219px;width:55px;height:38px;object-fit:cover"/></div></div>
+
+ <!-- Servo #5 — Right Cheek -->
+ <div class="rect-bg" style="left:1295px;top:958px;width:255px;height:28px;opacity:1"><img src="images/schematic/servo_blue_rectangle.png" style="top:-6%;left:-3%;width:106%;height:112%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="rect-bg" style="left:1300px;top:960px;width:245px;height:24px;opacity:1"><img src="images/schematic/servo_white_rectangle.png" style="top:-2%;left:-1%;width:102%;height:104%;filter:blur(20px) brightness(2.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:942px;width:280px;height:60px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 12px"><div style="font-family:Arial,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">RDS3225 #5 — Right Cheek</div><div style="font-family:'Zilla Slab',serif;font-weight:500;color:#808080;font-size:11px;text-align:center;white-space:nowrap">PWM Ch 4 · 25kg·cm · 270°</div><img src="images/schematic/RDS3225.png" style="position:absolute;top:11px;left:219px;width:55px;height:38px;object-fit:cover"/></div></div>
+
+ <!-- ═══ POWER ROW ═══ -->
+
+ <!-- 6V PSU -->
+ <div class="rect-bg" style="left:426px;top:1087px;width:292px;height:90px"><img src="images/schematic/PSU_blue_rectangle.png" style="top:-12%;left:-5%;width:110%;height:124%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="rect-bg" style="left:421px;top:1085px;width:302px;height:95px"><img src="images/schematic/PSU_white_rectangle.png" style="top:-5%;left:2%;width:97%;height:110%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="gw" style="left:422px;top:1067px;width:300px;height:130px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 16px"><div style="font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:15px;white-space:nowrap">6V 10A DC PSU</div><p style="width:147px;font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:11px;margin:0">Regulated Switch-Mode<br/>Input: 240V AC Mains<br/>Output: 6V DC @ 10A (60W)<br/>Powering all servos</p><img src="images/schematic/PSU.png" style="position:absolute;top:49px;right:56px;width:40px;height:33px;object-fit:cover"/></div></div>
+
+ <!-- Capacitor Bank -->
+ <div class="rect-bg" style="left:857px;top:1087px;width:290px;height:90px"><img src="images/schematic/Capacitor_blue_rectangle.png" style="top:-12%;left:-5%;width:110%;height:124%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="rect-bg" style="left:852px;top:1085px;width:300px;height:95px"><img src="images/schematic/Capacitor_white_rectangle.png" style="top:-5%;left:2%;width:97%;height:110%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="gw" style="left:852px;top:1067px;width:300px;height:130px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 16px"><div style="font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:15px;white-space:nowrap">CAPACITOR BANK</div><p style="font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:11px;margin:0;white-space:nowrap">3× 2200µF 10V Electrolytic<br/>Absorbs servo inrush current<br/>Parallel across V+ / GND rail<br/>Prevents brownout on startup</p><img src="images/schematic/Capacitor.png" style="position:absolute;top:56px;right:38px;width:40px;height:40px;object-fit:cover"/></div></div>
+
+ <!-- LM7805 -->
+ <div class="rect-bg" style="left:1287px;top:1103px;width:271px;height:60px"><img src="images/schematic/LM7805_blue_rectangle.png" style="top:-16%;left:-5%;width:110%;height:132%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="rect-bg" style="left:1282px;top:1102px;width:280px;height:62px"><img src="images/schematic/LM7805_white_rectangle.png" style="top:-11%;left:0;width:101%;height:123%;filter:blur(20px) brightness(1.2)"/></div>
+ <div class="gw gw-sm" style="left:1282px;top:1088px;width:280px;height:90px"><div class="gbg"></div><div class="gfr"></div><div class="gc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 14px"><div style="font-family:Inter,sans-serif;font-weight:700;color:#1a1a1a;font-size:13px;white-space:nowrap">LM7805 5V REGULATOR</div><p style="width:156px;font-family:'Zilla Slab',serif;font-weight:400;color:#666666;font-size:11px;margin:0">Steps 6V → 5V for ESP32 VIN<br/>(or use USB during dev)</p><img src="images/schematic/LM7805.png" style="position:absolute;top:38px;right:22px;width:44px;height:37px;object-fit:cover"/></div></div>
+
+ <!-- ═══ LABELS ═══ -->
+ <div class="lbl-blue" style="left:310px;top:788px">USB Serial</div>
+ <div class="lbl-blue" style="left:737px;top:760px">I²C Bus<br/>SDA + SCL</div>
+ <div class="lbl-blue" style="left:1129px;top:613px">PWM Signal</div>
+ <div class="lbl-gold" style="left:757px;top:1100px">6V DC</div>
+ <div class="lbl-gold" style="left:1017px;top:989px">V+ 6V<br/>to PCA9685</div>
+ <div class="lbl-gold" style="left:587px;top:984px">5V VIN<br/>to ESP32</div>
+ <div class="lbl-gold" style="left:1613px;top:790px;font-family:Inter,sans-serif">6V Servo<br/>Power Rail</div>
+
+ <!-- ═══ LEGEND ═══ -->
+ <div style="display:flex;width:1660px;height:60px;align-items:center;padding:10px 20px;position:absolute;top:1259px;left:82px;background:linear-gradient(180deg,#dadada 0%,#cecece 100%);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.4);box-shadow:0 0 15px rgba(255,255,255,0.25),inset 0 0 12px rgba(255,255,255,0.15);z-index:5"><div style="color:#444444;font-size:16px;font-family:'Zilla Slab';font-weight:700;white-space:nowrap">Signal Flow: PC → USB → ESP32 → I²C → PCA9685 → PWM → RDS3225 Servos</div></div>
+</div>
+   </div>
+
+   <!-- ==================== THE HOST STUDIO ==================== -->
+   <div id="host-studio" style="width:1960px;height:1410px;left:-20px;top:7515px;position:absolute;background:#212121;overflow:visible;border-top-left-radius:24px;border-top-right-radius:24px">
+    <!-- White dot grain from Backdrop_image1 -->
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('images/schematic/Backdrop_image1.png') top left / cover no-repeat;opacity:0.9;pointer-events:none;z-index:0;border-top-left-radius:24px;border-top-right-radius:24px;overflow:hidden"></div>
+    <div style="width:1823px;height:984px;left:68px;top:0;position:absolute;overflow:visible;z-index:1">
+     <a href="head.html" class="host-button-link" onclick="this.style.transform='scale(0.88)';var el=this;setTimeout(function(){el.style.transform='scale(1)'},150);setTimeout(function(){window.location.href='head.html'},300);return false;" style="text-decoration:none;width:220px;height:220px;left:802px;top:382px;position:absolute;cursor:pointer;display:block">
+     <!-- Golden ring (fills the frame) -->
+     <div class="host-button-orb" style="position:absolute;top:0;left:0;width:220px;height:220px;background:linear-gradient(135deg,#FAFAFA 0%,#DFDAB2 100%);border-radius:9999px;outline:1px white solid"></div>
+     <!-- Layer 3: Subtract.svg robot face icon -->
+     <div style="position:absolute;top:11.36%;left:12.73%;right:12.27%;bottom:11.03%">
+         <img src="images/schematic/Subtract.svg" alt="" style="position:absolute;top:0;left:-1.21%;width:102.42%;height:102.34%;pointer-events:none"/>
+     </div>
+</a>
+     <div style="position:absolute;top:126px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px">
+      <div style="width:50px;height:64px;flex-shrink:0;overflow:hidden"><img src="images/schematic/Head_YB_Vector.svg" alt="" style="width:100%;height:100%;display:block;object-fit:contain"/></div>
+      <div style="color:#F3F3F3;font-size:50px;font-family:'zihunaotushijieti_T',Georgia,serif;font-weight:400;line-height:1.2">The Host Studio</div>
+     </div>
+    </div>
+    <div style="width:1823px;height:374px;left:68px;top:984px;position:absolute;background:rgba(25,25,25,0.92);border-radius:16px;z-index:1">
+     <div style="width:1727px;height:207px;left:48px;top:48px;position:absolute">
+      <div style="color:#F3F3F3;font-size:20.8px;font-family:Arial;font-weight:700;line-height:22px">Contact</div>
+      <div style="left:0;top:57px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:16px;font-family:Arial;font-weight:400;line-height:25.6px"><a href="mailto:sean.c1121@gmail.com" style="color:#F3F3F3;text-decoration:none">sean.c1121@gmail.com</a></div>
+      <div style="left:267px;top:-3px;position:absolute;color:#F3F3F3;font-size:21.1px;font-family:Arial;font-weight:700;line-height:22px">Services</div>
+      <div style="left:267px;top:54px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:18px;font-family:Arial;font-weight:400;line-height:28.8px">Content & Creative</div>
+      <div style="left:513px;top:0;position:absolute;color:#F3F3F3;font-size:20.8px;font-family:Arial;font-weight:700;line-height:22px">Expertise</div>
+      <div style="left:513px;top:54px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:18px;font-family:Arial;font-weight:400;line-height:28.8px">3D Modeling, Sculpting, Mechanical structure</div>
+      <div style="left:513px;top:90.8px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:18px;font-family:Arial;font-weight:400;line-height:28.8px">UIUX design</div>
+      <div style="left:513px;top:128px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:18px;font-family:Arial;font-weight:400;line-height:28.8px">Mechatronics design</div>
+      <div style="width:1727px;height:1px;left:0;top:205.78px;position:absolute;background:rgba(245,243,240,0.18)"></div>
+     </div>
+     <div style="left:868.81px;top:302.2px;position:absolute;opacity:0.7;color:#F3F3F3;font-size:16px;font-family:Arial;font-weight:400;line-height:25.6px">Design by Sean</div>
+     <!-- Instagram icon -->
+     <a href="https://www.instagram.com/" target="_blank" style="position:absolute;left:1640px;top:283px;width:64px;height:64px;background:#212121;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none">
+         <img src="images/schematic/Instagram.svg" alt="Instagram" style="width:24px;height:24px"/>
+     </a>
+     <!-- LinkedIn icon -->
+     <a href="https://www.linkedin.com/" target="_blank" style="position:absolute;left:1712px;top:283px;width:64px;height:64px;background:#212121;border-radius:4px;display:flex;align-items:center;justify-content:center;text-decoration:none">
+         <img src="images/schematic/Linkedin.svg" alt="LinkedIn" style="width:24px;height:24px"/>
+     </a>
+    </div>
+   </div>
+
+  </div>
+
+ </div>
+</div>
+<script>
+(function() {
+    var sidebar = document.getElementById('sidebar-nav');
+    if (!sidebar) return;
+
+    function scaleSidebar() {
+        var s = Math.min(window.innerWidth / 1920, 1);
+        // Scale all dimensions proportionally
+        sidebar.style.left = (56 * s) + 'px';
+        sidebar.style.width = (240 * s) + 'px';
+        sidebar.style.gap = (24 * s) + 'px';
+
+        // Scale font sizes
+        var title = sidebar.querySelector('.sn-title');
+        var subs = sidebar.querySelectorAll('.sn-sub');
+        var links = sidebar.querySelectorAll('.sn-link');
+        var studio = sidebar.querySelector('.sn-studio');
+
+        if (title) title.style.fontSize = (35 * s) + 'px';
+        subs.forEach(function(el) { el.style.fontSize = (20 * s) + 'px'; });
+        links.forEach(function(el) { el.style.fontSize = (25 * s) + 'px'; });
+        if (studio) studio.style.fontSize = (25 * s) + 'px';
+
+        // Max width for the workflow link
+        links.forEach(function(el) {
+            if (el.textContent.indexOf('Technical') !== -1 || el.textContent.indexOf('Next Stage') !== -1) {
+                el.style.width = (240 * s) + 'px';
+            }
+        });
+    }
+
+    function positionSidebar() {
+        var s = Math.min(window.innerWidth / 1920, 1);
+        var scrollY = window.scrollY;
+
+        var startScroll = (93.37 + 137 + 156) * s;
+        var nextStageScreenY = (4040.37 + 2028.63 + 137) * s;
+        var sidebarHeight = sidebar.offsetHeight;
+        var stopScroll = nextStageScreenY - sidebarHeight - (80 * s);
+
+        // Always use fixed positioning for consistent horizontal placement
+        sidebar.style.position = 'fixed';
+
+        if (scrollY < startScroll) {
+            sidebar.style.top = ((startScroll - scrollY) + (30 * s)) + 'px';
+            sidebar.style.opacity = '1';
+            sidebar.style.pointerEvents = 'auto';
+        } else if (scrollY < stopScroll) {
+            sidebar.style.top = (30 * s) + 'px';
+            sidebar.style.opacity = '1';
+            sidebar.style.pointerEvents = 'auto';
+        } else {
+            sidebar.style.opacity = '0';
+            sidebar.style.pointerEvents = 'none';
+        }
+    }
+
+    scaleSidebar();
+    positionSidebar();
+
+    window.addEventListener('resize', function() {
+        scaleSidebar();
+        positionSidebar();
+    });
+    window.addEventListener('scroll', positionSidebar);
+
+    // Smooth scroll when clicking sidebar links
+    sidebar.querySelectorAll('a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var targetId = this.getAttribute('href').substring(1);
+            var targetScroll;
+
+            if (targetId === 'top') {
+                targetScroll = 0;
+            } else if (targetId === 'host-studio') {
+                // Scroll to bottom of the page so the viewer can see The Host Studio section
+                // and the golden orb button. Use the known layout position (top:7515px)
+                // multiplied by the current scale factor.
+                var s = Math.min(window.innerWidth / 1920, 1);
+                var hostStudioTop = (7515 + 137) * s; // 137 is the top offset of the content container
+                targetScroll = hostStudioTop - (20 * s);
+            } else {
+                var target = document.getElementById(targetId);
+                if (!target) return;
+                var s = Math.min(window.innerWidth / 1920, 1);
+                var rect = target.getBoundingClientRect();
+                targetScroll = window.scrollY + rect.top - (20 * s);
+            }
+
+            window.scrollTo({
+                top: targetScroll,
+                behavior: 'smooth'
+            });
+        });
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>Head 3.2 Motion Study</title>
+  <style>
+    html { background-color: transparent; height: 100%; }
+    body {
+      margin: 0; text-align: center;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: transparent;
+    }
+    #viewer-container {
+      display: inline-block; position: relative;
+      max-width: 100vw; max-height: 100vh; cursor: grab;
+    }
+    #viewer-container:active { cursor: grabbing; }
+    #viewer {
+      max-width: 100vw; max-height: 100vh;
+      width: auto; height: auto; object-fit: contain;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .preload { position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="viewer-container">
+    <img id="viewer" src="frame_0.png" alt="Head 3.2 Motion Study" />
+  </div>
+  <div class="preload" id="preloader"></div>
+  <script>
+    (function() {
+      const frameFiles = [
+        "frame_0.png",
+        "frame_1.png",
+        "frame_2.png",
+        "frame_3.png",
+        "frame_4.png",
+        "frame_5.png",
+        "frame_6.png",
+        "frame_7.png",
+        "frame_8.png",
+        "frame_9.png",
+        "frame_10.png",
+        "frame_11.png",
+        "frame_12.png",
+        "frame_13.png",
+        "frame_14.png",
+        "frame_15.png",
+        "frame_16.png",
+        "frame_17.png",
+        "frame_18.png",
+        "frame_19.png",
+        "frame_20.png",
+        "frame_21.png",
+        "frame_22.png",
+        "frame_23.png",
+        "frame_24.png",
+        "frame_25.png",
+        "frame_26.png",
+        "frame_27.png",
+        "frame_28.png",
+        "frame_29.png",
+        "frame_30.png",
+        "frame_31.png",
+        "frame_32.png",
+        "frame_33.png",
+        "frame_34.png",
+        "frame_35.png",
+        "frame_36.png",
+        "frame_37.png",
+        "frame_38.png",
+        "frame_39.png",
+        "frame_40.png",
+        "frame_41.png",
+        "frame_42.png",
+        "frame_43.png",
+        "frame_44.png",
+        "frame_45.png",
+        "frame_46.png",
+        "frame_47.png",
+        "frame_48.png",
+        "frame_49.png",
+        "frame_50.png",
+        "frame_51.png",
+        "frame_52.png",
+        "frame_53.png",
+        "frame_54.png",
+        "frame_55.png",
+        "frame_56.png",
+        "frame_57.png",
+        "frame_58.png",
+        "frame_59.png",
+        "frame_60.png",
+        "frame_61.png",
+        "frame_62.png",
+        "frame_63.png",
+        "frame_64.png",
+        "frame_65.png",
+        "frame_66.png",
+        "frame_67.png",
+        "frame_68.png",
+        "frame_69.png",
+        "frame_70.png",
+        "frame_71.png",
+        "frame_72.png",
+        "frame_73.png",
+        "frame_74.png"
+      ];
+      const totalFrames = frameFiles.length;
+      let currentFrame = 0;
+      let direction = 1;
+      const viewer = document.getElementById("viewer");
+      const container = document.getElementById("viewer-container");
+      const preloadedImages = [];
+      const preloader = document.getElementById("preloader");
+      frameFiles.forEach(src => {
+        const img = new Image(); img.src = src;
+        preloadedImages.push(img); preloader.appendChild(img);
+      });
+      let isDragging = false, startX = 0, dragAccumulator = 0;
+      const sensitivity = 30;
+      function onPointerDown(e) {
+        isDragging = true;
+        startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        dragAccumulator = 0; e.preventDefault();
+      }
+      function onPointerMove(e) {
+        if (!isDragging) return;
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const deltaX = clientX - startX; startX = clientX;
+        dragAccumulator += deltaX;
+        const framesToMove = Math.floor(dragAccumulator / sensitivity);
+        if (framesToMove !== 0) {
+          dragAccumulator -= framesToMove * sensitivity;
+          currentFrame = ((currentFrame + framesToMove) % totalFrames + totalFrames) % totalFrames;
+          viewer.src = frameFiles[currentFrame];
+        }
+        e.preventDefault();
+      }
+      function onPointerUp() { isDragging = false; }
+      container.addEventListener("mousedown", onPointerDown);
+      window.addEventListener("mousemove", onPointerMove);
+      window.addEventListener("mouseup", onPointerUp);
+      container.addEventListener("touchstart", onPointerDown, { passive: false });
+      window.addEventListener("touchmove", onPointerMove, { passive: false });
+      window.addEventListener("touchend", onPointerUp);
+      let autoRotateInterval = null;
+      const autoRotateDelay = 42;
+      function startAutoRotate() {
+        autoRotateInterval = setInterval(() => {
+          currentFrame += direction;
+          if (currentFrame >= totalFrames - 1) { currentFrame = totalFrames - 1; direction = -1; }
+          if (currentFrame <= 0) { currentFrame = 0; direction = 1; }
+          viewer.src = frameFiles[currentFrame];
+        }, autoRotateDelay);
+      }
+      function stopAutoRotate() {
+        if (autoRotateInterval) { clearInterval(autoRotateInterval); autoRotateInterval = null; }
+      }
+      container.addEventListener("mousedown", stopAutoRotate);
+      container.addEventListener("touchstart", stopAutoRotate);
+      let loadedCount = 0;
+      preloadedImages.forEach(img => {
+        if (img.complete) { loadedCount++; if (loadedCount === totalFrames) startAutoRotate(); }
+        else { img.addEventListener("load", () => { loadedCount++; if (loadedCount === totalFrames) startAutoRotate(); }); }
+      });
+    })();
+  </script>
+</body>
+</html>

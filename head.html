@@ -179,6 +179,11 @@
             box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
         }
 
+        a.back-btn {
+            text-decoration: none;
+            display: block;
+        }
+
         /* Right Panel - Timeline */
         .right-panel {
             width: 400px;
@@ -597,8 +602,11 @@
         <!-- Left Panel - Servo Controls -->
         <div class="left-panel">
             <!-- Back to Homepage Button -->
-            <div class="servo-section" style="margin-bottom: 25px;">
+            <div class="servo-section" style="margin-bottom: 15px;">
                 <button class="back-btn" onclick="backToMain()" style="width: 100%; margin: 0;">Homepage</button>
+            </div>
+            <div class="servo-section" style="margin-bottom: 25px;">
+                <a href="host-project.html" class="back-btn" style="text-align: center;">Project Info</a>
             </div>
             
             <!-- Head Control -->

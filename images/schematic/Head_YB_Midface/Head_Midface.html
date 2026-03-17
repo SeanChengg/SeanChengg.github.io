@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>Midface Panels</title>
+  <style>
+    html { background-color: transparent; height: 100%; }
+    body {
+      margin: 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: transparent;
+    }
+    #viewer-container {
+      display: inline-block;
+      position: relative;
+      max-width: 100vw;
+      max-height: 100vh;
+      cursor: grab;
+    }
+    #viewer-container:active { cursor: grabbing; }
+    #viewer {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto; height: auto;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .preload { position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="viewer-container">
+    <img id="viewer" src="Head_Midface_Frame1.png" alt="Midface Panels" />
+  </div>
+  <div class="preload" id="preloader"></div>
+  <script>
+(function() {
+    var img = document.getElementById('viewer');
+    var src = img.getAttribute('src');
+    var match = src.match(/(.+?)(\d+)(\.png)$/i);
+    var frameSrcs = [];
+    if (match) {
+        for (var i = 1; i <= 10; i++) {
+            frameSrcs.push(match[1] + i + match[3]);
+        }
+    }
+    var preloader = document.getElementById('preloader');
+    frameSrcs.forEach(function(s) { var p = new Image(); p.src = s; if (preloader) preloader.appendChild(p); });
+
+    var totalFrames = frameSrcs.length || 1;
+    var currentFrame = 0;
+    var playing = true;
+    var isDragging = false;
+    var startX = 0;
+    var dragStartFrame = 0;
+
+    function showFrame(n) {
+        n = ((n % totalFrames) + totalFrames) % totalFrames;
+        img.src = frameSrcs[n];
+        currentFrame = n;
+    }
+
+    // Auto-play using requestAnimationFrame - never gets killed
+    var lastTime = 0;
+    function tick(time) {
+        if (playing && !isDragging && time - lastTime > 150) {
+            showFrame(currentFrame + 1);
+            lastTime = time;
+        }
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Drag inside iframe (works when opened standalone)
+    document.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        playing = false;
+        startX = e.screenX;
+        dragStartFrame = currentFrame;
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        var dx = e.screenX - startX;
+        var frameDelta = Math.round(dx / 8);
+        showFrame(dragStartFrame + frameDelta);
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        playing = true;
+    });
+
+    document.addEventListener('mouseleave', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        playing = true;
+    });
+
+    // Listen for parent commands (when inside iframe)
+    window.addEventListener('message', function(e) {
+        try {
+            var d = e.data;
+            if (d === 'stop' || (d && d.cmd === 'stop')) { playing = false; }
+            else if (d === 'play' || (d && d.cmd === 'play')) { playing = true; isDragging = false; }
+            else if (d && d.frame !== undefined) {
+                playing = false;
+                var n = ((d.frame % totalFrames) + totalFrames) % totalFrames;
+                showFrame(n);
+            }
+        } catch(err) {}
+    });
+
+    showFrame(0);
+})();
+</script>
+</body>
+</html>
