@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Jaw Mechanism</title>
+  <style>
+    html { background-color: transparent; height: 100%; }
+    body {
+      margin: 0; text-align: center;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: transparent;
+    }
+    #viewer-container {
+      display: inline-block; position: relative;
+      max-width: 100vw; max-height: 100vh; cursor: grab;
+    }
+    #viewer-container:active { cursor: grabbing; }
+    #viewer {
+      max-width: 100vw; max-height: 100vh;
+      width: auto; height: auto; object-fit: contain;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .preload { position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="viewer-container">
+    <img id="viewer" src="Jaw_Mechanism_Frame1.png" alt="Jaw Mechanism" />
+  </div>
+  <div class="preload" id="preloader"></div>
+  <script>
+    (function(){
+      var files = [
+        "Jaw_Mechanism_Frame1.png",
+        "Jaw_Mechanism_Frame2.png",
+        "Jaw_Mechanism_Frame3.png",
+        "Jaw_Mechanism_Frame4.png",
+        "Jaw_Mechanism_Frame5.png",
+        "Jaw_Mechanism_Frame6.png",
+        "Jaw_Mechanism_Frame7.png"
+      ];
+      var total = files.length, cur = 0, dir = 1;
+      var viewer = document.getElementById("viewer");
+      var box = document.getElementById("viewer-container");
+      var imgs = [], loader = document.getElementById("preloader");
+      files.forEach(function(s){ var i = new Image(); i.src = s; imgs.push(i); loader.appendChild(i); });
+      var drag = false, sx = 0, acc = 0, sens = 30;
+      function down(e){ drag = true; sx = e.clientX||(e.touches&&e.touches[0].clientX)||0; acc = 0; e.preventDefault(); }
+      function move(e){
+        if(!drag) return;
+        var cx = e.clientX||(e.touches&&e.touches[0].clientX)||0;
+        acc += cx - sx; sx = cx;
+        var m = Math.floor(acc/sens);
+        if(m){ acc -= m*sens; cur = ((cur+m)%total+total)%total; viewer.src = files[cur]; }
+        e.preventDefault();
+      }
+      function up(){ drag = false; }
+      box.addEventListener("mousedown", down);
+      window.addEventListener("mousemove", move);
+      window.addEventListener("mouseup", up);
+      box.addEventListener("touchstart", down, {passive:false});
+      window.addEventListener("touchmove", move, {passive:false});
+      window.addEventListener("touchend", up);
+      var timer = null, ms = 200;
+      function go(){
+        timer = setInterval(function(){
+          cur += dir;
+          if(cur >= total-1){ cur = total-1; dir = -1; }
+          if(cur <= 0){ cur = 0; dir = 1; }
+          viewer.src = files[cur];
+        }, ms);
+      }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+      box.addEventListener("mousedown", stop);
+      box.addEventListener("touchstart", stop);
+      var done = 0;
+      imgs.forEach(function(i){
+        if(i.complete){ done++; if(done===total) go(); }
+        else i.addEventListener("load", function(){ done++; if(done===total) go(); });
+      });
+    })();
+  </script>
+</body>
+</html>

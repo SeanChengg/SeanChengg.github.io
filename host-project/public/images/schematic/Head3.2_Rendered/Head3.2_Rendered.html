@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>Head 3.2 Rendered Motion Study</title>
+  <style>
+    html { background-color: transparent; height: 100%; }
+    body {
+      margin: 0; text-align: center;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: transparent;
+    }
+    #viewer-container {
+      display: inline-block; position: relative;
+      max-width: 100vw; max-height: 100vh; cursor: grab;
+    }
+    #viewer-container:active { cursor: grabbing; }
+    #viewer {
+      max-width: 100vw; max-height: 100vh;
+      width: auto; height: auto; object-fit: contain;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .preload { position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="viewer-container">
+    <img id="viewer" src="Image%20101.png" alt="Head 3.2 Rendered Motion Study" />
+  </div>
+  <div class="preload" id="preloader"></div>
+  <script>
+    (function() {
+      const frameFiles = [
+        "Image%20101.png",
+        "Image%20102.png",
+        "Image%20103.png",
+        "Image%20104.png",
+        "Image%20105.png",
+        "Image%20106.png",
+        "Image%20107.png",
+        "Image%20108.png",
+        "Image%20109.png",
+        "Image%20110.png",
+        "Image%20111.png",
+        "Image%20112.png",
+        "Image%20113.png",
+        "Image%20114.png",
+        "Image%20115.png",
+        "Image%20116.png",
+        "Image%20117.png",
+        "Image%20118.png",
+        "Image%20119.png",
+        "Image%20120.png",
+        "Image%20121.png",
+        "Image%20122.png",
+        "Image%20123.png",
+        "Image%20124.png",
+        "Image%20125.png",
+        "Image%20126.png",
+        "Image%20127.png",
+        "Image%20128.png",
+        "Image%20129.png",
+        "Image%20130.png",
+        "Image%20131.png",
+        "Image%20132.png",
+        "Image%20133.png",
+        "Image%20134.png",
+        "Image%20135.png",
+        "Image%20136.png",
+        "Image%20137.png",
+        "Image%20138.png",
+        "Image%20139.png",
+        "Image%20140.png",
+        "Image%20141.png",
+        "Image%20142.png",
+        "Image%20143.png",
+        "Image%20144.png",
+        "Image%20145.png",
+        "Image%20146.png",
+        "Image%20147.png",
+        "Image%20148.png",
+        "Image%20149.png",
+        "Image%20150.png",
+        "Image%20151.png",
+        "Image%20152.png",
+        "Image%20153.png",
+        "Image%20154.png",
+        "Image%20155.png",
+        "Image%20156.png",
+        "Image%20157.png",
+        "Image%20158.png",
+        "Image%20159.png",
+        "Image%20160.png",
+        "Image%20161.png",
+        "Image%20162.png",
+        "Image%20163.png",
+        "Image%20164.png",
+        "Image%20165.png",
+        "Image%20166.png",
+        "Image%20167.png",
+        "Image%20168.png",
+        "Image%20169.png",
+        "Image%20170.png",
+        "Image%20171.png",
+        "Image%20172.png",
+        "Image%20173.png",
+        "Image%20174.png",
+        "Image%20175.png",
+        "Image%20176.png",
+        "Image%20177.png",
+        "Image%20178.png",
+        "Image%20179.png",
+        "Image%20180.png",
+        "Image%20181.png",
+        "Image%20182.png",
+        "Image%20183.png",
+        "Image%20184.png",
+        "Image%20185.png",
+        "Image%20186.png",
+        "Image%20187.png",
+        "Image%20188.png",
+        "Image%20189.png",
+        "Image%20190.png",
+        "Image%20191.png",
+        "Image%20192.png",
+        "Image%20193.png",
+        "Image%20194.png",
+        "Image%20195.png",
+        "Image%20196.png",
+        "Image%20197.png",
+        "Image%20198.png",
+        "Image%20199.png",
+        "Image%20200.png"
+      ];
+      const totalFrames = frameFiles.length;
+      let currentFrame = 0;
+      let direction = 1;
+      const viewer = document.getElementById("viewer");
+      const container = document.getElementById("viewer-container");
+      const preloadedImages = [];
+      const preloader = document.getElementById("preloader");
+      frameFiles.forEach(src => {
+        const img = new Image(); img.src = src;
+        preloadedImages.push(img); preloader.appendChild(img);
+      });
+      let isDragging = false, startX = 0, dragAccumulator = 0;
+      const sensitivity = 30;
+      function onPointerDown(e) {
+        isDragging = true;
+        startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        dragAccumulator = 0; e.preventDefault();
+      }
+      function onPointerMove(e) {
+        if (!isDragging) return;
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const deltaX = clientX - startX; startX = clientX;
+        dragAccumulator += deltaX;
+        const framesToMove = Math.floor(dragAccumulator / sensitivity);
+        if (framesToMove !== 0) {
+          dragAccumulator -= framesToMove * sensitivity;
+          currentFrame = ((currentFrame + framesToMove) % totalFrames + totalFrames) % totalFrames;
+          viewer.src = frameFiles[currentFrame];
+        }
+        e.preventDefault();
+      }
+      function onPointerUp() { isDragging = false; }
+      container.addEventListener("mousedown", onPointerDown);
+      window.addEventListener("mousemove", onPointerMove);
+      window.addEventListener("mouseup", onPointerUp);
+      container.addEventListener("touchstart", onPointerDown, { passive: false });
+      window.addEventListener("touchmove", onPointerMove, { passive: false });
+      window.addEventListener("touchend", onPointerUp);
+      let autoRotateInterval = null;
+      const autoRotateDelay = 42;
+      function startAutoRotate() {
+        autoRotateInterval = setInterval(() => {
+          currentFrame += direction;
+          if (currentFrame >= totalFrames - 1) { currentFrame = totalFrames - 1; direction = -1; }
+          if (currentFrame <= 0) { currentFrame = 0; direction = 1; }
+          viewer.src = frameFiles[currentFrame];
+        }, autoRotateDelay);
+      }
+      function stopAutoRotate() {
+        if (autoRotateInterval) { clearInterval(autoRotateInterval); autoRotateInterval = null; }
+      }
+      container.addEventListener("mousedown", stopAutoRotate);
+      container.addEventListener("touchstart", stopAutoRotate);
+      let loadedCount = 0;
+      preloadedImages.forEach(img => {
+        if (img.complete) { loadedCount++; if (loadedCount === totalFrames) startAutoRotate(); }
+        else { img.addEventListener("load", () => { loadedCount++; if (loadedCount === totalFrames) startAutoRotate(); }); }
+      });
+    })();
+  </script>
+</body>
+</html>
