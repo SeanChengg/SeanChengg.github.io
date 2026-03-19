@@ -26,7 +26,7 @@ export default function BackButton() {
       }}
     >
       <img
-        src="/Back_Sign.svg"
+        src={`${import.meta.env.BASE_URL}Back_Sign.svg`}
         alt="Back"
         style={{ width: 40, height: 40 }}
       />

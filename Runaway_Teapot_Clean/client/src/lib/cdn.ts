@@ -17,7 +17,7 @@ export const CDN = {
   teapotComponents: "https://d2xsxph8kpxj0f.cloudfront.net/310519663449836526/USHBnzKQf8N2zHuZbyb8Ls/teapot_components-DFFVn2Ectjri4HGEWJchvM.webp",
   teapotBrewing: "https://d2xsxph8kpxj0f.cloudfront.net/310519663449836526/USHBnzKQf8N2zHuZbyb8Ls/teapot_brewing-dby3Tu8HGLJLkCc5bP6bDR.webp",
 
-  // High-res versions for hero (local: replace client/public/teapot_hero_full.png with your transparent PNG)
-  teapotHeroFull: "/teapot_hero_full.png",
+  // High-res versions for hero (base path for GitHub Pages subfolder)
+  teapotHeroFull: `${import.meta.env.BASE_URL}teapot_hero_full.png`,
   teapotConceptFull: "https://d2xsxph8kpxj0f.cloudfront.net/310519663449836526/USHBnzKQf8N2zHuZbyb8Ls/teapot_concept-NPtsfWc6jv9XwVPT3z4bH6.png",
 };

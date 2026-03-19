@@ -325,7 +325,7 @@ export default function Home() {
                 overflow: "hidden",
               }}>
                 <img
-                  src="/Meccanum3.png"
+                  src={`${import.meta.env.BASE_URL}Meccanum3.png`}
                   alt="Prototype on workbench"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -364,7 +364,7 @@ export default function Home() {
                 overflow: "hidden",
               }}>
                 <img
-                  src="/Meccanum2.png"
+                  src={`${import.meta.env.BASE_URL}Meccanum2.png`}
                   alt="Teapot brewing atmosphere"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
