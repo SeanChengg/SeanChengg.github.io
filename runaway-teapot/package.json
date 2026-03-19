@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "prebuild": "rm -rf assets index.html",
     "build": "vite build",
     "preview": "vite preview --host"
   },

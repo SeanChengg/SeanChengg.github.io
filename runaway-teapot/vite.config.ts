@@ -13,8 +13,8 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "..", "runaway-teapot"),
-    emptyOutDir: true,
+    outDir: path.resolve(import.meta.dirname),
+    emptyOutDir: false,
   },
   server: {
     port: 3000,

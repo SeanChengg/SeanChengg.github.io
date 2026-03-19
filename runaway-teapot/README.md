@@ -1,6 +1,6 @@
 # The Runaway Teapot
 
-An Interactive Mechatronic Design project page.
+An Interactive Mechatronic Design project page. Single folder: source in `client/`, build outputs to this folder root. Deployed at https://seanchengg.github.io/runaway-teapot/
 
 ## Quick Start
 

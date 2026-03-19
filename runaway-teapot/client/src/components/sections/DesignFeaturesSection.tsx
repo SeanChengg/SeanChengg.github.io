@@ -11,30 +11,45 @@ const designFeatures = [
 export default function DesignFeaturesSection() {
   return (
     <div id="design-features" style={{ width: "1919px", height: "1200px", left: "0.75px", top: "3850px", position: "absolute" }}>
-      {/* Pot_Logo */}
-      <img
-        src={`${import.meta.env.BASE_URL}Pot_Logo.svg`}
-        alt=""
-        style={{ position: "absolute", left: "460px", top: "48.64px", width: "55px", height: "36px", transform: "scaleY(-1) rotate(180deg)", objectFit: "contain" }}
-      />
-      {/* Section title */}
+      {/* Pot_Logo + title — flex for vertical alignment */}
       <div
         style={{
           position: "absolute",
-          left: "530.5px",
-          top: "56.64px",
-          fontFamily: "'Space Grotesk',sans-serif",
-          fontWeight: 700,
-          fontSize: "30px",
-          lineHeight: "28.8px",
-          color: "black",
+          left: "460px",
+          top: "48.64px",
+          display: "flex",
+          alignItems: "center",
+          gap: "11px",
         }}
       >
-        Design Features
+        <img
+          src={`${import.meta.env.BASE_URL}Pot_Logo.svg`}
+          alt=""
+          style={{
+            width: "55px",
+            height: "36px",
+            flexShrink: 0,
+            transform: "scaleY(-1) rotate(180deg)",
+            objectFit: "contain",
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 700,
+            fontSize: "30px",
+            lineHeight: "28.8px",
+            color: "black",
+          }}
+        >
+          Design Features
+        </span>
       </div>
 
-      {/* Video player */}
-      <video
+      {/* Main image — robot product shot (per Figma) */}
+      <img
+        src={CDN.teapotPrototype}
+        alt="Runaway Teapot product"
         style={{
           position: "absolute",
           left: "460.25px",
@@ -45,13 +60,7 @@ export default function DesignFeaturesSection() {
           boxShadow: "4px 4px 4px rgba(0,0,0,0.25)",
           objectFit: "cover",
         }}
-        controls
-        muted
-        playsInline
-      >
-        <source src={CDN.video} type="video/quicktime" />
-        <source src={CDN.video} type="video/mp4" />
-      </video>
+      />
 
       {/* "Patience, Enforced by Design" text block */}
       <div

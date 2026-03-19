@@ -1,6 +1,6 @@
 # Runaway Teapot — All Images & SVGs Used
 
-Extracted and documented from the Runaway_Teapot_Clean page.
+Extracted and documented from the runaway-teapot page.
 
 ---
 

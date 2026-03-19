@@ -17,34 +17,39 @@ export default function HeroSection() {
         alt="The Runaway Teapot"
       />
 
-      {/* Pot_Logo */}
-      <img
-        src={`${import.meta.env.BASE_URL}Pot_Logo.svg`}
-        alt=""
-        style={{
-          position: "absolute",
-          left: "418px",
-          top: "150.28px",
-          width: "55px",
-          height: "36px",
-          transform: "scaleY(-1) rotate(180deg)",
-          objectFit: "contain",
-        }}
-      />
-      {/* Subtitle bar */}
+      {/* Pot_Logo + title — flex for vertical alignment */}
       <div
         style={{
           position: "absolute",
-          left: "484.5px",
+          left: "418px",
           top: "158.28px",
-          fontFamily: "'Space Grotesk',sans-serif",
-          fontWeight: 700,
-          fontSize: "30px",
-          lineHeight: "30px",
-          color: "#212121",
+          display: "flex",
+          alignItems: "center",
+          gap: "11px",
         }}
       >
-        The Runaway Teapot — Interactive Mechatronic Design
+        <img
+          src={`${import.meta.env.BASE_URL}Pot_Logo.svg`}
+          alt=""
+          style={{
+            width: "55px",
+            height: "36px",
+            flexShrink: 0,
+            transform: "scaleY(-1) rotate(180deg)",
+            objectFit: "contain",
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontWeight: 700,
+            fontSize: "30px",
+            lineHeight: "30px",
+            color: "#212121",
+          }}
+        >
+          The Runaway Teapot — Interactive Mechatronic Design
+        </span>
       </div>
 
       {/* Mixed-font "Let It Steep" heading */}
