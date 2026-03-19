@@ -20,4 +20,12 @@ export const CDN = {
   // High-res versions for hero (base path for GitHub Pages subfolder)
   teapotHeroFull: `${import.meta.env.BASE_URL}teapot_hero_full.png`,
   teapotConceptFull: "https://d2xsxph8kpxj0f.cloudfront.net/310519663449836526/USHBnzKQf8N2zHuZbyb8Ls/teapot_concept-NPtsfWc6jv9XwVPT3z4bH6.png",
+
+  // Assets from public/ (base path for GitHub Pages)
+  meccanum1: `${import.meta.env.BASE_URL}Meccanum1.png`,
+  meccanum2: `${import.meta.env.BASE_URL}Meccanum2.png`,
+  meccanum3: `${import.meta.env.BASE_URL}Meccanum3.png`,
+  electronics: `${import.meta.env.BASE_URL}Electronics.png`,
+  video: `${import.meta.env.BASE_URL}runaway-teapot-demo.MOV`,
+  arrow: `${import.meta.env.BASE_URL}Arrow.svg`,
 };
