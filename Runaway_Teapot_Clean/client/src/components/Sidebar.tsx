@@ -9,16 +9,16 @@ export default function Sidebar() {
     const s = Math.min(window.innerWidth / 1920, 1);
     sidebar.style.left = (100 * s) + "px";
     sidebar.style.width = (240 * s) + "px";
-    sidebar.style.gap = (24 * s) + "px";
+    sidebar.style.gap = (16 * s) + "px";
 
     const title = sidebar.querySelector(".sn-title") as HTMLElement;
     const subs = sidebar.querySelectorAll(".sn-sub") as NodeListOf<HTMLElement>;
     const links = sidebar.querySelectorAll(".sn-link") as NodeListOf<HTMLElement>;
 
-    if (title) title.style.fontSize = (32 * s) + "px";
-    subs.forEach((el) => { el.style.fontSize = (18 * s) + "px"; });
+    if (title) title.style.fontSize = (35 * s) + "px";
+    subs.forEach((el) => { el.style.fontSize = (20 * s) + "px"; });
     links.forEach((el) => {
-      el.style.fontSize = (22 * s) + "px";
+      el.style.fontSize = (25 * s) + "px";
     });
   }, []);
 
@@ -29,7 +29,7 @@ export default function Sidebar() {
     const scrollY = window.scrollY;
 
     const startScroll = (93.37 + 137 + 156) * s;
-    const pageBottom = 5200 * s;
+    const pageBottom = 5275 * s;
     const sidebarHeight = sidebar.offsetHeight;
     const stopScroll = pageBottom - sidebarHeight - (80 * s);
 
@@ -92,30 +92,31 @@ export default function Sidebar() {
         justifyContent: "flex-start",
         alignItems: "flex-start",
         display: "inline-flex",
+        gap: "16px",
         zIndex: 1000,
         pointerEvents: "auto",
         transition: "opacity 0.3s ease",
       }}
     >
-      <div className="sn-title" style={{ color: "#212121", fontFamily: "'DM Serif Display',Georgia,serif", fontWeight: 400 }}>
+      <div className="sn-title" style={{ color: "#212121", fontFamily: "'zihunaotushijieti_T',Georgia,serif", fontWeight: 400, fontSize: "35px", lineHeight: "48px" }}>
         The Runaway<br />Teapot
       </div>
-      <div className="sn-sub" style={{ color: "#737373", fontFamily: "'Space Grotesk',Arial,sans-serif", fontWeight: 400 }}>
+      <div className="sn-sub" style={{ color: "#737373", fontFamily: "'Space Grotesk',Arial,sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "27px" }}>
         An Interactive<br />Mechatronic Design
       </div>
-      <div className="sn-sub" style={{ color: "#737373", fontFamily: "'Space Grotesk',Arial,sans-serif", fontWeight: 400 }}>
-        Ongoing project since 2024
+      <div className="sn-sub" style={{ color: "#737373", fontFamily: "'Space Grotesk',Arial,sans-serif", fontWeight: 400, fontSize: "20px", lineHeight: "27px" }}>
+        2 Weeks Project
       </div>
-      <a href="#top" className="sn-link" onClick={(e) => handleClick(e, "top")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 500, textDecoration: "none" }}>
+      <a href="#top" className="sn-link" onClick={(e) => handleClick(e, "top")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 700, fontSize: "25px", lineHeight: "33px", textDecoration: "none" }}>
         Overview
       </a>
-      <a href="#concept" className="sn-link" onClick={(e) => handleClick(e, "concept")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 500, textDecoration: "none" }}>
+      <a href="#concept" className="sn-link" onClick={(e) => handleClick(e, "concept")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 700, fontSize: "25px", lineHeight: "33px", textDecoration: "none" }}>
         Concept
       </a>
-      <a href="#components" className="sn-link" onClick={(e) => handleClick(e, "components")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 500, textDecoration: "none" }}>
+      <a href="#components" className="sn-link" onClick={(e) => handleClick(e, "components")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 700, fontSize: "25px", lineHeight: "33px", textDecoration: "none" }}>
         Components
       </a>
-      <a href="#design-features" className="sn-link" onClick={(e) => handleClick(e, "design-features")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 500, textDecoration: "none" }}>
+      <a href="#design-features" className="sn-link" onClick={(e) => handleClick(e, "design-features")} style={{ color: "#686868", fontFamily: "'Zilla Slab',serif", fontWeight: 700, fontSize: "25px", lineHeight: "33px", textDecoration: "none" }}>
         Design Features
       </a>
     </div>
