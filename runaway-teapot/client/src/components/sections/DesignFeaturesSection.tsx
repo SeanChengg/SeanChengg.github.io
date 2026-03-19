@@ -46,10 +46,8 @@ export default function DesignFeaturesSection() {
         </span>
       </div>
 
-      {/* Main image — robot product shot (per Figma) */}
-      <img
-        src={CDN.teapotPrototype}
-        alt="Runaway Teapot product"
+      {/* Video — runaway-teapot-demo.MOV */}
+      <video
         style={{
           position: "absolute",
           left: "460.25px",
@@ -60,7 +58,13 @@ export default function DesignFeaturesSection() {
           boxShadow: "4px 4px 4px rgba(0,0,0,0.25)",
           objectFit: "cover",
         }}
-      />
+        controls
+        muted
+        playsInline
+      >
+        <source src={CDN.video} type="video/quicktime" />
+        <source src={CDN.video} type="video/mp4" />
+      </video>
 
       {/* "Patience, Enforced by Design" text block */}
       <div
