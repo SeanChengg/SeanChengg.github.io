@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptable Living — Independent Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'zihunaotushijieti_T';
+        src: url('runaway-teapot/fonts/zihunaotushijieti_T.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
+    <style>
+        :root {
+            --color-bg: #FCFCFA;
+            --color-bg-alt: #EEFCFF;
+            --color-bg-card: #FFFFFF;
+            --color-bg-footer: #0A0A0A;
+            --color-text: #050A14;
+            --color-text-2: #4A5568;
+            --color-text-3: #718096;
+            --color-text-inv: #FCFCFA;
+            --color-accent: #087A91;
+            --color-accent-2: #0A5E6F;
+            --color-gold: #EAB308;
+            --color-border: rgba(0,0,0,0.06);
+            --color-border-m: rgba(0,0,0,0.12);
+            --ff-display: 'zihunaotushijieti_T', Georgia, serif;
+            --ff-body: 'Zilla Slab', serif;
+            --fs-hero: clamp(48px, 5vw, 72px);
+            --fs-h1: clamp(36px, 3.5vw, 50px);
+            --fs-h2: clamp(28px, 2.5vw, 40px);
+            --fs-h3: clamp(20px, 1.8vw, 28px);
+            --fs-body: clamp(15px, 1.2vw, 18px);
+            --fs-body-lg: clamp(17px, 1.4vw, 22px);
+            --fs-cap: clamp(12px, 1vw, 14px);
+            --fs-over: clamp(11px, 0.9vw, 13px);
+            --lh-body: 1.7;
+            --lh-relax: 1.85;
+            --sp-xs: 8px; --sp-sm: 16px; --sp-md: 24px; --sp-lg: 40px; --sp-xl: 64px; --sp-2xl: 96px; --sp-3xl: 140px;
+            --max-w: 1440px;
+            --pad: clamp(24px, 4vw, 80px);
+            --sec-gap: clamp(80px, 10vw, 160px);
+            --sidebar-w: 240px;
+            --content-off: calc(var(--sidebar-w) + var(--sp-xl));
+            --shadow-card: 0 2px 12px rgba(0,0,0,0.04);
+            --radius: 8px;
+            --trans: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+        body{font-family:var(--ff-body);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--color-text);background:var(--color-bg);overflow-x:hidden}
+        img{max-width:100%;height:auto;display:block}
+        a{color:inherit;text-decoration:none}
+
+        .page{max-width:var(--max-w);margin:0 auto;position:relative}
+        .sec{padding:var(--sec-gap) var(--pad);position:relative}
+        .sec-content{max-width:1300px;margin-left:var(--content-off)}
+        @media(max-width:1200px){.sec-content{margin-left:auto;margin-right:auto}.hero-content{margin-left:0}}
+
+        /* Grid bg */
+        .grid-bg{position:absolute;top:0;left:0;width:192px;height:100%;opacity:0.035;pointer-events:none;z-index:0}
+        .grid-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(90deg,var(--color-text) 1px,transparent 1px),linear-gradient(180deg,var(--color-text) 1px,transparent 1px);background-size:48px 48px}
+
+        /* Back — Arrow_back / Back_Sign from host-project */
+        .back{position:fixed;top:20px;left:20px;z-index:100;display:flex;align-items:center;justify-content:center;width:50px;height:50px;opacity:0.6;transition:opacity 0.2s ease,transform 0.2s ease}
+        .back:hover{opacity:1;transform:scale(1.1)}
+
+        /* Hero */
+        .hero{min-height:100vh;display:flex;align-items:center;padding:var(--sp-3xl) var(--pad);position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:0;right:0;width:55%;height:100%;background:linear-gradient(135deg,rgba(8,122,145,0.03),rgba(8,122,145,0.08));clip-path:polygon(20% 0,100% 0,100% 100%,0% 100%);z-index:0}
+        .hero-inner{display:grid;grid-template-columns:1fr;width:100%;max-width:var(--max-w);margin:0 auto;position:relative;z-index:1}
+        .sidebar{padding-top:var(--sp-lg)}
+        .sidebar .label{font-family:var(--ff-display);font-size:clamp(24px,2.5vw,36px);color:var(--color-accent);margin-bottom:var(--sp-xs)}
+        .sidebar .sub{font-size:var(--fs-cap);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-sm)}
+        .sidebar .meta{font-size:var(--fs-cap);color:var(--color-text-3);margin-bottom:var(--sp-lg)}
+        .toc{display:flex;flex-direction:column;gap:var(--sp-sm)}
+        .toc a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);transition:var(--trans);padding:4px 0;border-left:2px solid transparent;padding-left:12px}
+        .toc a:hover{color:var(--color-accent);border-left-color:var(--color-accent)}
+        /* Sticky TOC — follows viewer */
+        .toc-fixed{position:fixed;left:var(--pad);top:calc(50vh - 180px);z-index:90;display:flex;flex-direction:column;gap:var(--sp-sm);transition:opacity 0.3s ease}
+        .toc-fixed .label{font-family:var(--ff-display);font-size:clamp(24px,2.5vw,36px);color:var(--color-accent);margin-bottom:var(--sp-xs)}
+        .toc-fixed .sub{font-size:var(--fs-cap);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-lg)}
+        .toc-fixed a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);transition:var(--trans);padding:4px 0;border-left:2px solid transparent;padding-left:12px}
+        .toc-fixed a:hover{color:var(--color-accent);border-left-color:var(--color-accent)}
+        @media(max-width:1024px){.toc-fixed{display:none}}
+        .hero-content{display:flex;flex-direction:column;justify-content:center;margin-left:var(--content-off)}
+        .overline{font-size:var(--fs-over);font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-md)}
+        .hero-title{font-family:var(--ff-display);font-size:var(--fs-hero);font-weight:400;line-height:1.1;margin-bottom:var(--sp-md)}
+        .hero-title em{font-style:italic;color:var(--color-accent)}
+        .hero-desc{font-family:var(--ff-body);font-size:var(--fs-body-lg);line-height:var(--lh-relax);color:var(--color-text-2);max-width:680px}
+
+        /* Section elements */
+        .sec-icon{width:50px;height:50px;margin-bottom:var(--sp-sm);color:var(--color-accent);opacity:0.6}
+        .sec-icon svg{width:100%;height:100%}
+        .sec-title{font-family:var(--ff-body);font-size:var(--fs-h1);font-weight:400;line-height:1.2;margin-bottom:var(--sp-lg)}
+        .sec-sub{font-family:var(--ff-body);font-size:var(--fs-h2);font-weight:400;margin-bottom:var(--sp-md)}
+        .body{font-size:var(--fs-body);line-height:var(--lh-relax);color:var(--color-text-2);max-width:900px}
+        .body+.body{margin-top:var(--sp-md)}
+
+        /* Figma page image — used as-is from Figma export */
+        .figma-page{width:100%;margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden;background:var(--color-bg-alt);position:relative}
+        .figma-page img{width:100%;height:auto;display:block}
+        .figma-page .export-note{position:absolute;bottom:12px;right:16px;font-size:11px;color:var(--color-accent);background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:4px;font-weight:500;backdrop-filter:blur(6px)}
+
+        /* Image with margin */
+        .img-margin{margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden}
+
+        /* Quote */
+        .quote{border-left:3px solid var(--color-accent);padding:var(--sp-sm) var(--sp-md);margin:var(--sp-md) 0;background:rgba(8,122,145,0.04);border-radius:0 4px 4px 0}
+        .quote p{font-style:italic;color:var(--color-text-2);line-height:var(--lh-body)}
+        .quote .attr{font-style:normal;font-size:var(--fs-cap);color:var(--color-text-3);margin-top:var(--sp-xs)}
+
+        /* Takeaway */
+        .takeaway{background:linear-gradient(135deg,#F7F5EF,#FAFAF8);border:1px solid var(--color-border-m);border-radius:16px;padding:var(--sp-xl);margin:var(--sp-xl) 0}
+        .takeaway .tk-label{font-size:var(--fs-over);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--sp-sm)}
+        .takeaway .tk-text{font-family:var(--ff-body);font-size:var(--fs-h3);line-height:1.5}
+        .takeaway .tk-text strong{font-weight:700}
+
+        /* Competitor grid */
+        .comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--sp-md);margin:var(--sp-lg) 0}
+        .comp-card{background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius);padding:var(--sp-md);box-shadow:var(--shadow-card)}
+        .comp-card h4{font-weight:700;margin-bottom:var(--sp-xs)}
+        .comp-card p{font-size:var(--fs-cap);color:var(--color-text-2);line-height:var(--lh-body)}
+
+        /* Insight cards */
+        .insight{background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:16px;padding:var(--sp-lg);margin-bottom:var(--sp-md);box-shadow:var(--shadow-card)}
+        .insight .num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--color-accent);color:white;font-size:14px;font-weight:600;margin-right:var(--sp-sm);vertical-align:middle}
+        .insight .ilabel{font-weight:700;display:inline;vertical-align:middle}
+        .insight .idesc{margin-top:var(--sp-sm);color:var(--color-text-2)}
+
+        /* Table */
+        .dtable{width:100%;border-collapse:collapse;margin:var(--sp-lg) 0;font-size:var(--fs-cap)}
+        .dtable thead{background:var(--color-bg-alt)}
+        .dtable th{padding:var(--sp-sm) var(--sp-md);text-align:left;font-weight:700;font-size:var(--fs-over);letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-2);border-bottom:2px solid var(--color-border-m)}
+        .dtable td{padding:var(--sp-sm) var(--sp-md);border-bottom:1px solid var(--color-border);color:var(--color-text-2)}
+
+        /* Two col layout */
+        .two-col{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-md)}
+        @media(max-width:768px){.two-col{grid-template-columns:1fr}}
+
+        /* Footer */
+        .footer{background:var(--color-bg-footer);color:var(--color-text-inv);padding:var(--sp-lg) var(--pad) var(--sp-md)}
+        .footer-inner{max-width:var(--max-w);margin:0 auto}
+        .footer-grid{display:grid;grid-template-columns:1fr 1fr 2fr;gap:var(--sp-md);padding-bottom:var(--sp-md);border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:var(--sp-md)}
+        @media(max-width:768px){.footer-grid{grid-template-columns:1fr}}
+        .footer h4{font-size:var(--fs-cap);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:var(--sp-sm)}
+        .footer a{color:rgba(255,255,255,0.7);transition:var(--trans)}
+        .footer a:hover{color:white}
+        .footer .credit{font-size:var(--fs-cap);color:rgba(255,255,255,0.35);text-align:center}
+
+        .bg-alt{background:var(--color-bg-alt)}
+        .mt-md{margin-top:var(--sp-md)}.mt-lg{margin-top:var(--sp-lg)}.mt-xl{margin-top:var(--sp-xl)}.mb-lg{margin-bottom:var(--sp-lg)}
+        .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.8s ease,transform 0.8s ease}
+        .fade-in.visible{opacity:1;transform:translateY(0)}
+
+        /* Placeholder for Figma exports */
+        .placeholder{background:linear-gradient(135deg,#E8F4F8,#D4ECF0);display:flex;align-items:center;justify-content:center;color:var(--color-accent);font-size:var(--fs-cap);font-weight:500;text-align:center;padding:var(--sp-md);min-height:200px;border-radius:var(--radius)}
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back" aria-label="Back">
+        <img src="images/Back_Sign.svg" alt="" style="width:40px;height:40px">
+    </a>
+
+    <nav class="toc-fixed" aria-label="Table of contents">
+        <p class="label">Adaptable Living</p>
+        <p class="sub">Independent Research</p>
+        <a href="#top">Overview</a>
+        <a href="#predicament">The Moving Predicament</a>
+        <a href="#research">User Research &amp; Persona</a>
+        <a href="#requirements">Requirements &amp; Data</a>
+        <a href="#competitor">Competitor Analysis</a>
+        <a href="#iteration">Prototyping &amp; Iteration</a>
+        <a href="#solution">The Solution</a>
+        <a href="#next">Next Stage</a>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="top">
+        <div class="grid-bg"></div>
+        <div class="hero-inner">
+            <div class="hero-content">
+                <h1 class="hero-title">Furniture<br><em>that moves</em><br>with you</h1>
+                <p class="hero-desc">This project addresses an apparent yet universal problem — the struggle of creating adaptable living spaces for frequent movers. From research through findings to a working solution, it traces the full arc of designing modular storage that is sturdy, adaptable, affordable, and still looks great.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THE MOVING PREDICAMENT ===== -->
+    <section class="sec bg-alt" id="predicament">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="12" width="36" height="28" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M16 12V8a4 4 0 018 0v4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="22" x2="42" y2="22" stroke="currentColor" stroke-width="2"/></svg></div>
+                <h2 class="sec-title">The Moving Predicament</h2>
+                <p class="body">Whether it's for school, work, or life changes, most of us have faced the challenge of fitting furniture and storage into different living spaces. It's about the constant struggle between what looks good and what's practical. More people in cities want modular furniture, but current options aren't cutting it — they're either flimsy, too pricey to customise, bulky, or overly complicated.</p>
+                <p class="body">We see an opportunity for furniture units that are sturdy, adaptable, affordable — while still looking great. The goal is to simplify moving and help renters create spaces that feel like home.</p>
+
+                <!-- Figma page: The Moving Predicament (10-1142) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_predicament.png" alt="The Moving Predicament" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== USER RESEARCH & PERSONA ===== -->
+    <section class="sec" id="research">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="16" r="8" stroke="currentColor" stroke-width="2.5"/><path d="M8 40c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <h2 class="sec-title">User Research &amp; Persona</h2>
+
+                <p class="body">Interview research revealed that renters' storage habits evolve in phases. When first moving in, aesthetics matter most. As belongings grow, they add temporary solutions. Space optimisation leads to bulkier shelves. When moving again, they face keep-or-discard decisions. This highlights a gap: occasional-use items like books, collectibles, or porcelain need secure, organised display — especially during moves.</p>
+                <p class="body">Imagine these items staying in their exact units while moving. No aimless searching through boxes, no rebuilding systems. Everything stays intact.</p>
+
+                <!-- Figma page: Frequent Renter's Storage Pattern (10-1455) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_renter_pattern.png" alt="Frequent Renter's Storage Pattern" loading="lazy">
+                </div>
+
+                <h3 class="sec-sub mt-xl">Meet Richard</h3>
+                <p class="body">Richard is a 28-year-old software engineer who's made minimalism his way of life — but not by choice. Living in a one-bedroom apartment with his cat, he works from home three days a week, so his space needs to be both living area and workspace. He 3D-prints his own organisers and loves finding clever storage solutions that look good.</p>
+                <p class="body">His apartment has awkward corners where wider shelves don't fit. He wants to display porcelain and figurine collectibles and keep them safe from his cat. Moving yearly for work is a headache — fragile collectibles broke during his last move, and he wasted hours digging for cat supplies or chargers. His old IKEA shelves are falling apart from constant rebuilding, and he ditched a glass-door unit because it was too heavy to move.</p>
+
+                <!-- Figma pages: Richard's Needs (10-1211) + Moving Pain Points (28-67) -->
+                <div class="two-col mt-lg">
+                    <div class="figma-page" style="margin:0">
+                        <img src="images/adaptable/page_richard_needs.png" alt="Richard's Needs &amp; Behaviors" loading="lazy">
+                    </div>
+                    <div class="figma-page" style="margin:0">
+                        <img src="images/adaptable/page_pain_points.png" alt="Moving Pain Points" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="takeaway mt-lg">
+                    <p class="tk-label">Core Needs</p>
+                    <p class="tk-text"><strong>Modular, stackable</strong> designs that adapt to awkward spaces. Style without compromising practicality. A <strong>multi-functional system</strong> that serves as secure display and moving bin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REQUIREMENTS & DATA ===== -->
+    <section class="sec bg-alt" id="requirements">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12h36M6 24h36M6 36h36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="14" cy="12" r="3" fill="currentColor"/><circle cx="24" cy="24" r="3" fill="currentColor"/><circle cx="34" cy="36" r="3" fill="currentColor"/></svg></div>
+                <h2 class="sec-title">Functional Requirements &amp; Collected Data</h2>
+                <p class="body">The solution must be mover-friendly with minimal assembly effort, offer scalable modularity, serve as both display and transportable unit, maintain aesthetic appeal, and keep costs market-viable.</p>
+                <p class="body">To ensure the shelf works for real-world needs, common items renters store — books, collectibles, electronics — were measured. This data drove the base shelf size: <strong style="color:#E53E3E">15.8" × 11.8" × 11.8"</strong> (40cm × 30cm × 30cm), accommodating 90% of items listed while fitting tight spaces like studio apartments.</p>
+
+                <!-- Figma page: Collected Items Data (10-859) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_collected_data.png" alt="Collected Items Data" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== COMPETITOR ANALYSIS ===== -->
+    <section class="sec" id="competitor">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="4" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/></svg></div>
+                <h2 class="sec-title">Competitor Analysis</h2>
+                <p class="body">The market for RTA shelves is saturated. The winning products are usually the simplest and cheapest — using standardised components like ball joints, uniform bars, and pre-drilled holes. No thinking required. Renters prioritise shelves priced between $30–$100 that offer either open display or enclosed storage.</p>
+                <p class="body">While they'll tolerate assembly if it's affordable and sturdy, these shelves often get discarded during moves. Disassembling them is tedious, and renters see them as temporary. Surveys confirmed: users prioritise effortless over reusability, and most rarely use shelves as moving bins.</p>
+
+                <!-- Figma page: Competitor Analysis (10-1067) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_competitor.png" alt="Competitor Analysis: Ready to Assemble Shelf" loading="lazy">
+                </div>
+
+                <!-- Figma page: Downside of RTA Shelves (32-175) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_downside_rta.png" alt="Downside of RTA Shelves" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROTOTYPING & ITERATION ===== -->
+    <section class="sec bg-alt" id="iteration">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4v40M4 24h40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/></svg></div>
+                <h2 class="sec-title">Prototyping &amp; Iteration</h2>
+                <p class="body">Early prototypes experimented with polygonal shapes and intricate connectors to create modular shelves. User testing responses were generally negative — difficult to adapt, store, or fit into corners. Renters aren't looking for niche furniture; they look for simple, standard form over experiments.</p>
+
+                <p class="body mt-md">The next stage used a rectangular shelf with uniform tenon connectors for modular assembly. Users liked the minimal look but hated the assembly process.</p>
+
+                <!-- Figma page: Iteration 2 RTA Shelves with Modular Connector (10-1013) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_iteration2_rta.png" alt="Iteration 2: RTA Shelves with Modular Connector" loading="lazy">
+                </div>
+
+                <div class="quote mt-lg">
+                    <p>"It's like solving a puzzle just to hold the books."</p>
+                    <p class="attr">— Leo</p>
+                </div>
+                <div class="quote">
+                    <p>"Aligning these parts can be frustrating."</p>
+                    <p class="attr">— Geo</p>
+                </div>
+
+                <p class="body mt-lg">Assembly complexity bothers renters too. They need simplicity in both form and usage. It all comes down to stripping the connecting system to its most intuitive form. These insights pushed the next iteration toward something simpler: assembly-free, easy to fold and pack, compact enough to fit into regular moving boxes, with optional display mode — encouraging users to keep them during moves.</p>
+
+                <h3 class="sec-sub mt-xl">Design Progression</h3>
+                <p class="body mb-lg">The full evolution from early RTA concepts through polygon experiments, modular connector shelves, and ultimately to the foldable solution — each stage informed by user feedback and production constraints.</p>
+
+                <!-- Figma page: Design Progression Map (10-1604) -->
+                <div class="figma-page">
+                    <img src="images/adaptable/page_progression_map.png" alt="Design Progression Map" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THE SOLUTION ===== -->
+    <section class="sec" id="solution">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2.5"/><path d="M8 20h32M20 20v20" stroke="currentColor" stroke-width="2"/><path d="M14 14h4M30 14h4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+                <h2 class="sec-title">Shelves That Move With You</h2>
+                <p class="body">In his apartment, Richard stacks the shelves and uses lower units to store porcelain ware in enclosed compartments — keeping them safe from his cat. He uses open display on upper levels for collectibles like sculptures and electronics, arranged for visual balance.</p>
+                <p class="body">When moving, Richard packs most shelves into a moving box within minutes and converts a couple into secure bins for charging cables and cat supplies. These bins let him find essentials instantly in his new place — no more stressful digging through boxes.</p>
+
+                <!-- Figma page: Shelves That Move With You (10-1025) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_shelves_move.png" alt="Shelves That Move With You" loading="lazy">
+                </div>
+
+                <!-- Figma page: Practicality Meets Portability (10-1045) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_practicality.png" alt="Practicality Meets Portability" loading="lazy">
+                </div>
+
+                <!-- Figma page: Material Preference (10-1035) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_material.png" alt="Material Preference Survey" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NEXT STAGE ===== -->
+    <section class="sec bg-alt" id="next">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4l8 8H16l8-8z" fill="currentColor" opacity="0.3"/><path d="M12 20h24v20H12z" stroke="currentColor" stroke-width="2.5" rx="2"/><path d="M20 20v20M28 20v20M12 30h24" stroke="currentColor" stroke-width="1.5"/></svg></div>
+                <h2 class="sec-title">Next Stage</h2>
+                <p class="body">The next phase focuses on streamlining sheet metal fabrication to reduce costs without sacrificing durability — trimming excess design elements and sourcing manufacturers. Beyond apartments, the project is exploring markets like luxury RV camping, where users need portable, adaptable storage that survives constant motion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="studio">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div><h4>Contact</h4><a href="mailto:sean.c1121@gmail.com">sean.c1121@gmail.com</a></div>
+                <div><h4>Services</h4><p style="color:rgba(255,255,255,0.7)">Content &amp; Creative</p></div>
+                <div><h4>Expertise</h4><p style="color:rgba(255,255,255,0.7)">3D Modeling, Sculpting, Mechanical structure</p><p style="color:rgba(255,255,255,0.7)">UIUX design · Mechatronics design</p></div>
+            </div>
+            <p class="credit">Design by Sean</p>
+        </div>
+    </footer>
+
+    <script>
+        const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+        document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+        const links=document.querySelectorAll('.toc a, .toc-fixed a'),secs=document.querySelectorAll('section[id]');
+        const tocFixed=document.querySelector('.toc-fixed'),footer=document.getElementById('studio');
+        function updateToc(){
+            let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-200)c=s.id});
+            links.forEach(l=>{l.style.borderLeftColor='transparent';l.style.color='';if(l.getAttribute('href')==='#'+c){l.style.borderLeftColor='var(--color-accent)';l.style.color='var(--color-accent)'}});
+            if(tocFixed&&footer){const footerTop=footer.getBoundingClientRect().top;const hideBefore=150;tocFixed.style.opacity=footerTop<window.innerHeight+hideBefore?'0':'1';tocFixed.style.pointerEvents=footerTop<window.innerHeight+hideBefore?'none':'auto'}
+        }
+        window.addEventListener('scroll',updateToc);updateToc();
+    </script>
+</body>
+</html>
