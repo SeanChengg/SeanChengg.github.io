@@ -60,6 +60,12 @@
             --rt-item-stagger:0.42s;
             /* Richard frames: fade-in in order 1→5; each starts after the previous finishes */
             --richard-frame-dur:0.65s;
+            /* Hero: chars appear R→L (last char first), line slides left in sync; then recoil */
+            --hero-line-dur:1.35s;
+            /* R→L drive (longer travel, snappier timing — still in sync with char cascade) */
+            --hero-line-drive-start:clamp(72px,14vw,220px);
+            --hero-char-stagger:0.042s;
+            --hero-char-fade-dur:0.26s;
         }
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -98,11 +104,64 @@
         .toc-fixed a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);transition:var(--trans);padding:4px 0;border-left:2px solid transparent;padding-left:12px}
         .toc-fixed a:hover{color:var(--color-accent);border-left-color:var(--color-accent)}
         @media(max-width:1024px){.toc-fixed{display:none}}
-        .hero-content{display:flex;flex-direction:column;justify-content:center;margin-left:var(--content-off)}
+        .hero-content{display:flex;flex-direction:column;justify-content:center;margin-left:var(--content-off);align-items:flex-start}
         .overline{font-size:var(--fs-over);font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-md)}
-        .hero-title{font-family:var(--ff-display);font-size:var(--fs-hero);font-weight:400;line-height:1.1;margin-bottom:var(--sp-md)}
+        .hero-title{font-family:var(--ff-display);font-size:var(--fs-hero);font-weight:400;line-height:1.1;margin-bottom:var(--sp-md);display:flex;flex-direction:column;align-items:flex-start;gap:0.02em;width:100%;max-width:min(100%,920px)}
         .hero-title em{font-style:italic;color:var(--color-accent)}
         .hero-desc{font-family:var(--ff-body);font-size:var(--fs-body-lg);line-height:var(--lh-relax);color:var(--color-text-2);max-width:680px}
+        /* Per-char: opacity R→L (--ch 0 = rightmost, appears first). Line translateX syncs so slide ends as last char fades in */
+        @keyframes hero-char-fade{to{opacity:1}}
+        @keyframes hero-line-slide{
+            from{transform:translateX(var(--hero-line-drive-start))}
+            to{transform:translateX(0)}
+        }
+        @keyframes hero-line-recoil{
+            0%{transform:translateX(0)}
+            32%{transform:translateX(14px)}
+            62%{transform:translateX(-5px)}
+            100%{transform:translateX(0)}
+        }
+        /* Outer = drive R→L only. Inner = recoil only. Two transforms on one element fight: recoil's fill-mode was zeroing the slide. */
+        .hero-title__line{
+            --line-start-delay:0s;
+            --line-chars:9;
+            --line-slide-dur:calc((var(--line-chars) - 1) * var(--hero-char-stagger) + var(--hero-char-fade-dur));
+            display:block;
+            width:max-content;
+            max-width:100%;
+            will-change:transform;
+            transform:translateX(var(--hero-line-drive-start));
+            animation:hero-line-slide var(--line-slide-dur) linear var(--line-start-delay) both;
+        }
+        .hero-title__line-inner{
+            display:block;
+            width:max-content;
+            max-width:100%;
+            will-change:transform;
+            transform:translateX(0);
+            animation:hero-line-recoil 0.62s cubic-bezier(0.22,1,0.36,1) calc(var(--line-start-delay) + var(--line-slide-dur)) both;
+        }
+        .hero-title__line--1{--line-chars:9}
+        .hero-title__line--2{
+            --line-chars:10;
+            --line-start-delay:calc((9 - 1) * var(--hero-char-stagger) + var(--hero-char-fade-dur));
+        }
+        .hero-title__line--3{
+            --line-chars:8;
+            --line-start-delay:calc((9 + 10 - 2) * var(--hero-char-stagger) + 2 * var(--hero-char-fade-dur));
+        }
+        .hero-title__ch{
+            display:inline-block;
+            opacity:0;
+            will-change:opacity;
+            animation:hero-char-fade var(--hero-char-fade-dur) ease-out forwards;
+            animation-delay:calc(var(--line-start-delay) + var(--ch) * var(--hero-char-stagger));
+        }
+        .hero-title__line--2 em{font-style:italic;color:var(--color-accent)}
+        @media (prefers-reduced-motion:reduce){
+            .hero-title__line,.hero-title__line-inner{animation:none!important;transform:none!important}
+            .hero-title__ch{animation:none!important;opacity:1!important}
+        }
 
         /* Section elements */
         .sec-icon{width:50px;height:50px;margin-bottom:var(--sp-sm);color:var(--color-accent);opacity:0.6}
@@ -366,7 +425,17 @@
         <div class="grid-bg"></div>
         <div class="hero-inner">
             <div class="hero-content">
-                <h1 class="hero-title">Furniture<br><em>that moves</em><br>with you</h1>
+                <h1 class="hero-title">
+                    <span class="hero-title__line hero-title__line--1" aria-label="Furniture">
+                        <span class="hero-title__line-inner"><span class="hero-title__ch" style="--ch:8">F</span><span class="hero-title__ch" style="--ch:7">u</span><span class="hero-title__ch" style="--ch:6">r</span><span class="hero-title__ch" style="--ch:5">n</span><span class="hero-title__ch" style="--ch:4">i</span><span class="hero-title__ch" style="--ch:3">t</span><span class="hero-title__ch" style="--ch:2">u</span><span class="hero-title__ch" style="--ch:1">r</span><span class="hero-title__ch" style="--ch:0">e</span></span>
+                    </span>
+                    <span class="hero-title__line hero-title__line--2" aria-label="that moves">
+                        <span class="hero-title__line-inner"><em><span class="hero-title__ch" style="--ch:9">t</span><span class="hero-title__ch" style="--ch:8">h</span><span class="hero-title__ch" style="--ch:7">a</span><span class="hero-title__ch" style="--ch:6">t</span><span class="hero-title__ch" style="--ch:5">&nbsp;</span><span class="hero-title__ch" style="--ch:4">m</span><span class="hero-title__ch" style="--ch:3">o</span><span class="hero-title__ch" style="--ch:2">v</span><span class="hero-title__ch" style="--ch:1">e</span><span class="hero-title__ch" style="--ch:0">s</span></em></span>
+                    </span>
+                    <span class="hero-title__line hero-title__line--3" aria-label="with you">
+                        <span class="hero-title__line-inner"><span class="hero-title__ch" style="--ch:7">w</span><span class="hero-title__ch" style="--ch:6">i</span><span class="hero-title__ch" style="--ch:5">t</span><span class="hero-title__ch" style="--ch:4">h</span><span class="hero-title__ch" style="--ch:3">&nbsp;</span><span class="hero-title__ch" style="--ch:2">y</span><span class="hero-title__ch" style="--ch:1">o</span><span class="hero-title__ch" style="--ch:0">u</span></span>
+                    </span>
+                </h1>
                 <p class="hero-desc">This project addresses an apparent yet universal problem — the struggle of creating adaptable living spaces for frequent movers. From research through findings to a working solution, it traces the full arc of designing modular storage that is sturdy, adaptable, affordable, and still looks great.</p>
             </div>
         </div>
