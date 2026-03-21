@@ -52,6 +52,14 @@
             --shadow-card: 0 2px 12px rgba(0,0,0,0.04);
             --radius: 8px;
             --trans: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+            --renter-strip-bg: var(--color-bg-alt);
+            /* Space between timeline points (dots): gap + row-gap on .renter-timeline — ↑ = farther apart, ↓ = tighter */
+            --rt-timeline-gap:clamp(28px,4vw,56px);
+            /* Timeline entrance: slower fade + equal delay between steps */
+            --rt-item-fade-duration:0.9s;
+            --rt-item-stagger:0.42s;
+            /* Richard frames: fade-in in order 1→5; each starts after the previous finishes */
+            --richard-frame-dur:0.65s;
         }
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -107,7 +115,177 @@
         /* Figma page image — used as-is from Figma export */
         .figma-page{width:100%;margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden;background:transparent;position:relative}
         .figma-page img{width:100%;height:auto;display:block}
+        /* Same width as former .two-col left cell (1fr + gap + 1fr) */
+        .figma-page--richard-col{
+            max-width:calc((100% - var(--sp-md)) / 2);
+            width:100%;
+            margin-left:0;
+            margin-right:auto;
+        }
+        @media(max-width:768px){
+            .figma-page--richard-col{max-width:100%}
+        }
         .figma-page .export-note{position:absolute;bottom:12px;right:16px;font-size:11px;color:var(--color-accent);background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:4px;font-weight:500;backdrop-filter:blur(6px)}
+
+        /* Richard: underlay = page_richard_needs.png; Frame1.png = Workspace (box 1) + first insight line; Frame2–5 on top; fade 1→5 */
+        @keyframes richard-frame-in{from{opacity:0}to{opacity:1}}
+        .richard-needs-stack{position:relative}
+        .richard-needs-stack__inner{position:relative;width:100%}
+        .richard-needs-stack__spacer{
+            width:100%;height:auto;display:block;
+            visibility:hidden;
+            pointer-events:none;
+            user-select:none;
+        }
+        .richard-needs-stack__layers{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            pointer-events:none;
+        }
+        .richard-needs-stack__underlay{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            object-fit:contain;object-position:top center;
+            z-index:0;
+            pointer-events:none;
+        }
+        .richard-needs-stack__f{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            object-fit:contain;object-position:top center;
+            opacity:0;
+        }
+        .richard-needs-stack__f--1{z-index:1}
+        .richard-needs-stack__f--2{z-index:2}
+        .richard-needs-stack__f--3{z-index:3}
+        .richard-needs-stack__f--4{z-index:4}
+        .richard-needs-stack__f--5{z-index:5}
+        .richard-needs-stack:not(.richard-needs-stack--visible) .richard-needs-stack__f{animation:none}
+        /* Delays: 0, 1×dur, 2×dur … so frame N starts after frame N−1 completes */
+        .richard-needs-stack--visible .richard-needs-stack__f--1{
+            animation:richard-frame-in var(--richard-frame-dur) ease-in-out forwards;
+            animation-delay:0s;
+        }
+        .richard-needs-stack--visible .richard-needs-stack__f--2{
+            animation:richard-frame-in var(--richard-frame-dur) ease-in-out forwards;
+            animation-delay:calc(var(--richard-frame-dur) * 1);
+        }
+        .richard-needs-stack--visible .richard-needs-stack__f--3{
+            animation:richard-frame-in var(--richard-frame-dur) ease-in-out forwards;
+            animation-delay:calc(var(--richard-frame-dur) * 2);
+        }
+        .richard-needs-stack--visible .richard-needs-stack__f--4{
+            animation:richard-frame-in var(--richard-frame-dur) ease-in-out forwards;
+            animation-delay:calc(var(--richard-frame-dur) * 3);
+        }
+        .richard-needs-stack--visible .richard-needs-stack__f--5{
+            animation:richard-frame-in var(--richard-frame-dur) ease-in-out forwards;
+            animation-delay:calc(var(--richard-frame-dur) * 4);
+        }
+        @media (prefers-reduced-motion:reduce){
+            .richard-needs-stack__f{opacity:1!important;animation:none!important}
+        }
+
+        /* Cyan strip only — no nested white “cards”. Matrix height drives row; EoRH column stretches to match. */
+        .renter-pattern-wrap{
+            width:100%;
+            max-width:min(100%,1372px);
+            min-width:0;
+            margin-top:var(--sp-xl);
+            margin-left:auto;
+            margin-right:auto;
+            padding:clamp(20px,3vw,36px) clamp(16px,2.5vw,28px);
+            background:var(--renter-strip-bg);
+            border-radius:16px;
+            box-sizing:border-box;
+        }
+        /* Flex row: cross-axis stretch so EoRH column height always matches matrix column */
+        .renter-pattern-split{
+            display:flex;
+            flex-direction:row;
+            flex-wrap:nowrap;
+            align-items:stretch;
+            gap:clamp(24px,3.2vw,48px);
+            width:100%;
+            min-width:0;
+        }
+        @media(max-width:900px){
+            .renter-pattern-split{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
+            .renter-evolution{flex:0 0 auto!important;width:100%!important;max-width:100%!important}
+            .storage-matrix--figma{flex:0 0 auto!important;width:100%!important;min-height:0}
+        }
+        @media (min-width:901px){
+            .renter-timeline{
+                display:grid;
+                grid-template-rows:repeat(4,minmax(0,1fr));
+                row-gap:var(--rt-timeline-gap);
+                column-gap:0;
+            }
+        }
+        .renter-evolution{
+            position:relative;
+            margin:0;
+            flex:0 0 27%;
+            width:27%;
+            max-width:27%;
+            min-width:0;
+            min-height:0;
+            align-self:stretch;
+            display:flex;
+            flex-direction:column;
+            justify-content:flex-start;
+            overflow:visible;
+            padding:var(--sp-sm) var(--sp-md) var(--sp-md);
+            background:transparent;
+            border:none;
+            border-radius:0;
+            box-sizing:border-box;
+            box-shadow:none;
+        }
+        .renter-evolution-title{font-family:var(--ff-body);font-size:var(--fs-h3);font-weight:600;color:var(--color-text);margin-bottom:var(--sp-sm);line-height:1.25;word-wrap:break-word;overflow-wrap:break-word}
+        /* Stacked: natural heights. ≥901px: 4 equal rows so short copy (e.g. last step) doesn’t look stubby vs matrix */
+        .renter-timeline{list-style:none;margin:0;padding:0;position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:var(--rt-timeline-gap)}
+        .renter-timeline::before{content:'';position:absolute;left:18px;top:12px;bottom:0;width:2px;background:linear-gradient(180deg,var(--color-accent),rgba(8,122,145,0.2));border-radius:1px;transform-origin:top;transform:scaleY(0);transition:transform 1.45s cubic-bezier(0.25,0.46,0.45,0.94)}
+        .renter-evolution--visible .renter-timeline::before{transform:scaleY(1)}
+        .renter-timeline-item{position:relative;padding:0;padding-left:44px;min-height:0;opacity:0;transform:translateY(14px);transition:opacity var(--rt-item-fade-duration) ease,transform var(--rt-item-fade-duration) ease}
+        .renter-evolution--visible .renter-timeline-item{opacity:1;transform:translateY(0)}
+        .renter-evolution--visible .renter-timeline-item:nth-child(1){transition-delay:0s}
+        .renter-evolution--visible .renter-timeline-item:nth-child(2){transition-delay:calc(var(--rt-item-stagger) * 1)}
+        .renter-evolution--visible .renter-timeline-item:nth-child(3){transition-delay:calc(var(--rt-item-stagger) * 2)}
+        .renter-evolution--visible .renter-timeline-item:nth-child(4){transition-delay:calc(var(--rt-item-stagger) * 3)}
+        .renter-timeline-item::before{content:'';position:absolute;left:18px;top:8px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--color-accent);box-shadow:0 0 0 3px rgba(8,122,145,0.22);border:2px solid var(--color-bg-card)}
+        .renter-timeline-item strong{display:block;font-size:var(--fs-cap);color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:var(--sp-xs)}
+        .renter-timeline-item p{margin:0;font-size:clamp(14px,1.1vw,17px);line-height:1.45;color:var(--color-text-2);word-wrap:break-word;overflow-wrap:break-word;hyphens:auto}
+        .storage-matrix--figma{
+            margin:0;
+            flex:1 1 0;
+            min-width:0;
+            width:auto;
+            min-height:0;
+            padding:0;
+            background:transparent;
+            border:none;
+            align-self:stretch;
+            display:flex;
+            flex-direction:column;
+        }
+        /* Height from asset aspect ratio — row matches this; evolution column stretches */
+        .storage-matrix__figma-stack{
+            position:relative;
+            width:100%;
+            aspect-ratio:1830 / 1684;
+            line-height:0;
+            background:transparent;
+            border:none;
+            border-radius:0;
+            overflow:hidden;
+            box-sizing:border-box;
+            box-shadow:none;
+            flex:0 0 auto;
+        }
+        /* Single image, full opacity always — no scroll dim / no overlay layer */
+        .storage-matrix__figma-base{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;object-fit:contain;object-position:center center;opacity:1}
+        @media (prefers-reduced-motion:reduce){
+            .renter-timeline::before{transform:scaleY(1);transition:none}
+            .renter-timeline-item{opacity:1;transform:none;transition:none}
+        }
 
         /* Image with margin */
         .img-margin{margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden}
@@ -221,22 +399,54 @@
                 <p class="body">Interview research revealed that renters' storage habits evolve in phases. When first moving in, aesthetics matter most. As belongings grow, they add temporary solutions. Space optimisation leads to bulkier shelves. When moving again, they face keep-or-discard decisions. This highlights a gap: occasional-use items like books, collectibles, or porcelain need secure, organised display — especially during moves.</p>
                 <p class="body">Imagine these items staying in their exact units while moving. No aimless searching through boxes, no rebuilding systems. Everything stays intact.</p>
 
-                <!-- Figma page: Frequent Renter's Storage Pattern (10-1455) -->
-                <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_renter_pattern.png" alt="Frequent Renter's Storage Pattern" loading="lazy">
+                <!-- Evolution + matrix; short lines only — title comes from PNG -->
+                <div class="renter-pattern-wrap">
+                <div class="renter-pattern-split">
+                    <div class="renter-evolution" id="renter-evolution" aria-label="Evolution of a renter's home">
+                        <h3 class="renter-evolution-title">Evolution of a renter's home</h3>
+                        <ol class="renter-timeline">
+                            <li class="renter-timeline-item">
+                                <strong>First move in</strong>
+                                <p>Focus on aesthetics and matching decor</p>
+                            </li>
+                            <li class="renter-timeline-item">
+                                <strong>Belongings grow</strong>
+                                <p>Add temporary storage solutions</p>
+                            </li>
+                            <li class="renter-timeline-item">
+                                <strong>Space optimisation</strong>
+                                <p>Maximise vertical space</p>
+                            </li>
+                            <li class="renter-timeline-item" id="renter-timeline-step4">
+                                <strong>Moving again</strong>
+                                <p>Keep vs. sell decisions — sorting what moves, what stays, and what goes.</p>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="storage-matrix storage-matrix--figma" id="storage-matrix">
+                        <div class="storage-matrix__figma-stack">
+                            <img class="storage-matrix__figma-img storage-matrix__figma-base" src="images/adaptable/storage-priority-matrix.png" width="1830" height="1684" loading="lazy" decoding="async" alt="Frequent Renter's Storage Pattern: Low Priority to High Priority, High Frequency to Low Frequency; quadrants Regular Access Items, Daily Essentials, Long-term Storage, Occasional Use Items">
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <h3 class="sec-sub mt-xl">Meet Richard</h3>
                 <p class="body">Richard is a 28-year-old software engineer who's made minimalism his way of life — but not by choice. Living in a one-bedroom apartment with his cat, he works from home three days a week, so his space needs to be both living area and workspace. He 3D-prints his own organisers and loves finding clever storage solutions that look good.</p>
                 <p class="body">His apartment has awkward corners where wider shelves don't fit. He wants to display porcelain and figurine collectibles and keep them safe from his cat. Moving yearly for work is a headache — fragile collectibles broke during his last move, and he wasted hours digging for cat supplies or chargers. His old IKEA shelves are falling apart from constant rebuilding, and he ditched a glass-door unit because it was too heavy to move.</p>
 
-                <!-- Figma pages: Richard's Needs (10-1211) + Moving Pain Points (28-67) -->
-                <div class="two-col mt-lg">
-                    <div class="figma-page" style="margin:0">
-                        <img src="images/adaptable/page_richard_needs.png" alt="Richard's Needs &amp; Behaviors" loading="lazy">
-                    </div>
-                    <div class="figma-page" style="margin:0">
-                        <img src="images/adaptable/page_pain_points.png" alt="Moving Pain Points" loading="lazy">
+                <!-- Underlay = full page; Frame1 = Workspace + line to Hao quote; Frame2–5 build on top; fade 1→5 -->
+                <div class="figma-page figma-page--richard-col mt-lg richard-needs-stack" id="richard-needs-stack" role="img" aria-label="Richard's Needs and Behaviors — User Insights">
+                    <div class="richard-needs-stack__inner">
+                        <img class="richard-needs-stack__spacer" src="images/adaptable/page_richard_needs/page_richard_needs.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                        <div class="richard-needs-stack__layers">
+                            <img class="richard-needs-stack__underlay" src="images/adaptable/page_richard_needs/page_richard_needs.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--1" src="images/adaptable/page_richard_needs/Frame1.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--2" src="images/adaptable/page_richard_needs/Frame2.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--3" src="images/adaptable/page_richard_needs/Frame3.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--4" src="images/adaptable/page_richard_needs/Frame4.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--5" src="images/adaptable/page_richard_needs/Frame5.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                        </div>
                     </div>
                 </div>
 
@@ -385,6 +595,36 @@
             if(tocFixed&&footer){const footerTop=footer.getBoundingClientRect().top;const hideBefore=150;tocFixed.style.opacity=footerTop<window.innerHeight+hideBefore?'0':'1';tocFixed.style.pointerEvents=footerTop<window.innerHeight+hideBefore?'none':'auto'}
         }
         window.addEventListener('scroll',updateToc);updateToc();
+
+        /* Evolution timeline: animate on scroll into view; reset when scrolled away so it can replay */
+        (function(){
+            var el=document.getElementById('renter-evolution');
+            if(!el)return;
+            var io=new IntersectionObserver(function(entries){
+                entries.forEach(function(en){
+                    if(en.isIntersecting){
+                        el.classList.add('renter-evolution--visible');
+                    }else{
+                        el.classList.remove('renter-evolution--visible');
+                    }
+                });
+            },{threshold:0.18,rootMargin:'0px 0px -6% 0px'});
+            io.observe(el);
+        })();
+
+        /* Richard frame stack: play staggered fade when in view; reset when scrolled away */
+        (function(){
+            var el=document.getElementById('richard-needs-stack');
+            if(!el)return;
+            var io=new IntersectionObserver(function(entries){
+                entries.forEach(function(en){
+                    if(en.isIntersecting){el.classList.add('richard-needs-stack--visible');}
+                    else{el.classList.remove('richard-needs-stack--visible');}
+                });
+            },{threshold:0.15,rootMargin:'0px 0px -8% 0px'});
+            io.observe(el);
+        })();
+
     </script>
 </body>
 </html>
