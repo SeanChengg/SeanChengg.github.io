@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Head — Electronics Architecture</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Inter', 'SF Mono', 'Menlo', monospace;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    h1 span { color: #666; font-size: 14px; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 3px; }
+    .subtitle { color: #666; font-size: 14px; margin-bottom: 48px; }
+
+    /* SCHEMATIC LAYOUT */
+    .schematic {
+      position: relative;
+      width: 1200px;
+      height: 800px;
+      margin: 0 auto 60px;
+    }
+
+    /* COMPONENT BLOCKS */
+    .component {
+      position: absolute;
+      border: 2px solid;
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .component .label {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .component .detail {
+      font-size: 11px;
+      color: #999;
+      line-height: 1.4;
+    }
+
+    /* COLOR CODING */
+    .controller { border-color: #4fc3f7; background: rgba(79,195,247,0.08); }
+    .controller .label { color: #4fc3f7; }
+
+    .driver { border-color: #81c784; background: rgba(129,199,132,0.08); }
+    .driver .label { color: #81c784; }
+
+    .servo { border-color: #ffb74d; background: rgba(255,183,77,0.06); }
+    .servo .label { color: #ffb74d; }
+
+    .power { border-color: #ef5350; background: rgba(239,83,80,0.08); }
+    .power .label { color: #ef5350; }
+
+    .interface { border-color: #b39ddb; background: rgba(179,157,219,0.08); }
+    .interface .label { color: #b39ddb; }
+
+    /* CONNECTION LINES (SVG) */
+    .connections {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .conn-i2c { stroke: #4fc3f7; stroke-width: 2; }
+    .conn-pwm { stroke: #81c784; stroke-width: 2; }
+    .conn-power { stroke: #ef5350; stroke-width: 2.5; }
+    .conn-serial { stroke: #b39ddb; stroke-width: 2; }
+    .conn-label {
+      font-family: 'Inter', monospace;
+      font-size: 10px;
+      fill: #888;
+    }
+
+    /* PIN TABLE */
+    .pin-table {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 48px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .pin-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: #666;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #222;
+    }
+    .pin-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      color: #ccc;
+    }
+    .pin-table td:first-child { color: #fff; font-weight: 600; }
+    .pin-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin: 48px auto 16px;
+      max-width: 1200px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .section-title.i2c::before { background: #4fc3f7; }
+    .section-title.pwm::before { background: #81c784; }
+    .section-title.power-section::before { background: #ef5350; }
+    .section-title.servo-section::before { background: #ffb74d; }
+
+    /* BOM */
+    .bom-table {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 48px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .bom-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: #666;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #333;
+      background: rgba(255,255,255,0.02);
+    }
+    .bom-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      color: #ccc;
+    }
+    .bom-table td:first-child { color: #fff; font-weight: 600; }
+    .bom-table td:last-child { color: #fff; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .bom-table tr:last-child td { border-top: 2px solid #333; border-bottom: none; }
+    .bom-table tr:last-child td:first-child { font-weight: 800; }
+    .bom-table tr:last-child td:last-child { font-weight: 800; font-size: 15px; }
+
+    .legend {
+      max-width: 1200px;
+      margin: 0 auto 32px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #999;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .note {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 16px 20px;
+      background: rgba(255,183,77,0.06);
+      border-left: 3px solid #ffb74d;
+      font-size: 13px;
+      color: #ccc;
+      border-radius: 0 6px 6px 0;
+    }
+    .note strong { color: #ffb74d; }
+  </style>
+</head>
+<body>
+
+  <h1>
+    <span>The Panel Head — Next Stage</span>
+    Electronics Architecture
+  </h1>
+  <p class="subtitle">Control chain: PC → ESP32 → PCA9685 → 5× RDS3218 Servos</p>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#b39ddb"></div> USB Serial</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4fc3f7"></div> I²C Bus</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#81c784"></div> PWM Signal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef5350"></div> Power (6V)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffb74d"></div> Servo Motor</div>
+  </div>
+
+  <!-- BLOCK DIAGRAM -->
+  <div class="schematic">
+    <!-- SVG CONNECTIONS -->
+    <svg class="connections" viewBox="0 0 1200 800">
+      <!-- USB Serial: PC → ESP32 -->
+      <line x1="160" y1="120" x2="160" y2="210" class="conn-serial" stroke-dasharray="6,4" />
+      <text x="170" y="170" class="conn-label">USB Serial</text>
+      <text x="170" y="183" class="conn-label">115200 baud</text>
+
+      <!-- I²C: ESP32 → PCA9685 -->
+      <line x1="160" y1="340" x2="160" y2="430" class="conn-i2c" />
+      <text x="170" y="385" class="conn-label">I²C (SDA/SCL)</text>
+      <text x="170" y="398" class="conn-label">GPIO 21 / 22</text>
+
+      <!-- PWM: PCA9685 → Servos -->
+      <line x1="260" y1="510" x2="380" y2="620" class="conn-pwm" stroke-dasharray="4,3" />
+      <line x1="200" y1="560" x2="560" y2="620" class="conn-pwm" stroke-dasharray="4,3" />
+      <line x1="160" y1="560" x2="740" y2="620" class="conn-pwm" stroke-dasharray="4,3" />
+      <line x1="120" y1="560" x2="920" y2="620" class="conn-pwm" stroke-dasharray="4,3" />
+      <line x1="80" y1="510" x2="1080" y2="620" class="conn-pwm" stroke-dasharray="4,3" />
+      <text x="420" y="595" class="conn-label">PWM 50Hz (500–2500µs pulse)</text>
+
+      <!-- Power lines -->
+      <line x1="700" y1="130" x2="700" y2="210" class="conn-power" stroke-width="3" />
+      <text x="710" y="175" class="conn-label" fill="#ef5350">6V 10A</text>
+
+      <!-- Cap bank to PCA9685 -->
+      <line x1="700" y1="340" x2="300" y2="430" class="conn-power" stroke-width="2" />
+      <text x="460" y="375" class="conn-label" fill="#ef5350">Filtered 6V → V+ terminal</text>
+
+      <!-- Power to servos -->
+      <line x1="700" y1="340" x2="380" y2="620" class="conn-power" stroke-width="1.5" opacity="0.4" />
+      <line x1="700" y1="340" x2="560" y2="620" class="conn-power" stroke-width="1.5" opacity="0.4" />
+      <line x1="700" y1="340" x2="740" y2="620" class="conn-power" stroke-width="1.5" opacity="0.4" />
+      <line x1="700" y1="340" x2="920" y2="620" class="conn-power" stroke-width="1.5" opacity="0.4" />
+      <line x1="700" y1="340" x2="1080" y2="620" class="conn-power" stroke-width="1.5" opacity="0.4" />
+
+      <!-- ESP32 3.3V to PCA9685 logic -->
+      <line x1="240" y1="300" x2="700" y2="300" class="conn-i2c" stroke-dasharray="3,3" opacity="0.3" />
+      <text x="400" y="293" class="conn-label">3.3V logic power</text>
+    </svg>
+
+    <!-- PC / Browser -->
+    <div class="component interface" style="left:40px; top:30px; width:240px;">
+      <div class="label">PC / Browser</div>
+      <div class="detail">
+        ElectronBotStudio<br>
+        Three.js 3D Viewport<br>
+        Real-time slider control<br>
+        Keyframe animation recorder
+      </div>
+    </div>
+
+    <!-- ESP32 -->
+    <div class="component controller" style="left:40px; top:210px; width:240px;">
+      <div class="label">ESP32 DevKit V1</div>
+      <div class="detail">
+        Dual-core 240MHz<br>
+        I²C Master (GPIO 21/22)<br>
+        USB Serial @ 115200 baud<br>
+        Command parser + interpolation<br>
+        OE control (emergency stop)
+      </div>
+    </div>
+
+    <!-- PCA9685 -->
+    <div class="component driver" style="left:40px; top:430px; width:280px;">
+      <div class="label">PCA9685 PWM Driver</div>
+      <div class="detail">
+        16-channel PWM @ 50Hz<br>
+        I²C addr: 0x40<br>
+        12-bit resolution (4096 steps)<br>
+        V+ screw terminal → servo power<br>
+        CH0–CH4 → 5 servos
+      </div>
+    </div>
+
+    <!-- Power Supply -->
+    <div class="component power" style="left:580px; top:30px; width:240px;">
+      <div class="label">6V 10A Switching PSU</div>
+      <div class="detail">
+        AC 220V → DC 6V<br>
+        10A continuous output<br>
+        Screw terminal output<br>
+        SPST toggle switch on input
+      </div>
+    </div>
+
+    <!-- Capacitor Bank -->
+    <div class="component power" style="left:580px; top:210px; width:240px;">
+      <div class="label">Capacitor Bank</div>
+      <div class="detail">
+        4× 1000µF 10V electrolytic<br>
+        Parallel across V+ / GND<br>
+        Absorbs servo inrush current<br>
+        Prevents ESP32 brownout
+      </div>
+    </div>
+
+    <!-- I²C Pull-ups -->
+    <div class="component controller" style="left:880px; top:210px; width:200px;">
+      <div class="label">I²C Pull-ups</div>
+      <div class="detail">
+        2× 4.7kΩ to 3.3V<br>
+        SDA + SCL lines<br>
+        Required for reliable comms
+      </div>
+    </div>
+
+    <!-- SERVOS -->
+    <div class="component servo" style="left:300px; top:620px; width:150px;">
+      <div class="label">CH0 — Servo 1</div>
+      <div class="detail">Midface Left<br>RDS3218</div>
+    </div>
+    <div class="component servo" style="left:480px; top:620px; width:150px;">
+      <div class="label">CH1 — Servo 2</div>
+      <div class="detail">Midface Right<br>RDS3218</div>
+    </div>
+    <div class="component servo" style="left:660px; top:620px; width:150px;">
+      <div class="label">CH2 — Servo 3</div>
+      <div class="detail">Left Cheek<br>RDS3218</div>
+    </div>
+    <div class="component servo" style="left:840px; top:620px; width:150px;">
+      <div class="label">CH3 — Servo 4</div>
+      <div class="detail">Right Cheek<br>RDS3218</div>
+    </div>
+    <div class="component servo" style="left:1020px; top:620px; width:150px;">
+      <div class="label">CH4 — Servo 5</div>
+      <div class="detail">Jaw<br>RDS3218</div>
+    </div>
+
+    <!-- Mechanism labels below servos -->
+    <div style="position:absolute; left:300px; top:720px; width:150px; text-align:center; font-size:10px; color:#666;">Midface linkage<br>4-bar geared</div>
+    <div style="position:absolute; left:480px; top:720px; width:150px; text-align:center; font-size:10px; color:#666;">Midface linkage<br>4-bar geared</div>
+    <div style="position:absolute; left:660px; top:720px; width:150px; text-align:center; font-size:10px; color:#666;">Cheek linkage<br>6-bar geared</div>
+    <div style="position:absolute; left:840px; top:720px; width:150px; text-align:center; font-size:10px; color:#666;">Cheek linkage<br>6-bar geared</div>
+    <div style="position:absolute; left:1020px; top:720px; width:150px; text-align:center; font-size:10px; color:#666;">Jaw linkage<br>4-bar geared</div>
+  </div>
+
+  <!-- WIRING TABLES -->
+  <h3 class="section-title i2c">I²C Wiring — ESP32 → PCA9685</h3>
+  <table class="pin-table">
+    <thead>
+      <tr><th>ESP32 Pin</th><th>PCA9685 Pin</th><th>Wire Color</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GPIO 21</td><td>SDA</td><td>Blue</td><td>I²C data — add 4.7kΩ pull-up to 3.3V</td></tr>
+      <tr><td>GPIO 22</td><td>SCL</td><td>Yellow</td><td>I²C clock — add 4.7kΩ pull-up to 3.3V</td></tr>
+      <tr><td>3.3V</td><td>VCC (logic)</td><td>Red</td><td>PCA9685 logic power (3.3V compatible)</td></tr>
+      <tr><td>GND</td><td>GND</td><td>Black</td><td>Common ground — must share with servo power GND</td></tr>
+      <tr><td>GPIO 25 (optional)</td><td>OE (Output Enable)</td><td>White</td><td>Active LOW — pull HIGH to disable all PWM (emergency stop)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-title pwm">PWM Channel Mapping — PCA9685 → Servos</h3>
+  <table class="pin-table">
+    <thead>
+      <tr><th>PCA9685 Channel</th><th>Servo</th><th>Mechanism Region</th><th>Linkage Type</th><th>Angle Range</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CH0</td><td>RDS3218 #1</td><td>Midface Left</td><td>4-bar geared linkage</td><td>0°–180° (mapped)</td></tr>
+      <tr><td>CH1</td><td>RDS3218 #2</td><td>Midface Right</td><td>4-bar geared linkage</td><td>0°–180° (mapped)</td></tr>
+      <tr><td>CH2</td><td>RDS3218 #3</td><td>Left Cheek</td><td>6-bar geared linkage</td><td>0°–150° (mapped)</td></tr>
+      <tr><td>CH3</td><td>RDS3218 #4</td><td>Right Cheek</td><td>6-bar geared linkage</td><td>0°–150° (mapped)</td></tr>
+      <tr><td>CH4</td><td>RDS3218 #5</td><td>Jaw</td><td>4-bar geared linkage</td><td>0°–120° (mapped)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="section-title power-section">Power Distribution</h3>
+  <table class="pin-table">
+    <thead>
+      <tr><th>Source</th><th>Destination</th><th>Voltage</th><th>Max Current</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>AC Mains (220V)</td><td>Switching PSU input</td><td>220V AC</td><td>—</td><td>Through SPST toggle switch</td></tr>
+      <tr><td>PSU output</td><td>Capacitor bank</td><td>6V DC</td><td>10A</td><td>Screw terminal connection</td></tr>
+      <tr><td>Cap bank</td><td>PCA9685 V+ terminal</td><td>6V DC</td><td>10A</td><td>Servo power rail — do NOT connect to VCC</td></tr>
+      <tr><td>Cap bank</td><td>All servo V+</td><td>6V DC</td><td>~2A per servo</td><td>Through PCA9685 breakout pins</td></tr>
+      <tr><td>ESP32 USB</td><td>ESP32 (logic)</td><td>5V → 3.3V</td><td>500mA</td><td>Powered by USB from PC — separate from servo power</td></tr>
+      <tr><td>ESP32 3.3V pin</td><td>PCA9685 VCC</td><td>3.3V</td><td>&lt;10mA</td><td>Logic power only</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Critical:</strong> The ESP32 is powered via USB (from the PC), NOT from the 6V servo power supply. 
+    The only shared connection between the two power domains is <strong>GND</strong> (common ground). 
+    This prevents servo noise from crashing the microcontroller.
+  </div>
+
+  <h3 class="section-title servo-section">Servo Specifications — RDS3218</h3>
+  <table class="pin-table">
+    <thead>
+      <tr><th>Parameter</th><th>Value</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Model</td><td>RDS3218</td><td>Digital, metal gear servo</td></tr>
+      <tr><td>Torque</td><td>18 kg·cm at 6V</td><td>Sufficient for all panel linkages</td></tr>
+      <tr><td>Rotation</td><td>270°</td><td>Full range — mapped to panel travel in firmware</td></tr>
+      <tr><td>Speed</td><td>0.16 sec / 60°</td><td>At 6V — fast enough for 30 FPS animation</td></tr>
+      <tr><td>Voltage</td><td>4.8V – 6.8V</td><td>Running at 6V for max torque</td></tr>
+      <tr><td>PWM Signal</td><td>500µs – 2500µs</td><td>Standard PWM at 50Hz</td></tr>
+      <tr><td>Stall Current</td><td>~2A at 6V</td><td>5 servos = 10A max (matched to PSU)</td></tr>
+      <tr><td>Connector</td><td>3-pin JR/Futaba</td><td>Brown=GND, Red=V+, Orange=Signal</td></tr>
+    </tbody>
+  </table>
+
+  <!-- BOM -->
+  <h3 class="section-title" style="margin-top:64px;">Bill of Materials — Electronics Only</h3>
+  <table class="bom-table">
+    <thead>
+      <tr><th>#</th><th>Component</th><th>Specification</th><th>Qty</th><th>Est. Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>ESP32 DevKit V1</td><td>38-pin, USB-C, dual-core 240MHz</td><td>1</td><td>$10.00</td></tr>
+      <tr><td>2</td><td>PCA9685 PWM Board</td><td>16-ch I²C PWM driver, Adafruit or equiv.</td><td>1</td><td>$12.00</td></tr>
+      <tr><td>3</td><td>RDS3218 Servo</td><td>18kg·cm, 270°, metal gear</td><td>5</td><td>$65.00</td></tr>
+      <tr><td>4</td><td>6V 10A Switching PSU</td><td>AC→DC, screw terminal output</td><td>1</td><td>$18.00</td></tr>
+      <tr><td>5</td><td>Capacitors (1000µF 10V)</td><td>Electrolytic, radial lead</td><td>4</td><td>$2.00</td></tr>
+      <tr><td>6</td><td>Resistors (4.7kΩ)</td><td>¼W, I²C pull-ups</td><td>2</td><td>$0.20</td></tr>
+      <tr><td>7</td><td>Breadboard</td><td>Full-size, 830 tie-points</td><td>1</td><td>$5.00</td></tr>
+      <tr><td>8</td><td>Jumper Wire Kit</td><td>M-M, M-F, F-F assorted</td><td>1</td><td>$6.00</td></tr>
+      <tr><td>9</td><td>USB-C Cable</td><td>Data-capable, 1m</td><td>1</td><td>$5.00</td></tr>
+      <tr><td>10</td><td>SPST Toggle Switch</td><td>Panel-mount, 10A rated</td><td>1</td><td>$3.00</td></tr>
+      <tr><td>11</td><td>Barrel Jack Connector</td><td>5.5×2.1mm, panel mount</td><td>1</td><td>$2.00</td></tr>
+      <tr><td>12</td><td>Heat-shrink Tubing</td><td>Assorted sizes</td><td>1 set</td><td>$4.00</td></tr>
+      <tr><td></td><td><strong>TOTAL (Electronics)</strong></td><td></td><td></td><td><strong>$132.20</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-bottom:64px;">
+    <strong>Shopping priority:</strong> Buy items 1–5 first for bench testing. You can verify the entire control chain (PC → ESP32 → PCA9685 → Servo) on a breadboard before committing to the full build. Items 7–12 are for clean assembly later.
+  </div>
+
+</body>
+</html>

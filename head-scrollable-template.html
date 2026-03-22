@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Head Project - Sean Cheng</title>
+    
+    <!-- Locomotive Scroll CSS -->
+    <link rel="stylesheet" href="denniss-template/assets/css/locomotive-scroll.css">
+    <link rel="stylesheet" href="denniss-template/assets/css/normalize.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .main {
+            width: 100vw;
+            position: relative;
+            background: #000;
+        }
+
+        .main-wrap {
+            width: 100vw;
+            will-change: transform;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 120px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1e2a3a 0%, #2d3e50 100%);
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 72px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .hero-section p {
+            font-size: 24px;
+            opacity: 0.8;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        /* Content Sections */
+        .content-section {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 60px;
+        }
+
+        .content-section h2 {
+            font-size: 48px;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .content-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            background: #0a0a0a;
+        }
+
+        /* Process Section */
+        .process-section {
+            background: #111;
+        }
+
+        /* Technical Section */
+        .technical-section {
+            background: #0a0a0a;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            background: #111;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 400px;
+            background: #222;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ElectronBotStudio Section (Last) */
+        .electronbot-section {
+            background: linear-gradient(135deg, #1e2a3a 0%, #2d3e50 50%, #34495e 100%);
+            min-height: 100vh;
+            padding: 0;
+            display: block;
+        }
+
+        .electronbot-section h2 {
+            text-align: center;
+            padding: 60px 0 40px;
+            font-size: 48px;
+            font-weight: 300;
+        }
+
+        /* ElectronBotStudio Container - Your existing interface */
+        #electronbot-container {
+            width: 100%;
+            height: calc(100vh - 200px);
+            position: relative;
+        }
+
+        /* Parallax Image */
+        .parallax-image {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            will-change: transform;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 48px;
+            }
+
+            .content-section {
+                padding: 0 30px;
+            }
+
+            .section {
+                padding: 80px 0;
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .once-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .once-in.is-inview {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <main class="main">
+        <div class="main-wrap" data-scroll-container>
+            
+            <!-- Hero Section -->
+            <section class="section hero-section" data-scroll-section>
+                <h1 class="once-in" data-scroll data-scroll-speed="0.5">Head Project</h1>
+                <p class="once-in" data-scroll data-scroll-speed="0.3">3D Facial Expression Control System</p>
+            </section>
+            
+            <!-- Introduction -->
+            <section class="section intro-section" data-scroll-section>
+                <div class="content-section">
+                    <h2 class="once-in" data-scroll>About This Project</h2>
+                    <p class="once-in" data-scroll>
+                        This project explores advanced 3D facial expression control using 
+                        real-time manipulation of facial features through an interactive interface.
+                    </p>
+                    <p class="once-in" data-scroll>
+                        The system allows precise control over individual facial components, 
+                        enabling complex emotional expressions and animations.
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Process Section -->
+            <section class="section process-section" data-scroll-section>
+                <div class="content-section">
+                    <h2 class="once-in" data-scroll>Process</h2>
+                    <p class="once-in" data-scroll>
+                        The development process involved 3D modeling, rigging, and creating 
+                        an intuitive control interface for real-time manipulation.
+                    </p>
+                    <!-- Add more process content here -->
+                </div>
+            </section>
+            
+            <!-- Technical Details -->
+            <section class="section technical-section" data-scroll-section>
+                <div class="content-section">
+                    <h2 class="once-in" data-scroll>Technical Details</h2>
+                    <p class="once-in" data-scroll>
+                        Built with Three.js for 3D rendering, the system uses GLTF models 
+                        and custom shaders for realistic facial expressions.
+                    </p>
+                    <!-- Add technical details here -->
+                </div>
+            </section>
+            
+            <!-- Gallery Section -->
+            <section class="section gallery-section" data-scroll-section>
+                <div class="content-section">
+                    <h2 class="once-in" data-scroll>Gallery</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item once-in" data-scroll>
+                            <!-- Add your images here -->
+                            <div style="background: #333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
+                                Image 1
+                            </div>
+                        </div>
+                        <div class="gallery-item once-in" data-scroll>
+                            <div style="background: #333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
+                                Image 2
+                            </div>
+                        </div>
+                        <div class="gallery-item once-in" data-scroll>
+                            <div style="background: #333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #666;">
+                                Image 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ElectronBotStudio Section (LAST) -->
+            <section class="section electronbot-section" data-scroll-section>
+                <h2>Interactive 3D Viewer</h2>
+                <div id="electronbot-container">
+                    <!-- 
+                    PASTE YOUR EXISTING ELECTRONBOTSTUDIO INTERFACE HERE
+                    Copy the content from your current head.html starting from:
+                    <div class="main-container"> ... </div>
+                    -->
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff;">
+                        <p>Your ElectronBotStudio interface will go here</p>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+    
+    <!-- Locomotive Scroll JS -->
+    <script src="denniss-template/assets/js/locomotive-scroll.min.js"></script>
+    <script>
+        // Initialize Locomotive Scroll
+        const scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            multiplier: 1,
+            class: 'is-revealed',
+            scrollbarContainer: null
+        });
+
+        // Scroll-triggered animations
+        scroll.on('scroll', (instance) => {
+            const elements = document.querySelectorAll('.once-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isInView) {
+                    el.classList.add('is-inview');
+                }
+            });
+        });
+    </script>
+    
+    <!-- Your ElectronBotStudio scripts (when you add the interface) -->
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script type="module" src="./west_world/js/main.js"></script>
+    -->
+</body>
+</html>

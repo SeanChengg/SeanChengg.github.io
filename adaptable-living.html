@@ -59,7 +59,7 @@
             --rt-item-fade-duration:0.9s;
             --rt-item-stagger:0.42s;
             /* Richard frames: fade-in in order 1→5; each starts after the previous finishes */
-            --richard-frame-dur:0.65s;
+            --richard-frame-dur:0.52s;
             /* Hero: chars appear R→L (last char first), line slides left in sync; then recoil */
             --hero-line-dur:1.35s;
             /* R→L drive (longer travel, snappier timing — still in sync with char cascade) */
@@ -94,15 +94,25 @@
         .sidebar .label{font-family:var(--ff-display);font-size:clamp(24px,2.5vw,36px);color:var(--color-accent);margin-bottom:var(--sp-xs)}
         .sidebar .sub{font-size:var(--fs-cap);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-sm)}
         .sidebar .meta{font-size:var(--fs-cap);color:var(--color-text-3);margin-bottom:var(--sp-lg)}
-        .toc{display:flex;flex-direction:column;gap:var(--sp-sm)}
-        .toc a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);transition:var(--trans);padding:4px 0;border-left:2px solid transparent;padding-left:12px}
-        .toc a:hover{color:var(--color-accent);border-left-color:var(--color-accent)}
-        /* Sticky TOC — follows viewer */
-        .toc-fixed{position:fixed;left:var(--pad);top:calc(50vh - 180px);z-index:90;display:flex;flex-direction:column;gap:var(--sp-sm);transition:opacity 0.3s ease}
-        .toc-fixed .label{font-family:var(--ff-display);font-size:clamp(24px,2.5vw,36px);color:var(--color-accent);margin-bottom:var(--sp-xs)}
-        .toc-fixed .sub{font-size:var(--fs-cap);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-lg)}
-        .toc-fixed a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);transition:var(--trans);padding:4px 0;border-left:2px solid transparent;padding-left:12px}
-        .toc-fixed a:hover{color:var(--color-accent);border-left-color:var(--color-accent)}
+        /* TOC: tighter row gap; anchored from top so last item isn’t flush to viewport bottom */
+        .toc{display:flex;flex-direction:column;gap:6px}
+        .toc a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);padding:2px 0;border-left:2px solid transparent;padding-left:12px;display:inline-block;transition:color 0.2s ease,transform 0.2s ease,filter 0.2s ease;transform-origin:left center}
+        .toc a:hover{color:#212121!important;border-left-color:var(--color-accent);transform:scale(1.05);filter:brightness(1.12)}
+        /* Sticky TOC — host-project style hover: scale + darken + slight “light up”
+           ▼ Vertical align with hero main title: edit `top` / `clamp()` on `.toc-fixed` only.
+           Hero is vertically centered in the viewport; if the TOC feels high/low vs “Furniture”, nudge these values (e.g. try 18vh→24vh or add a few px). */
+        .toc-fixed{
+            position:fixed;left:var(--pad);z-index:90;
+            top:clamp(120px,22vh,280px);
+            display:flex;flex-direction:column;gap:6px;
+            transition:opacity 0.3s ease;
+        }
+        /* Space under “Adaptable Living” — tweak margin-bottom on .label */
+        .toc-fixed .label{font-family:var(--ff-display);font-size:clamp(24px,2.5vw,36px);color:var(--color-accent);margin-bottom:var(--sp-md);line-height:1.15}
+        /* Space under “Independent Research” before first TOC link — tweak margin-bottom on .sub */
+        .toc-fixed .sub{font-size:var(--fs-cap);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-lg);line-height:1.25}
+        .toc-fixed a{font-size:var(--fs-cap);font-weight:500;color:var(--color-text-3);padding:2px 0;border-left:2px solid transparent;padding-left:12px;display:inline-block;transition:color 0.2s ease,transform 0.2s ease,filter 0.2s ease;transform-origin:left center}
+        .toc-fixed a:hover{color:#212121!important;border-left-color:var(--color-accent);transform:scale(1.05);filter:brightness(1.12)}
         @media(max-width:1024px){.toc-fixed{display:none}}
         .hero-content{display:flex;flex-direction:column;justify-content:center;margin-left:var(--content-off);align-items:flex-start}
         .overline{font-size:var(--fs-over);font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--color-text-3);margin-bottom:var(--sp-md)}
@@ -174,6 +184,211 @@
         /* Figma page image — used as-is from Figma export */
         .figma-page{width:100%;margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden;background:transparent;position:relative}
         .figma-page img{width:100%;height:auto;display:block}
+        /* Solution hero image: full width, tighter bottom margin so body text feels connected */
+        .figma-page.solution-hero{
+            margin-top:var(--sp-md);
+            margin-bottom:var(--sp-xl);
+            border-radius:var(--radius);
+            overflow:hidden;
+        }
+        /* Shelf video: same width as hero; thinner grey frame, no harsh outline, rounded */
+        .figma-page.solution-video-frame{
+            width:100%;
+            margin-top:0;
+            margin-bottom:var(--sp-xl);
+            border-radius:22px;
+            overflow:hidden;
+            background:linear-gradient(165deg,#e8e4df 0%,#cfc8bd 22%,#c4bdb2 50%,#d6d1c9 78%,#e2ded8 100%);
+            border:none;
+            box-shadow:
+                0 4px 14px rgba(0,0,0,0.1),
+                0 1px 0 rgba(255,255,255,0.5) inset,
+                0 -1px 0 rgba(0,0,0,0.05) inset;
+            padding:clamp(8px,1.1vw,12px);
+        }
+        .solution-video-matte{
+            position:relative;
+            background:#f7f6f4;
+            border-radius:16px;
+            overflow:hidden;
+            border:1px solid rgba(180,172,160,0.45);
+            box-shadow:
+                inset 0 1px 3px rgba(0,0,0,0.05),
+                inset 0 0 0 1px rgba(255,255,255,0.5);
+            /* Crop container: use the video's visible content aspect ratio (excluding the black bar).
+               The actual video is ~1920x1080 but ~60px on the right is black.
+               So the real content is roughly 1860x1080 ≈ 1.722:1.
+               We use this as the aspect ratio so the container fits the content exactly. */
+            aspect-ratio: 1860 / 1080;
+        }
+        .solution-video-matte video{
+            display:block;
+            width:100%;
+            height:100%;
+            position:absolute;
+            left:0;
+            top:0;
+            /* Cover fills the container; since the container is slightly narrower than
+               the full video ratio, the rightmost ~3% (the black bar) gets cropped off */
+            object-fit:cover;
+            object-position:left center;
+            background:#f7f6f4;
+        }
+        /* Collected Items Data: less gap under body copy and before next section (default figma-page uses --sp-xl) */
+        .figma-page.figma-page--collected-data{margin-top:var(--sp-md);margin-bottom:var(--sp-sm)}
+        /* Tighter transition Requirements → Competitor (both use large --sec-gap) */
+        section#requirements.sec{padding-bottom:clamp(36px,5vw,72px)}
+        section#competitor.sec{padding-top:clamp(44px,6vw,88px);padding-bottom:clamp(28px,4vw,52px)}
+        /* Tighter transition Competitor Analysis → Pivot / Design Progression */
+        section#pivot.sec{padding-top:clamp(32px,4vw,56px)}
+        /* Iteration: gap under RTA image → first quote (tweak the px values) */
+        section#iteration .figma-page.mt-lg{margin-bottom:0px}
+        section#iteration .figma-page.mt-lg + .quote{margin-top:24px}
+        /* Design Progression: frames 1→9 appear in order and stay visible; end state = all 9 shown (one play per view until complete). Tweak --dg-cycle */
+        .design-progression-stack{position:relative;width:100%;--dg-cycle:9s}
+        .design-progression-stack__inner{position:relative;width:100%}
+        .design-progression-stack__spacer{
+            width:100%;height:auto;display:block;
+            visibility:hidden;pointer-events:none;user-select:none;
+        }
+        .design-progression-stack__layers{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            pointer-events:none;
+        }
+        .design-progression-stack__frame{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            object-fit:contain;object-position:top center;
+            opacity:0;
+            animation-duration:var(--dg-cycle);
+            animation-iteration-count:1;
+            animation-fill-mode:forwards;
+            animation-timing-function:linear;
+            animation-play-state:paused;
+        }
+        .design-progression-stack__frame--1{z-index:1;animation-name:design-prog-f1}
+        .design-progression-stack__frame--2{z-index:2;animation-name:design-prog-f2}
+        .design-progression-stack__frame--3{z-index:3;animation-name:design-prog-f3}
+        .design-progression-stack__frame--4{z-index:4;animation-name:design-prog-f4}
+        .design-progression-stack__frame--5{z-index:5;animation-name:design-prog-f5}
+        .design-progression-stack__frame--6{z-index:6;animation-name:design-prog-f6}
+        .design-progression-stack__frame--7{z-index:7;animation-name:design-prog-f7}
+        .design-progression-stack__frame--8{z-index:8;animation-name:design-prog-f8}
+        .design-progression-stack__frame--9{z-index:9;animation-name:design-prog-f9}
+        .design-progression-stack--playing .design-progression-stack__frame{animation-play-state:running}
+        /* Before start / after scroll-away (not complete): only frame 1 visible */
+        .design-progression-stack:not(.design-progression-stack--playing):not(.design-progression-stack--complete) .design-progression-stack__frame{animation:none!important}
+        .design-progression-stack:not(.design-progression-stack--playing):not(.design-progression-stack--complete) .design-progression-stack__frame--1{opacity:1}
+        .design-progression-stack:not(.design-progression-stack--playing):not(.design-progression-stack--complete) .design-progression-stack__frame:not(.design-progression-stack__frame--1){opacity:0}
+        /* After animation: all layers stay visible */
+        .design-progression-stack--complete .design-progression-stack__frame{animation:none!important;opacity:1!important}
+        /* Each frame: fade in over ~4.5% of cycle after its step */
+        @keyframes design-prog-f1{0%,100%{opacity:1}}
+        @keyframes design-prog-f2{0%,11.111%{opacity:0}15.6%,100%{opacity:1}}
+        @keyframes design-prog-f3{0%,22.222%{opacity:0}26.7%,100%{opacity:1}}
+        @keyframes design-prog-f4{0%,33.333%{opacity:0}37.8%,100%{opacity:1}}
+        @keyframes design-prog-f5{0%,44.444%{opacity:0}48.9%,100%{opacity:1}}
+        @keyframes design-prog-f6{0%,55.555%{opacity:0}60.0%,100%{opacity:1}}
+        @keyframes design-prog-f7{0%,66.666%{opacity:0}71.1%,100%{opacity:1}}
+        @keyframes design-prog-f8{0%,77.777%{opacity:0}82.2%,100%{opacity:1}}
+        @keyframes design-prog-f9{0%,88.888%{opacity:0}93.3%,100%{opacity:1}}
+        /* ===== DOTTED LINES between progression circles (24 18 dasharray; grow via inline stroke-dashoffset + JS) ===== */
+        .design-progression-stack__lines{
+            position:absolute;left:0;top:0;width:100%;height:100%;
+            z-index:0;
+            pointer-events:none;overflow:visible;
+        }
+        .dp-line{
+            stroke:#9ca3af;
+            stroke-width:12;
+            stroke-dasharray:24 18;
+            stroke-linecap:round;
+            fill:none;
+            visibility:hidden;
+            opacity:0;
+            transition:none;
+        }
+        .design-progression-stack--complete .dp-line{
+            visibility:visible !important;
+            opacity:1 !important;
+            stroke-dashoffset:0 !important;
+            stroke-dasharray:24 18 !important;
+            transition:none !important;
+        }
+        .design-progression-stack:not(.design-progression-stack--playing):not(.design-progression-stack--complete) .dp-line{
+            visibility:hidden;
+            opacity:0;
+        }
+        @media (prefers-reduced-motion:reduce){
+            .design-progression-stack__frame{animation:none!important;opacity:1!important}
+            .dp-line{
+                visibility:visible!important;opacity:1!important;
+                stroke-dashoffset:0!important;stroke-dasharray:24 18!important;
+                transition:none!important;
+            }
+        }
+        /* 3D Question mark inside Frame 9 circle — positioned at Frame 9 center, sized to fit inside circle */
+        .dp-qmark{
+            position:absolute;
+            z-index:11; /* above all frames */
+            pointer-events:none;
+            /* Position: edit left / top (percent of .design-progression-stack__layers box).
+               — Move UP: decrease `top` (e.g. 74% → 71%). Move DOWN: increase `top`.
+               — Move LEFT: decrease `left`. Move RIGHT: increase `left`.
+               — Bigger/smaller: change `width` (height follows SVG aspect ratio). */
+            width:19%;
+            left:76.8%;
+            top:71%;
+            opacity:0;
+            transform-origin:center center;
+            animation:none;
+        }
+        .dp-qmark svg{
+            display:block;
+            width:100%;
+            height:auto;
+        }
+
+        /* Show as soon as animation is playing (Frame 9 fade-in) OR after complete */
+        .design-progression-stack--playing .dp-qmark,
+        .design-progression-stack--complete .dp-qmark{
+            opacity:1;
+            animation:dp-qmark-enter 0.5s ease-out forwards, dp-qmark-wiggle 2.5s ease-in-out 0.5s infinite;
+        }
+
+        /* Entrance: scale up + fade in */
+        @keyframes dp-qmark-enter{
+            from{opacity:0;transform:scale(0.3) rotate(-15deg)}
+            to{opacity:1;transform:scale(1) rotate(0deg)}
+        }
+
+        /* Continuous wiggle */
+        @keyframes dp-qmark-wiggle{
+            0%{transform:rotate(0deg)}
+            15%{transform:rotate(8deg)}
+            30%{transform:rotate(-6deg)}
+            45%{transform:rotate(5deg)}
+            60%{transform:rotate(-3deg)}
+            75%{transform:rotate(2deg)}
+            100%{transform:rotate(0deg)}
+        }
+
+        /* Before play or when idle (not playing and not complete): hidden */
+        .design-progression-stack:not(.design-progression-stack--playing):not(.design-progression-stack--complete) .dp-qmark{
+            opacity:0;
+            animation:none;
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .dp-qmark{
+                opacity:1!important;
+                animation:none!important;
+                transform:none!important;
+            }
+            .design-progression-stack--complete .dp-qmark{
+                opacity:1;
+                animation:none!important;
+            }
+        }
         /* Same width as former .two-col left cell (1fr + gap + 1fr) */
         .figma-page--richard-col{
             max-width:calc((100% - var(--sp-md)) / 2);
@@ -181,8 +396,37 @@
             margin-left:0;
             margin-right:auto;
         }
+        .figma-page--pain-col{
+            max-width:calc((100% - var(--sp-md)) / 2);
+            width:100%;
+            margin-left:auto;
+            margin-right:0;
+        }
+        /* Richard + Pain Points side by side */
+        .richard-pain-row{
+            display:flex;
+            flex-direction:row;
+            flex-wrap:wrap;
+            align-items:flex-start;
+            gap:var(--sp-md);
+            width:100%;
+        }
+        .richard-pain-row .figma-page--richard-col,
+        .richard-pain-row .figma-page--pain-col{
+            flex:1 1 calc(50% - var(--sp-md) / 2);
+            min-width:0;
+            max-width:calc(50% - var(--sp-md) / 2);
+            margin-left:0;
+            margin-right:0;
+            margin-top:0;
+            margin-bottom:0;
+        }
         @media(max-width:768px){
-            .figma-page--richard-col{max-width:100%}
+            .figma-page--richard-col,
+            .figma-page--pain-col{max-width:100%}
+            .richard-pain-row{flex-direction:column}
+            .richard-pain-row .figma-page--richard-col,
+            .richard-pain-row .figma-page--pain-col{max-width:100%;flex:1 1 auto}
         }
         .figma-page .export-note{position:absolute;bottom:12px;right:16px;font-size:11px;color:var(--color-accent);background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:4px;font-weight:500;backdrop-filter:blur(6px)}
 
@@ -414,8 +658,9 @@
         <a href="#predicament">The Moving Predicament</a>
         <a href="#research">User Research &amp; Persona</a>
         <a href="#requirements">Requirements &amp; Data</a>
-        <a href="#competitor">Competitor Analysis</a>
         <a href="#iteration">Prototyping &amp; Iteration</a>
+        <a href="#competitor">Competitor Analysis</a>
+        <a href="#pivot">The Pivot</a>
         <a href="#solution">The Solution</a>
         <a href="#next">Next Stage</a>
     </nav>
@@ -504,8 +749,9 @@
                 <p class="body">Richard is a 28-year-old software engineer who's made minimalism his way of life — but not by choice. Living in a one-bedroom apartment with his cat, he works from home three days a week, so his space needs to be both living area and workspace. He 3D-prints his own organisers and loves finding clever storage solutions that look good.</p>
                 <p class="body">His apartment has awkward corners where wider shelves don't fit. He wants to display porcelain and figurine collectibles and keep them safe from his cat. Moving yearly for work is a headache — fragile collectibles broke during his last move, and he wasted hours digging for cat supplies or chargers. His old IKEA shelves are falling apart from constant rebuilding, and he ditched a glass-door unit because it was too heavy to move.</p>
 
-                <!-- Underlay = full page; Frame1 = Workspace + line to Hao quote; Frame2–5 build on top; fade 1→5 -->
-                <div class="figma-page figma-page--richard-col mt-lg richard-needs-stack" id="richard-needs-stack" role="img" aria-label="Richard's Needs and Behaviors — User Insights">
+                <!-- Underlay = full page; Frame1 = Workspace + line to Hao quote; Frame2–5 build on top; fade 1→5 | Pain points: same pattern, Frame1–4 -->
+                <div class="richard-pain-row mt-lg">
+                <div class="figma-page figma-page--richard-col richard-needs-stack" id="richard-needs-stack" role="img" aria-label="Richard's Needs and Behaviors — User Insights">
                     <div class="richard-needs-stack__inner">
                         <img class="richard-needs-stack__spacer" src="images/adaptable/page_richard_needs/page_richard_needs.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
                         <div class="richard-needs-stack__layers">
@@ -517,6 +763,19 @@
                             <img class="richard-needs-stack__f richard-needs-stack__f--5" src="images/adaptable/page_richard_needs/Frame5.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
                         </div>
                     </div>
+                </div>
+                <div class="figma-page figma-page--pain-col richard-needs-stack" id="pain-points-stack" role="img" aria-label="Pain points — layered frames">
+                    <div class="richard-needs-stack__inner">
+                        <img class="richard-needs-stack__spacer" src="images/adaptable/page_pain_points/page_pain_points.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                        <div class="richard-needs-stack__layers">
+                            <img class="richard-needs-stack__underlay" src="images/adaptable/page_pain_points/page_pain_points.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--1" src="images/adaptable/page_pain_points/Frame1.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--2" src="images/adaptable/page_pain_points/Frame2.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--3" src="images/adaptable/page_pain_points/Frame3.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <img class="richard-needs-stack__f richard-needs-stack__f--4" src="images/adaptable/page_pain_points/Frame4.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <div class="takeaway mt-lg">
@@ -537,37 +796,15 @@
                 <p class="body">To ensure the shelf works for real-world needs, common items renters store — books, collectibles, electronics — were measured. This data drove the base shelf size: <strong style="color:#E53E3E">15.8" × 11.8" × 11.8"</strong> (40cm × 30cm × 30cm), accommodating 90% of items listed while fitting tight spaces like studio apartments.</p>
 
                 <!-- Figma page: Collected Items Data (10-859) -->
-                <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_collected_data.png" alt="Collected Items Data" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== COMPETITOR ANALYSIS ===== -->
-    <section class="sec" id="competitor">
-        <div class="page"><div class="grid-bg"></div>
-            <div class="sec-content fade-in">
-                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="4" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/></svg></div>
-                <h2 class="sec-title">Competitor Analysis</h2>
-                <p class="body">The market for RTA shelves is saturated. The winning products are usually the simplest and cheapest — using standardised components like ball joints, uniform bars, and pre-drilled holes. No thinking required. Renters prioritise shelves priced between $30–$100 that offer either open display or enclosed storage.</p>
-                <p class="body">While they'll tolerate assembly if it's affordable and sturdy, these shelves often get discarded during moves. Disassembling them is tedious, and renters see them as temporary. Surveys confirmed: users prioritise effortless over reusability, and most rarely use shelves as moving bins.</p>
-
-                <!-- Figma page: Competitor Analysis (10-1067) -->
-                <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_competitor.png" alt="Competitor Analysis: Ready to Assemble Shelf" loading="lazy">
-                </div>
-
-                <!-- Figma page: Downside of RTA Shelves (32-175) -->
-                <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_downside_rta.png" alt="Downside of RTA Shelves" loading="lazy">
+                <div class="figma-page figma-page--collected-data">
+                    <img src="images/adaptable/page_collected_data.png?v=2" alt="Collected Items Data" loading="lazy" decoding="async">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ===== PROTOTYPING & ITERATION ===== -->
-    <section class="sec bg-alt" id="iteration">
+    <section class="sec" id="iteration">
         <div class="page"><div class="grid-bg"></div>
             <div class="sec-content fade-in">
                 <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4v40M4 24h40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/></svg></div>
@@ -578,7 +815,7 @@
 
                 <!-- Figma page: Iteration 2 RTA Shelves with Modular Connector (10-1013) -->
                 <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_iteration2_rta.png" alt="Iteration 2: RTA Shelves with Modular Connector" loading="lazy">
+                    <img src="images/adaptable/page_iteration2_rta.png?v=9" alt="Iteration 2: RTA Shelves with Modular Connector" loading="lazy" decoding="async">
                 </div>
 
                 <div class="quote mt-lg">
@@ -589,37 +826,134 @@
                     <p>"Aligning these parts can be frustrating."</p>
                     <p class="attr">— Geo</p>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <p class="body mt-lg">Assembly complexity bothers renters too. They need simplicity in both form and usage. It all comes down to stripping the connecting system to its most intuitive form. These insights pushed the next iteration toward something simpler: assembly-free, easy to fold and pack, compact enough to fit into regular moving boxes, with optional display mode — encouraging users to keep them during moves.</p>
+    <!-- ===== COMPETITOR ANALYSIS ===== -->
+    <section class="sec bg-alt" id="competitor">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
+                <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="4" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="26" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/></svg></div>
+                <h2 class="sec-title">Competitor Analysis</h2>
+                <p class="body">The market for RTA shelves is saturated. The winning products are usually the simplest and cheapest — standardised parts, minimal steps, no thinking required. Renters prioritise shelves priced between $30–$100 that offer either open display or enclosed storage.</p>
+                <p class="body">While they'll tolerate assembly if it's affordable and sturdy, these shelves often get discarded during moves. Disassembling them is tedious, and renters see them as temporary. Surveys confirmed: users prioritise effortless over reusability, and most rarely use shelves as moving bins.</p>
 
+                <!-- Figma page: Competitor Analysis (10-1067) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_competitor.png?v=6" alt="Competitor Analysis: Ready to Assemble Shelf" loading="lazy" decoding="async">
+                </div>
+
+                <div class="takeaway mt-lg">
+                    <p class="tk-label">Key Takeaway</p>
+                    <p class="tk-text"><strong>USM &amp; System180</strong> shelves dominate by making production &amp; assembly simple: <strong>Ball joints</strong>, <strong>Uniform bars</strong>, <strong>Pre-drilled holes</strong>, <strong>no thinking required</strong>.</p>
+                </div>
+
+                <!-- Figma page: Downside of RTA Shelves (32-175) -->
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/page_downside_rta.png?v=5" alt="Downside of RTA Shelves" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THE PIVOT ===== -->
+    <section class="sec" id="pivot">
+        <div class="page"><div class="grid-bg"></div>
+            <div class="sec-content fade-in">
                 <h3 class="sec-sub mt-xl">Design Progression</h3>
                 <p class="body mb-lg">The full evolution from early RTA concepts through polygon experiments, modular connector shelves, and ultimately to the foldable solution — each stage informed by user feedback and production constraints.</p>
 
-                <!-- Figma page: Design Progression Map (10-1604) -->
-                <div class="figma-page">
-                    <img src="images/adaptable/page_progression_map.png" alt="Design Progression Map" loading="lazy">
+                <!-- Design Progression: 9-frame stop-motion (images/adaptable/Design_progression/Frame1–9.png) -->
+                <div class="figma-page mt-lg">
+                    <div class="design-progression-stack" id="design-progression-stack" role="img" aria-label="Design progression — animated frames 1 through 9">
+                        <div class="design-progression-stack__inner">
+                            <img class="design-progression-stack__spacer" src="images/adaptable/Design_progression/Frame1.png" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                            <div class="design-progression-stack__layers">
+                                <svg class="design-progression-stack__lines" viewBox="0 0 2284 1916" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <line class="dp-line dp-line--1" x1="321" y1="277" x2="1131" y2="277"/>
+                                    <line class="dp-line dp-line--2" x1="1131" y1="277" x2="1967" y2="277"/>
+                                    <line class="dp-line dp-line--3" x1="1967" y1="277" x2="1967" y2="922"/>
+                                    <line class="dp-line dp-line--4" x1="1970" y1="922" x2="1131" y2="922"/>
+                                    <line class="dp-line dp-line--5" x1="1131" y1="922" x2="320" y2="922"/>
+                                    <line class="dp-line dp-line--6" x1="320" y1="922" x2="320" y2="1595"/>
+                                    <line class="dp-line dp-line--7" x1="317" y1="1595" x2="1126" y2="1595"/>
+                                    <line class="dp-line dp-line--8" x1="1126" y1="1595" x2="1970" y2="1595"/>
+                                </svg>
+                                <img class="design-progression-stack__frame design-progression-stack__frame--1" src="images/adaptable/Design_progression/Frame1.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--2" src="images/adaptable/Design_progression/Frame2.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--3" src="images/adaptable/Design_progression/Frame3.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--4" src="images/adaptable/Design_progression/Frame4.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--5" src="images/adaptable/Design_progression/Frame5.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--6" src="images/adaptable/Design_progression/Frame6.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--7" src="images/adaptable/Design_progression/Frame7.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--8" src="images/adaptable/Design_progression/Frame8.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="design-progression-stack__frame design-progression-stack__frame--9" src="images/adaptable/Design_progression/Frame9.png?v=1" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                                <!-- Animated 3D question mark inside Frame 9 circle -->
+                                <div class="dp-qmark" id="dp-qmark" aria-hidden="true">
+                                    <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="qm-grad" x1="0" y1="0" x2="1" y2="1">
+                                                <stop offset="0%" stop-color="#c0c0c0"/>
+                                                <stop offset="35%" stop-color="#e8e8e8"/>
+                                                <stop offset="55%" stop-color="#d0d0d0"/>
+                                                <stop offset="100%" stop-color="#a0a0a0"/>
+                                            </linearGradient>
+                                            <linearGradient id="qm-shadow" x1="0" y1="0" x2="0.3" y2="1">
+                                                <stop offset="0%" stop-color="#999"/>
+                                                <stop offset="100%" stop-color="#bbb"/>
+                                            </linearGradient>
+                                            <filter id="qm-depth" x="-10%" y="-10%" width="130%" height="130%">
+                                                <feDropShadow dx="3" dy="5" stdDeviation="3" flood-color="#00000033"/>
+                                            </filter>
+                                        </defs>
+                                        <!-- 3D back layer (shadow/depth) -->
+                                        <text x="63" y="112" text-anchor="middle" font-family="'Georgia','Times New Roman',serif" font-size="130" font-weight="700" fill="url(#qm-shadow)" opacity="0.5" transform="translate(4,4)">?</text>
+                                        <!-- 3D front layer -->
+                                        <text x="63" y="112" text-anchor="middle" font-family="'Georgia','Times New Roman',serif" font-size="130" font-weight="700" fill="url(#qm-grad)" filter="url(#qm-depth)">?</text>
+                                        <!-- Highlight on top-right edge for 3D effect -->
+                                        <text x="63" y="112" text-anchor="middle" font-family="'Georgia','Times New Roman',serif" font-size="130" font-weight="700" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" opacity="0.7">?</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="body mt-lg">A unit that needs assembly is frustrating for renters. They need absolute simplicity. It all comes down to stripping the user manual to most intuitive form. These insights pushed the next iteration toward something simpler:</p>
+                <div class="takeaway mt-md">
+                    <p class="tk-label">Final Iteration</p>
+                    <p class="tk-text"><strong>Assembly-free, easy to fold and pack</strong>, compact enough to fit into regular moving boxes, with <strong>optional display mode</strong> — encouraging users to keep them during moves.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ===== THE SOLUTION ===== -->
-    <section class="sec" id="solution">
+    <section class="sec bg-alt" id="solution">
         <div class="page"><div class="grid-bg"></div>
             <div class="sec-content fade-in">
                 <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2.5"/><path d="M8 20h32M20 20v20" stroke="currentColor" stroke-width="2"/><path d="M14 14h4M30 14h4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 <h2 class="sec-title">Shelves That Move With You</h2>
+
+                <!-- Hero image for the solution -->
+                <div class="figma-page solution-hero">
+                    <img src="images/adaptable/Hero_image.png" alt="Shelves That Move With You — Hero" loading="lazy" decoding="async">
+                </div>
+
+                <div class="figma-page solution-video-frame">
+                    <div class="solution-video-matte">
+                        <video class="solution-video" src="images/adaptable/Shelf.mp4" controls playsinline preload="metadata" aria-label="Shelf assembly — product video">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+
                 <p class="body">In his apartment, Richard stacks the shelves and uses lower units to store porcelain ware in enclosed compartments — keeping them safe from his cat. He uses open display on upper levels for collectibles like sculptures and electronics, arranged for visual balance.</p>
                 <p class="body">When moving, Richard packs most shelves into a moving box within minutes and converts a couple into secure bins for charging cables and cat supplies. These bins let him find essentials instantly in his new place — no more stressful digging through boxes.</p>
 
                 <!-- Figma page: Shelves That Move With You (10-1025) -->
                 <div class="figma-page mt-lg">
                     <img src="images/adaptable/page_shelves_move.png" alt="Shelves That Move With You" loading="lazy">
-                </div>
-
-                <!-- Figma page: Practicality Meets Portability (10-1045) -->
-                <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_practicality.png" alt="Practicality Meets Portability" loading="lazy">
                 </div>
 
                 <!-- Figma page: Material Preference (10-1035) -->
@@ -631,7 +965,7 @@
     </section>
 
     <!-- ===== NEXT STAGE ===== -->
-    <section class="sec bg-alt" id="next">
+    <section class="sec" id="next">
         <div class="page"><div class="grid-bg"></div>
             <div class="sec-content fade-in">
                 <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4l8 8H16l8-8z" fill="currentColor" opacity="0.3"/><path d="M12 20h24v20H12z" stroke="currentColor" stroke-width="2.5" rx="2"/><path d="M20 20v20M28 20v20M12 30h24" stroke="currentColor" stroke-width="1.5"/></svg></div>
@@ -681,16 +1015,137 @@
             io.observe(el);
         })();
 
-        /* Richard frame stack: play staggered fade when in view; reset when scrolled away */
+        /* Richard + Pain Points frame stacks: same staggered fade when in view */
         (function(){
-            var el=document.getElementById('richard-needs-stack');
-            if(!el)return;
-            var io=new IntersectionObserver(function(entries){
-                entries.forEach(function(en){
-                    if(en.isIntersecting){el.classList.add('richard-needs-stack--visible');}
-                    else{el.classList.remove('richard-needs-stack--visible');}
+            var ids=['richard-needs-stack','pain-points-stack'];
+            var opts={threshold:0.15,rootMargin:'0px 0px -8% 0px'};
+            ids.forEach(function(id){
+                var el=document.getElementById(id);
+                if(!el)return;
+                var io=new IntersectionObserver(function(entries){
+                    entries.forEach(function(en){
+                        if(en.isIntersecting){el.classList.add('richard-needs-stack--visible');}
+                        else{el.classList.remove('richard-needs-stack--visible');}
+                    });
+                },opts);
+                io.observe(el);
+            });
+        })();
+
+        /* Design Progression: sequential dotted line draw + frame reveal.
+           Lines grow smoothly from circle to circle, always BEHIND frames. */
+        (function(){
+            var el = document.getElementById('design-progression-stack');
+            if(!el) return;
+
+            var lines = el.querySelectorAll('.dp-line');
+            var playing = false;
+            var complete = false;
+            var timeouts = [];
+
+            var cs = getComputedStyle(el);
+            var cycleS = parseFloat(cs.getPropertyValue('--dg-cycle')) || 9;
+            var cycleMs = cycleS * 1000;
+            var frameStep = cycleMs / 9;
+            var drawDur = frameStep * 0.8;
+
+            /* Pre-compute each line's length and set the initial dashoffset as INLINE STYLE
+               (not via CSS var) so the browser has a real numeric start value for the transition. */
+            var lineLengths = [];
+            lines.forEach(function(line){
+                var x1 = +line.getAttribute('x1'), y1 = +line.getAttribute('y1');
+                var x2 = +line.getAttribute('x2'), y2 = +line.getAttribute('y2');
+                var len = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+                var rounded = Math.ceil(len / 42) * 42;  /* round to dash cycle (24+18=42) */
+                lineLengths.push(rounded);
+                /* Set dasharray to the full length so the entire line is one "dash" worth of dots,
+                   then offset hides it. When offset goes to 0, dots are revealed progressively. */
+                line.setAttribute('stroke-dasharray', '24 18');
+                line.style.strokeDashoffset = rounded + 'px';
+                line.style.transition = 'none';
+            });
+
+            function activateLine(line, idx){
+                /* Force the browser to acknowledge the current dashoffset value */
+                line.getBoundingClientRect();  /* force layout/reflow */
+                /* Now set the transition and target value */
+                line.style.transition = 'stroke-dashoffset ' + drawDur + 'ms ease-out';
+                line.style.visibility = 'visible';
+                line.style.opacity = '1';
+                line.style.strokeDashoffset = '0px';
+            }
+
+            function resetLine(line, idx){
+                line.style.transition = 'none';
+                line.style.strokeDashoffset = lineLengths[idx] + 'px';
+                line.style.visibility = 'hidden';
+                line.style.opacity = '0';
+            }
+
+            function startSequence(){
+                if(playing || complete) return;
+                playing = true;
+                el.classList.add('design-progression-stack--playing');
+
+                var qmark = document.getElementById('dp-qmark');
+                if(qmark){
+                    qmark.style.opacity = '0';
+                    qmark.style.animation = 'none';
+                }
+
+                lines.forEach(function(line, i){
+                    /* Line i starts at (i * frameStep) + 15% buffer after source frame appears */
+                    /* Extra buffer so lines start after destination circle’s fade-in (~4.5% of cycle) */
+                    var delay = ((i + 1) * frameStep) + (0.38 * frameStep);
+
+                    var t = setTimeout(function(){
+                        activateLine(line, i);
+                    }, delay);
+                    timeouts.push(t);
                 });
-            },{threshold:0.15,rootMargin:'0px 0px -8% 0px'});
+
+                /* Show question mark right when Frame 9 fades in */
+                if(qmark){
+                    var qmDelay = 8 * frameStep + (0.3 * frameStep); /* Frame 9 appears at 8*frameStep, small buffer for fade-in */
+                    var tq = setTimeout(function(){
+                        qmark.style.opacity = '1';
+                        qmark.style.removeProperty('animation');
+                    }, qmDelay);
+                    timeouts.push(tq);
+                }
+
+                var totalTime = 9 * frameStep + drawDur + 400;
+                var tc = setTimeout(function(){
+                    el.classList.add('design-progression-stack--complete');
+                    el.classList.remove('design-progression-stack--playing');
+                    playing = false;
+                    complete = true;
+                }, totalTime);
+                timeouts.push(tc);
+            }
+
+            function stopSequence(){
+                if(complete) return;
+                playing = false;
+                el.classList.remove('design-progression-stack--playing');
+                timeouts.forEach(function(id){ clearTimeout(id); });
+                timeouts = [];
+                lines.forEach(function(line, i){
+                    resetLine(line, i);
+                });
+                var qmark = document.getElementById('dp-qmark');
+                if(qmark){ qmark.style.opacity = '0'; }
+            }
+
+            /* Initial state: all lines hidden */
+            lines.forEach(function(line, i){ resetLine(line, i); });
+
+            var io = new IntersectionObserver(function(entries){
+                entries.forEach(function(en){
+                    if(en.isIntersecting){ startSequence(); }
+                    else { stopSequence(); }
+                });
+            }, {threshold: 0.12, rootMargin: '0px 0px -6% 0px'});
             io.observe(el);
         })();
 
