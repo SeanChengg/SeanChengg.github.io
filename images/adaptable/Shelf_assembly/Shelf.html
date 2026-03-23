@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Shelf assembly</title>
+  <style>
+    html {
+      background-color: #EEFCFF;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #EEFCFF;
+    }
+    #viewer-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+    #viewer-container:active { cursor: grabbing; }
+    #viewer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .preload { position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="viewer-container">
+    <img id="viewer" src="Shelf_Frame1.png" alt="Shelf assembly — frame by frame" />
+  </div>
+  <div class="preload" id="preloader"></div>
+  <script>
+(function() {
+    var img = document.getElementById('viewer');
+    var src = img.getAttribute('src');
+    var match = src.match(/(.+?)(\d+)(\.png)$/i);
+    var frameSrcs = [];
+    var NUM_FRAMES = 200;
+    if (match) {
+        for (var i = 1; i <= NUM_FRAMES; i++) {
+            frameSrcs.push(match[1] + i + match[3]);
+        }
+    }
+    var preloader = document.getElementById('preloader');
+    /* Batch-preload so 200 frames don’t block the main thread at once */
+    (function preloadBatch(start) {
+        var end = Math.min(start + 12, frameSrcs.length);
+        for (var j = start; j < end; j++) {
+            var p = new Image();
+            p.src = frameSrcs[j];
+            if (preloader) preloader.appendChild(p);
+        }
+        if (end < frameSrcs.length) {
+            setTimeout(function() { preloadBatch(end); }, 30);
+        }
+    })(0);
+
+    var totalFrames = frameSrcs.length || 1;
+    var currentFrame = 0;
+    var playing = true;
+    var isDragging = false;
+    var startX = 0;
+    var dragStartFrame = 0;
+
+    function showFrame(n) {
+        n = ((n % totalFrames) + totalFrames) % totalFrames;
+        img.src = frameSrcs[n];
+        currentFrame = n;
+    }
+
+    /* ~40ms ≈ 8s for full 200-frame loop; tweak FRAME_MS if you want slower/faster */
+    var FRAME_MS = 40;
+    var lastTime = 0;
+    function tick(time) {
+        if (playing && !isDragging && time - lastTime > FRAME_MS) {
+            showFrame(currentFrame + 1);
+            lastTime = time;
+        }
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    document.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        playing = false;
+        startX = e.screenX;
+        dragStartFrame = currentFrame;
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        var dx = e.screenX - startX;
+        var frameDelta = Math.round(dx / 4);
+        showFrame(dragStartFrame + frameDelta);
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        playing = true;
+    });
+
+    document.addEventListener('mouseleave', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        playing = true;
+    });
+
+    window.addEventListener('message', function(e) {
+        try {
+            var d = e.data;
+            if (d === 'stop' || (d && d.cmd === 'stop')) { playing = false; }
+            else if (d === 'play' || (d && d.cmd === 'play')) { playing = true; isDragging = false; }
+            else if (d && d.frame !== undefined) {
+                playing = false;
+                var n = ((d.frame % totalFrames) + totalFrames) % totalFrames;
+                showFrame(n);
+            }
+        } catch(err) {}
+    });
+
+    showFrame(0);
+})();
+</script>
+</body>
+</html>
