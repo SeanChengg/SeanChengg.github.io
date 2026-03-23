@@ -66,6 +66,20 @@
             --hero-line-drive-start:clamp(72px,14vw,220px);
             --hero-char-stagger:0.042s;
             --hero-char-fade-dur:0.26s;
+            /* Story paragraphs — max line width (matches default .body 900px) */
+            --story-paragraph-max-width: 980px;
+            /* Richard story paragraph under How_it_looks — tweak position (px or 0) */
+            --pad-richard-story-left: 10px;
+            --margin-richard-story-top: -40px;      /* ↑ positive = move paragraph down; negative = pull up toward image */
+            --margin-richard-story-bottom: 0px;    /* ↑ space before the next paragraph */
+            /* "When moving…" paragraph under How_it_looks2 — same knobs as Richard story */
+            --pad-moving-story-left: 10px;
+            --margin-moving-story-top: -40px;
+            --margin-moving-story-bottom: 0px;
+            /* Shelf_unpack.png — max width (100%, 900px, 80%, etc.) */
+            --shelf-unpack-img-max-width: 100%;
+            /* Horizontal nudge: 0 = flush left of column; positive px = move right; negative = move left */
+            --shelf-unpack-img-margin-left: 0px;
         }
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -180,10 +194,56 @@
         .sec-sub{font-family:var(--ff-body);font-size:var(--fs-h2);font-weight:400;margin-bottom:var(--sp-md)}
         .body{font-size:var(--fs-body);line-height:var(--lh-relax);color:var(--color-text-2);max-width:900px}
         .body+.body{margin-top:var(--sp-md)}
+        .body--nudge-right{
+            padding-left:var(--pad-richard-story-left);
+            margin-top:var(--margin-richard-story-top);
+            margin-bottom:var(--margin-richard-story-bottom);
+            max-width:var(--story-paragraph-max-width);
+        }
+        .body--moving-story{
+            padding-left:var(--pad-moving-story-left);
+            margin-top:var(--margin-moving-story-top);
+            margin-bottom:var(--margin-moving-story-bottom);
+            max-width:var(--story-paragraph-max-width);
+        }
 
         /* Figma page image — used as-is from Figma export */
         .figma-page{width:100%;margin:var(--sp-xl) 0;border-radius:var(--radius);overflow:hidden;background:transparent;position:relative}
         .figma-page img{width:100%;height:auto;display:block}
+        #solution .figma-page--shelf-unpack{
+            display:flex;
+            justify-content:flex-start;
+        }
+        #solution .figma-page--shelf-unpack img{
+            width:94%;
+            max-width:var(--shelf-unpack-img-max-width);
+            height:auto;
+            margin-left:var(--shelf-unpack-img-margin-left);
+            margin-right:auto;
+        }
+        /* Shelf assembly: height from sizer image's intrinsic aspect ratio */
+        .figma-page.shelf-assembly-embed {
+            position: relative;
+            width: 100%;
+            max-width: 970px;
+            margin-left: 10px;
+            margin-right: auto;
+            background: #EEFCFF;
+            overflow: hidden;
+            border-radius: var(--radius);
+        }
+       
+        /* Iframe fills the sizer-defined box */
+        .figma-page.shelf-assembly-embed iframe {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            background: #EEFCFF;
+        }
         /* Solution hero image: full width, tighter bottom margin so body text feels connected */
         .figma-page.solution-hero{
             margin-top:var(--sp-md);
@@ -627,6 +687,42 @@
         @media(max-width:768px){.two-col{grid-template-columns:1fr}}
 
         /* Footer */
+        /* Next Stage: Template.png behind copy */
+        .next-stage-content{position:relative}
+        /* Two equal halves: same contain scale each; full-width flip was clipping off-canvas */
+        .next-stage-bg-pair{
+            position:absolute;
+            inset:-3rem;
+            z-index:0;
+            pointer-events:none;
+            display:flex;
+            flex-direction:row;
+            align-items:stretch;
+        }
+        .next-stage-bg-half{
+            flex:1 1 50%;
+            position:relative;
+            min-width:0;
+            min-height:100%;
+        }
+        .next-stage-bg-tile{
+            position:absolute;
+            inset:0;
+            background-image:url('images/adaptable/Template.png');
+            background-repeat:no-repeat;
+            background-size:contain;
+            opacity:0.3;
+        }
+        .next-stage-bg-tile--left{background-position:left center}
+        .next-stage-bg-tile--mirror{
+            background-position:right center;
+            transform:scaleX(-1);
+            transform-origin:center center;
+        }
+        .next-stage-content > .sec-icon,
+        .next-stage-content > .sec-title,
+        .next-stage-content > .body{position:relative;z-index:1}
+
         .footer{background:var(--color-bg-footer);color:var(--color-text-inv);padding:var(--sp-lg) var(--pad) var(--sp-md)}
         .footer-inner{max-width:var(--max-w);margin:0 auto}
         .footer-grid{display:grid;grid-template-columns:1fr 1fr 2fr;gap:var(--sp-md);padding-bottom:var(--sp-md);border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:var(--sp-md)}
@@ -948,17 +1044,40 @@
                     </div>
                 </div>
 
-                <p class="body">In his apartment, Richard stacks the shelves and uses lower units to store porcelain ware in enclosed compartments — keeping them safe from his cat. He uses open display on upper levels for collectibles like sculptures and electronics, arranged for visual balance.</p>
-                <p class="body">When moving, Richard packs most shelves into a moving box within minutes and converts a couple into secure bins for charging cables and cat supplies. These bins let him find essentials instantly in his new place — no more stressful digging through boxes.</p>
-
-                <!-- Figma page: Shelves That Move With You (10-1025) -->
+                <!-- Figma page: Shelves That Move With You (10-1025) — above Richard story -->
                 <div class="figma-page mt-lg">
                     <img src="images/adaptable/page_shelves_move.png" alt="Shelves That Move With You" loading="lazy">
                 </div>
 
-                <!-- Figma page: Material Preference (10-1035) -->
+                <p class="body mt-lg">Unpacked from a slim kit, the shelf assembles into a rigid frame in minutes—no mystery screws or confusing parts. Three flexible display modes let you customize how your collection feels in the room:</p>
+                <p class="body"><strong>Open-frame display.</strong> Shelves and uprights only—no sides or back—creates a gallery-like presentation where objects sit fully exposed. This configuration maximizes sightlines and keeps everything within instant reach, perfect for showcasing display pieces you want to highlight.</p>
+                <p class="body"><strong>Paneled surround.</strong> Add back and side panels for structural stability and spill protection while maintaining full visibility of your compartments. You get the security of an enclosed structure without sacrificing the ability to see everything at a glance.</p>
+                <p class="body"><strong>Doored storage.</strong> Optional doors transform open bays into quiet, concealed cabinets with a softer visual presence. This mode reduces dust accumulation and visual clutter while adding a layer of privacy—ideal if you're storing items around pets or managing display fatigue.</p>
+
+                <div class="figma-page mt-lg figma-page--shelf-unpack">
+                    <img src="images/adaptable/Shelf_unpack.png" alt="Shelf unpacking and three display modes" loading="lazy" decoding="async">
+                </div>
+
+                <!-- How it looks (material preference) -->
                 <div class="figma-page mt-lg">
-                    <img src="images/adaptable/page_material.png" alt="Material Preference Survey" loading="lazy">
+                    <img src="images/adaptable/How_it_looks.png" alt="How it looks — material preference" loading="lazy" decoding="async">
+                </div>
+
+                <p class="body body--nudge-right">In his apartment, Richard stacks the shelves strategically: lower units with enclosed compartments store his porcelain collection safely away from his cat, while upper levels showcase sculptures and electronics in open display, arranged for visual impact.</p>
+
+                <div class="figma-page mt-lg">
+                    <img src="images/adaptable/How_it_looks2.png" alt="How it looks — detail" loading="lazy" decoding="async">
+                </div>
+
+                <p class="body body--moving-story">When moving, he packs most shelves flat in minutes and repurposes a couple as secure bins for charging cables and cat supplies—letting him access essentials instantly in his new place without rummaging through boxes.</p>
+
+                <div class="figma-page mt-lg shelf-assembly-embed" aria-label="Shelf assembly — interactive frame sequence">
+                    <img class="shelf-assembly-aspect-sizer" src="images/adaptable/Shelf_assembly/Shelf_Frame1.png" width="960" height="1707" alt="" decoding="async" aria-hidden="true">
+                    <iframe
+                        src="images/adaptable/Shelf_assembly/Shelf.html"
+                        title="Shelf assembly — frame by frame (drag to scrub)"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
                 </div>
             </div>
         </div>
@@ -967,7 +1086,11 @@
     <!-- ===== NEXT STAGE ===== -->
     <section class="sec" id="next">
         <div class="page"><div class="grid-bg"></div>
-            <div class="sec-content fade-in">
+            <div class="sec-content fade-in next-stage-content">
+                <div class="next-stage-bg-pair" aria-hidden="true">
+                    <div class="next-stage-bg-half"><div class="next-stage-bg-tile next-stage-bg-tile--left"></div></div>
+                    <div class="next-stage-bg-half"><div class="next-stage-bg-tile next-stage-bg-tile--mirror"></div></div>
+                </div>
                 <div class="sec-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4l8 8H16l8-8z" fill="currentColor" opacity="0.3"/><path d="M12 20h24v20H12z" stroke="currentColor" stroke-width="2.5" rx="2"/><path d="M20 20v20M28 20v20M12 30h24" stroke="currentColor" stroke-width="1.5"/></svg></div>
                 <h2 class="sec-title">Next Stage</h2>
                 <p class="body">The next phase focuses on streamlining sheet metal fabrication to reduce costs without sacrificing durability — trimming excess design elements and sourcing manufacturers. Beyond apartments, the project is exploring markets like luxury RV camping, where users need portable, adaptable storage that survives constant motion.</p>
