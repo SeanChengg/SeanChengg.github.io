@@ -1,0 +1,188 @@
+@font-face {
+  font-family: 'zihunaotushijieti_T';
+  src: url('/fonts/zihunaotushijieti_T.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #F3F3F3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-blend-mode: multiply;
+  background-size: 512px 512px;
+}
+
+.page-scale-wrapper {
+  width: 1920px;
+  transform-origin: top left;
+}
+
+#sidebar-nav .sn-link,
+#sidebar-nav .sn-studio {
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+#sidebar-nav .sn-link:hover,
+#sidebar-nav .sn-studio:hover {
+  color: #212121 !important;
+  transform: scale(1.05);
+}
+
+.ns {
+  position: relative;
+  width: 1823px;
+  background: #383838;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.gw {
+  position: absolute;
+  overflow: visible;
+}
+
+.gw .gbg {
+  position: absolute;
+  inset: -4px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.12);
+  filter: url(#liquid-glass);
+  z-index: 0;
+}
+
+.gw .gfr {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08) 40%, rgba(255,255,255,.1) 60%, rgba(255,255,255,.15));
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 4px 24px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.2), inset 0 .5px 0 rgba(255,255,255,.2);
+  z-index: 1;
+}
+
+.gw .gc {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+.gw-sm .gbg {
+  inset: -3px;
+  border-radius: 9px;
+  filter: url(#liquid-glass-sm);
+}
+
+.gw-sm .gfr {
+  border-radius: 6px;
+}
+
+.ns .wire-img {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ns .wire-img img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ns .lbl-blue {
+  position: absolute;
+  color: #5985AD;
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.ns .lbl-gold {
+  position: absolute;
+  color: #B8A977;
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.gallery-thumb {
+  transition: transform .2s ease, box-shadow .2s ease, border .2s ease;
+}
+
+.gallery-thumb:hover {
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+/* Path Finder gallery — static images */
+.pf-gallery-display {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 900px;
+  max-height: 750px;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* Code snippet styling */
+.pf-code-block {
+  position: absolute;
+  background: rgba(25, 25, 25, 0.04);
+  border-radius: 12px;
+  padding: 28px 32px;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #404040;
+  white-space: pre;
+  overflow-x: auto;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* PID scenario cards */
+.pf-scenario-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+
+/* Pipeline step cards */
+.pf-pipeline-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  background: rgba(25, 25, 25, 0.04);
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #404040;
+  white-space: nowrap;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.pf-pipeline-arrow {
+  font-size: 24px;
+  color: #999;
+  margin: 0 6px;
+  user-select: none;
+}
