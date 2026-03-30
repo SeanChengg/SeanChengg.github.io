@@ -30,7 +30,7 @@ export const SECTION_HEADING_TOP = 124;
 export const SECTION_TITLE_LINE_HEIGHT = 28.8;
 
 /** Wheel asset size (must match SectionHeading + Hero) */
-export const SECTION_WHEEL_SIZE = 100;
+export const SECTION_WHEEL_SIZE = 128;
 
 /** Horizontal gap between wheel and title (icon right edge → title) */
 export const SECTION_ICON_TITLE_GAP = 13;
