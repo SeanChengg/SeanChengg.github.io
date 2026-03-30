@@ -1,3 +1,5 @@
+import { withBase } from '../publicUrl';
+
 export default function BackButton() {
   return (
     <a
@@ -11,7 +13,7 @@ export default function BackButton() {
       onMouseOver={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
       onMouseOut={e => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
     >
-      <img src="/images/schematic/Back_Sign.svg" alt="Back" style={{ width: 40, height: 40 }} />
+      <img src={withBase('images/schematic/Back_Sign.svg')} alt="Back" style={{ width: 40, height: 40 }} />
     </a>
   );
 }

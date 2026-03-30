@@ -6,15 +6,16 @@ import {
   PF_GALLERY_LEFT,
   PF_GALLERY_TOP_IN_HARDWARE,
 } from '../pageLayout';
+import { withBase } from '../publicUrl';
 
 const slides = [
-  { src: '/images/path_finder/Path1.jpeg', label: '3/4 View' },
-  { src: '/images/path_finder/Path2.jpeg', label: 'Rear 3/4' },
-  { src: '/images/path_finder/Path3.jpeg', label: 'Profile' },
-  { src: '/images/path_finder/Path_Finder_Front.png', label: 'Front' },
-  { src: '/images/path_finder/Path_Finder_Left.png', label: 'Left' },
-  { src: '/images/path_finder/Path_Finder_RF.png', label: 'Right Front' },
-  { src: '/images/path_finder/Path_Finder_Right.png', label: 'Right' },
+  { src: withBase('images/path_finder/Path1.jpeg'), label: '3/4 View' },
+  { src: withBase('images/path_finder/Path2.jpeg'), label: 'Rear 3/4' },
+  { src: withBase('images/path_finder/Path3.jpeg'), label: 'Profile' },
+  { src: withBase('images/path_finder/Path_Finder_Front.png'), label: 'Front' },
+  { src: withBase('images/path_finder/Path_Finder_Left.png'), label: 'Left' },
+  { src: withBase('images/path_finder/Path_Finder_RF.png'), label: 'Right Front' },
+  { src: withBase('images/path_finder/Path_Finder_Right.png'), label: 'Right' },
 ];
 
 /** Last four slides are PNG cutouts (no scene background); show smaller in thumbs + main view */
@@ -55,7 +56,7 @@ export default function Gallery({ top = PF_GALLERY_TOP_IN_HARDWARE }) {
         }}
       />
       <img
-        src="/images/schematic/Previous_Page_Arrow.svg"
+        src={withBase('images/schematic/Previous_Page_Arrow.svg')}
         style={{
           position: 'absolute',
           top: sx(350),
@@ -70,7 +71,7 @@ export default function Gallery({ top = PF_GALLERY_TOP_IN_HARDWARE }) {
         alt="Previous"
       />
       <img
-        src="/images/schematic/Next_Page_Arrow.svg"
+        src={withBase('images/schematic/Next_Page_Arrow.svg')}
         style={{
           position: 'absolute',
           top: sx(350),

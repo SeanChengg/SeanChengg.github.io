@@ -1,9 +1,11 @@
+import { withBase } from '../publicUrl';
+
 export default function Hero() {
   return (
     <div style={{ width: 1823, height: 820.94, left: 48.75, top: 93.37, position: 'absolute' }}>
       <img
         style={{ width: 580, height: 780, left: 1150, top: -150, position: 'absolute', objectFit: 'contain', borderRadius: 16 }}
-        src="/images/path_finder/Path_Finder_Nobackground.png"
+        src={withBase('images/path_finder/Path_Finder_Nobackground.png')}
         alt="Path Finder robot"
       />
       <div style={{ width: 998, height: 262, left: 413, top: 426, position: 'absolute' }}>

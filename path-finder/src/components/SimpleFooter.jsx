@@ -1,3 +1,5 @@
+import { withBase } from '../publicUrl';
+
 export default function SimpleFooter() {
   return (
     <div
@@ -47,10 +49,10 @@ export default function SimpleFooter() {
         <div style={{ opacity: 0.7, color: '#F3F3F3', fontSize: 16, fontFamily: 'Arial', fontWeight: 400, lineHeight: '25.6px' }}>Design by Sean</div>
         <div style={{ position: 'absolute', right: 0, display: 'flex', gap: 8 }}>
           <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" style={{ width: 64, height: 64, background: '#212121', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
-            <img src="/images/schematic/Instagram.svg" alt="Instagram" style={{ width: 24, height: 24 }} />
+            <img src={withBase('images/schematic/Instagram.svg')} alt="Instagram" style={{ width: 24, height: 24 }} />
           </a>
           <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" style={{ width: 64, height: 64, background: '#212121', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
-            <img src="/images/schematic/Linkedin.svg" alt="LinkedIn" style={{ width: 24, height: 24 }} />
+            <img src={withBase('images/schematic/Linkedin.svg')} alt="LinkedIn" style={{ width: 24, height: 24 }} />
           </a>
         </div>
       </div>
