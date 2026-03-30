@@ -1,3 +1,4 @@
+import SectionWheelIcon from './SectionWheelIcon';
 import { INTEGRATION_TOP, INTEGRATION_HEIGHT } from '../pageLayout';
 
 export default function Integration() {
@@ -11,14 +12,7 @@ export default function Integration() {
 
   return (
     <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
-      <div style={{ width: 50, height: 64, left: 460, top: 103, position: 'absolute', overflow: 'hidden' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" style={{ display: 'block' }}>
-          <path d="M10 40 Q25 10 40 40" stroke="#212121" strokeWidth="2" fill="none" />
-          <circle cx="10" cy="40" r="4" stroke="#212121" strokeWidth="1.5" fill="none" />
-          <circle cx="40" cy="40" r="4" stroke="#212121" strokeWidth="1.5" fill="none" />
-          <circle cx="25" cy="15" r="4" stroke="#212121" strokeWidth="1.5" fill="#212121" />
-        </svg>
-      </div>
+      <SectionWheelIcon />
       <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
         How It Comes Together
       </div>

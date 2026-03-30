@@ -1,19 +1,12 @@
 import Gallery from './Gallery';
 import CostTable from './CostTable';
+import SectionWheelIcon from './SectionWheelIcon';
 import { HARDWARE_TOP, HARDWARE_HEIGHT } from '../pageLayout';
 
 export default function Hardware() {
   return (
     <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
-      <div style={{ width: 50, height: 64, left: 460, top: 103, position: 'absolute', overflow: 'hidden' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" style={{ display: 'block' }}>
-          <rect x="8" y="15" width="34" height="20" rx="3" stroke="#212121" strokeWidth="2" />
-          <circle cx="18" cy="38" r="4" stroke="#212121" strokeWidth="1.5" />
-          <circle cx="32" cy="38" r="4" stroke="#212121" strokeWidth="1.5" />
-          <line x1="8" y1="25" x2="42" y2="25" stroke="#212121" strokeWidth="1" />
-          <rect x="20" y="8" width="10" height="7" rx="2" stroke="#212121" strokeWidth="1.5" />
-        </svg>
-      </div>
+      <SectionWheelIcon />
       <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
         Hardware
       </div>

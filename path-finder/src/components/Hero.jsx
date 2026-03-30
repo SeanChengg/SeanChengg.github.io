@@ -1,4 +1,5 @@
 import { withBase } from '../publicUrl';
+import SectionWheelIcon from './SectionWheelIcon';
 
 export default function Hero() {
   return (
@@ -17,15 +18,7 @@ export default function Hero() {
           An autonomous line-following robot that splits its brain in two — a Raspberry Pi Zero for computer vision and a Raspberry Pi Pico for real-time motor control, communicating over UART serial to navigate any path.
         </div>
       </div>
-      <div style={{ width: 50, height: 64, left: 413, top: 0, position: 'absolute', overflow: 'hidden' }}>
-        <svg viewBox="0 0 50 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-          <circle cx="25" cy="20" r="8" stroke="#212121" strokeWidth="2" fill="none" />
-          <path d="M25 30 L25 50" stroke="#212121" strokeWidth="2" />
-          <circle cx="15" cy="55" r="4" stroke="#212121" strokeWidth="1.5" fill="none" />
-          <circle cx="35" cy="55" r="4" stroke="#212121" strokeWidth="1.5" fill="none" />
-          <path d="M10 12 Q25 2 40 12" stroke="#212121" strokeWidth="1.5" fill="none" />
-        </svg>
-      </div>
+      <SectionWheelIcon left={413} top={0} />
       <div style={{ width: 890.78, height: 28.8, left: 443, top: 21, position: 'absolute', overflow: 'hidden' }}>
         <div style={{ width: 870.92, height: 33.02, left: 38, top: -3, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '30px' }}>
           Path Finder - Autonomous Line-Following Robot

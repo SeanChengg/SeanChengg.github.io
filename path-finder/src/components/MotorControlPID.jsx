@@ -1,4 +1,5 @@
 import GlassWidget from './GlassWidget';
+import SectionWheelIcon from './SectionWheelIcon';
 import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT } from '../pageLayout';
 
 const codeSnippet = `// PID Controller — pid_control.c
@@ -21,13 +22,7 @@ const scenarios = [
 export default function MotorControlPID() {
   return (
     <div id="motor-control" style={{ width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75, top: MOTOR_PID_TOP, position: 'absolute' }}>
-      <div style={{ width: 50, height: 64, left: 460, top: 103, position: 'absolute', overflow: 'hidden' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" style={{ display: 'block' }}>
-          <circle cx="25" cy="25" r="16" stroke="#212121" strokeWidth="2" />
-          <path d="M25 12 L25 25 L36 30" stroke="#212121" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="25" cy="25" r="3" fill="#212121" />
-        </svg>
-      </div>
+      <SectionWheelIcon />
       <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
         Motor Control & PID
       </div>

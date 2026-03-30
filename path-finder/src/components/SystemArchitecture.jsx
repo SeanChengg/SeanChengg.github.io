@@ -1,18 +1,11 @@
 import GlassWidget from './GlassWidget';
+import SectionWheelIcon from './SectionWheelIcon';
 import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT } from '../pageLayout';
 
 export default function SystemArchitecture() {
   return (
     <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
-      <div style={{ width: 50, height: 64, left: 460, top: 103, position: 'absolute', overflow: 'hidden' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" style={{ display: 'block' }}>
-          <rect x="5" y="5" width="18" height="18" rx="3" stroke="#212121" strokeWidth="2" />
-          <rect x="27" y="5" width="18" height="18" rx="3" stroke="#212121" strokeWidth="2" />
-          <rect x="16" y="27" width="18" height="18" rx="3" stroke="#212121" strokeWidth="2" />
-          <line x1="14" y1="23" x2="25" y2="27" stroke="#212121" strokeWidth="1.5" />
-          <line x1="36" y1="23" x2="25" y2="27" stroke="#212121" strokeWidth="1.5" />
-        </svg>
-      </div>
+      <SectionWheelIcon />
       <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
         System Architecture
       </div>

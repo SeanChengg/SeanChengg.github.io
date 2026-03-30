@@ -1,3 +1,4 @@
+import SectionWheelIcon from './SectionWheelIcon';
 import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT } from '../pageLayout';
 
 export default function LineDetection() {
@@ -11,14 +12,7 @@ export default function LineDetection() {
 
   return (
     <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute' }}>
-      <div style={{ width: 50, height: 64, left: 460, top: 103, position: 'absolute', overflow: 'hidden' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" style={{ display: 'block' }}>
-          <circle cx="25" cy="18" r="10" stroke="#212121" strokeWidth="2" />
-          <circle cx="25" cy="18" r="4" fill="#212121" />
-          <path d="M15 35 L25 28 L35 35" stroke="#212121" strokeWidth="1.5" fill="none" />
-          <line x1="25" y1="35" x2="25" y2="48" stroke="#212121" strokeWidth="2" />
-        </svg>
-      </div>
+      <SectionWheelIcon />
       <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
         Line Detection
       </div>
