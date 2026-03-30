@@ -5,7 +5,7 @@ import { HARDWARE_TOP, HARDWARE_HEIGHT } from '../pageLayout';
 
 export default function Hardware() {
   return (
-    <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
+    <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute', zIndex: 1 }}>
       <SectionHeading>Hardware</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',

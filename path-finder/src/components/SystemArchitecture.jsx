@@ -4,7 +4,7 @@ import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT } from '../pageLayo
 
 export default function SystemArchitecture() {
   return (
-    <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
+    <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute', zIndex: 1 }}>
       <SectionHeading>System Architecture</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',

@@ -21,7 +21,7 @@ const scenarios = [
 
 export default function MotorControlPID() {
   return (
-    <div id="motor-control" style={{ width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75, top: MOTOR_PID_TOP, position: 'absolute' }}>
+    <div id="motor-control" style={{ width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75, top: MOTOR_PID_TOP, position: 'absolute', zIndex: 1 }}>
       <SectionHeading>Motor Control & PID</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',

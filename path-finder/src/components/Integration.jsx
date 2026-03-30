@@ -11,7 +11,7 @@ export default function Integration() {
   ];
 
   return (
-    <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
+    <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute', zIndex: 1 }}>
       <SectionHeading>How It Comes Together</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',

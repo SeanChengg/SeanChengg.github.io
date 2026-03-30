@@ -4,6 +4,8 @@ import {
   SECTION_TITLE_LINE_HEIGHT,
   SECTION_ICON_TITLE_GAP,
   HERO_MAIN_COLUMN_LEFT,
+  HERO_ROOT_TOP,
+  HERO_ROOT_HEIGHT,
 } from '../pageLayout';
 
 const HERO_TITLE_ROW_TOP = 21;
@@ -12,9 +14,18 @@ const heroHeadingRowTop =
 
 export default function Hero() {
   return (
-    <div style={{ width: 1823, height: 820.94, left: 48.75, top: 93.37, position: 'absolute' }}>
+    <div
+      style={{
+        width: 1823,
+        height: HERO_ROOT_HEIGHT,
+        left: 48.75,
+        top: HERO_ROOT_TOP,
+        position: 'absolute',
+        zIndex: 0,
+      }}
+    >
       <img
-        style={{ width: 580, height: 780, left: 1150, top: -150, position: 'absolute', objectFit: 'contain', borderRadius: 16 }}
+        style={{ width: 500, height: 670, left: 1220, top: -120, position: 'absolute', objectFit: 'contain', borderRadius: 16 }}
         src={withBase('images/path_finder/Path_Finder_Nobackground.png')}
         alt="Path Finder robot"
       />
@@ -41,9 +52,13 @@ export default function Hero() {
         <img
           src={withBase('images/path_finder/Wheel.png')}
           alt=""
+          width={SECTION_WHEEL_SIZE}
+          height={SECTION_WHEEL_SIZE}
           style={{
             width: SECTION_WHEEL_SIZE,
             height: SECTION_WHEEL_SIZE,
+            maxWidth: SECTION_WHEEL_SIZE,
+            maxHeight: SECTION_WHEEL_SIZE,
             objectFit: 'contain',
             display: 'block',
             flexShrink: 0,

@@ -11,7 +11,7 @@ export default function LineDetection() {
   ];
 
   return (
-    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute' }}>
+    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', zIndex: 1 }}>
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',

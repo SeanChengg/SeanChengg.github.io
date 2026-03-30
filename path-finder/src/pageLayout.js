@@ -29,8 +29,8 @@ export const SECTION_HEADING_TOP = 124;
 /** Bold Arial section titles — matches components’ `lineHeight: '28.8px'` */
 export const SECTION_TITLE_LINE_HEIGHT = 28.8;
 
-/** Wheel asset size (SectionHeading + Hero); 70px keeps the heading row above body copy (top 187). */
-export const SECTION_WHEEL_SIZE = 70;
+/** Wheel icon — small relative to 30px titles; keeps heading row compact above body (top 187). */
+export const SECTION_WHEEL_SIZE = 48;
 
 /** Horizontal gap between wheel and title (icon right edge → title) */
 export const SECTION_ICON_TITLE_GAP = 13;
@@ -68,8 +68,16 @@ export const GAP_AFTER_GALLERY_TO_HEADING = 115;
  */
 export const GAP_AFTER_BLOCK_TO_HEADING = 88;
 
-/** Hero block ends ~914px */
-export const SYSTEM_ARCHITECTURE_TOP = 750;
+/**
+ * Hero root — keep in sync with Hero.jsx outer wrapper (single source for “below hero” layout).
+ * System Architecture must start *after* the hero; the old 750 value overlapped the hero (~914px
+ * tall) so headings and Wheel.png sat in the same band as hero layers and looked broken.
+ */
+export const HERO_ROOT_TOP = 93.37;
+export const HERO_ROOT_HEIGHT = 820.94;
+export const HERO_BOTTOM = HERO_ROOT_TOP + HERO_ROOT_HEIGHT;
+export const SYSTEM_ARCHITECTURE_GAP_AFTER_HERO = 16;
+export const SYSTEM_ARCHITECTURE_TOP = HERO_BOTTOM + SYSTEM_ARCHITECTURE_GAP_AFTER_HERO;
 
 /**
  * Bottom of SystemArchitecture.jsx `.ns` diagram: top 510 + height 640 — keep in sync with that file.
