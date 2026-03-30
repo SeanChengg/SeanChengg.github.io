@@ -1,4 +1,4 @@
-import SectionWheelIcon from './SectionWheelIcon';
+import SectionHeading from './SectionHeading';
 import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT } from '../pageLayout';
 
 export default function LineDetection() {
@@ -12,10 +12,7 @@ export default function LineDetection() {
 
   return (
     <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute' }}>
-      <SectionWheelIcon />
-      <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
-        Line Detection
-      </div>
+      <SectionHeading>Line Detection</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',
         minHeight: 360,

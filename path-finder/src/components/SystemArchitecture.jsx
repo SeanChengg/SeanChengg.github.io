@@ -1,14 +1,11 @@
 import GlassWidget from './GlassWidget';
-import SectionWheelIcon from './SectionWheelIcon';
+import SectionHeading from './SectionHeading';
 import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT } from '../pageLayout';
 
 export default function SystemArchitecture() {
   return (
     <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
-      <SectionWheelIcon />
-      <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
-        System Architecture
-      </div>
+      <SectionHeading>System Architecture</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',
         minHeight: 270,

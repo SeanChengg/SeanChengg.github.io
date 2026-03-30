@@ -1,5 +1,11 @@
 import { withBase } from '../publicUrl';
-import SectionWheelIcon from './SectionWheelIcon';
+import { SECTION_WHEEL_SIZE, HEADING_ROW_SHIFT_RIGHT } from '../pageLayout';
+
+const HERO_TITLE_ROW_TOP = 21;
+const HERO_TITLE_LINE_H = 28.8;
+const HERO_ICON_LEFT = 393 + HEADING_ROW_SHIFT_RIGHT;
+const HERO_ICON_TITLE_GAP = 18;
+const heroHeadingRowTop = HERO_TITLE_ROW_TOP + HERO_TITLE_LINE_H / 2 - SECTION_WHEEL_SIZE / 2;
 
 export default function Hero() {
   return (
@@ -18,9 +24,37 @@ export default function Hero() {
           An autonomous line-following robot that splits its brain in two — a Raspberry Pi Zero for computer vision and a Raspberry Pi Pico for real-time motor control, communicating over UART serial to navigate any path.
         </div>
       </div>
-      <SectionWheelIcon left={413} top={0} />
-      <div style={{ width: 890.78, height: 28.8, left: 443, top: 21, position: 'absolute', overflow: 'hidden' }}>
-        <div style={{ width: 870.92, height: 33.02, left: 38, top: -3, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '30px' }}>
+      <div
+        style={{
+          position: 'absolute',
+          left: HERO_ICON_LEFT,
+          top: heroHeadingRowTop,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: HERO_ICON_TITLE_GAP,
+        }}
+      >
+        <img
+          src={withBase('images/path_finder/Wheel.png')}
+          alt=""
+          style={{
+            width: SECTION_WHEEL_SIZE,
+            height: SECTION_WHEEL_SIZE,
+            objectFit: 'contain',
+            display: 'block',
+            flexShrink: 0,
+          }}
+        />
+        <div
+          style={{
+            color: '#212121',
+            fontSize: 30,
+            fontFamily: 'Arial,sans-serif',
+            fontWeight: 700,
+            lineHeight: '30px',
+          }}
+        >
           Path Finder - Autonomous Line-Following Robot
         </div>
       </div>

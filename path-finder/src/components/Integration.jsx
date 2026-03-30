@@ -1,4 +1,4 @@
-import SectionWheelIcon from './SectionWheelIcon';
+import SectionHeading from './SectionHeading';
 import { INTEGRATION_TOP, INTEGRATION_HEIGHT } from '../pageLayout';
 
 export default function Integration() {
@@ -12,10 +12,7 @@ export default function Integration() {
 
   return (
     <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
-      <SectionWheelIcon />
-      <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
-        How It Comes Together
-      </div>
+      <SectionHeading>How It Comes Together</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',
         minHeight: 315,

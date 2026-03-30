@@ -23,8 +23,30 @@ export const PF_GALLERY_LEFT = Math.round(460 + PF_GALLERY_BASE_W / 2 - PF_GALLE
 /** Y offset from Hardware section top → bottom of grey gallery panel */
 export const HARDWARE_GALLERY_BOTTOM = PF_GALLERY_TOP_IN_HARDWARE + PF_GALLERY_H;
 
-/** Section heading row (icon ~103, title at 124 — matches PF section components) */
+/** Section heading row — title text baseline box starts at 124px */
 export const SECTION_HEADING_TOP = 124;
+
+/** Bold Arial section titles — matches components’ `lineHeight: '28.8px'` */
+export const SECTION_TITLE_LINE_HEIGHT = 28.8;
+
+/** Wheel asset size (must match SectionHeading) */
+export const SECTION_WHEEL_SIZE = 70;
+
+/** Horizontal gap between wheel and title (icon right edge → title) */
+export const SECTION_ICON_TITLE_GAP = 13;
+
+/** Nudge the whole icon + title row right (keeps gap; use in Hero too) */
+export const HEADING_ROW_SHIFT_RIGHT = 20;
+
+/** Y of the horizontal midline through the one-line section title */
+export const SECTION_TITLE_CENTER_Y = SECTION_HEADING_TOP + SECTION_TITLE_LINE_HEIGHT / 2;
+
+/** Flex row `top` so icon + title align to that midline (same as old title `top: 124` band) */
+export const SECTION_HEADING_ROW_TOP = SECTION_TITLE_CENTER_Y - SECTION_WHEEL_SIZE / 2;
+
+/** Flex row `left` — base column aligned to old 523 title + 13px gap, then shifted right */
+export const SECTION_ICON_LEFT =
+  523 - SECTION_ICON_TITLE_GAP - SECTION_WHEEL_SIZE + HEADING_ROW_SHIFT_RIGHT;
 
 /** Slightly larger gap after Hardware gallery → Line Detection heading (Host-style) */
 export const GAP_AFTER_GALLERY_TO_HEADING = 115;

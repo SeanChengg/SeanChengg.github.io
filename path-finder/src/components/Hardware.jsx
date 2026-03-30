@@ -1,15 +1,12 @@
 import Gallery from './Gallery';
 import CostTable from './CostTable';
-import SectionWheelIcon from './SectionWheelIcon';
+import SectionHeading from './SectionHeading';
 import { HARDWARE_TOP, HARDWARE_HEIGHT } from '../pageLayout';
 
 export default function Hardware() {
   return (
     <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
-      <SectionWheelIcon />
-      <div style={{ left: 523, top: 124, position: 'absolute', color: '#212121', fontSize: 30, fontFamily: 'Arial,sans-serif', fontWeight: 700, lineHeight: '28.8px' }}>
-        Hardware
-      </div>
+      <SectionHeading>Hardware</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: 187, position: 'absolute',
         minHeight: 270,
