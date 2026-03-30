@@ -1,6 +1,6 @@
 import GlassWidget from './GlassWidget';
 import SectionHeading from './SectionHeading';
-import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT } from '../pageLayout';
+import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 const codeSnippet = `// PID Controller — pid_control.c
 float apply_pid_control(float error, float integral, float derivative) {
@@ -21,10 +21,10 @@ const scenarios = [
 
 export default function MotorControlPID() {
   return (
-    <div id="motor-control" style={{ width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75, top: MOTOR_PID_TOP, position: 'absolute', zIndex: 1 }}>
+    <div id="motor-control" style={{ width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75, top: MOTOR_PID_TOP, position: 'absolute' }}>
       <SectionHeading>Motor Control & PID</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: 187, position: 'absolute',
+        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 360,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,

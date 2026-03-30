@@ -1,14 +1,14 @@
 import Gallery from './Gallery';
 import CostTable from './CostTable';
 import SectionHeading from './SectionHeading';
-import { HARDWARE_TOP, HARDWARE_HEIGHT } from '../pageLayout';
+import { HARDWARE_TOP, HARDWARE_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 export default function Hardware() {
   return (
-    <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute', zIndex: 1 }}>
+    <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
       <SectionHeading>Hardware</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: 187, position: 'absolute',
+        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 270,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,

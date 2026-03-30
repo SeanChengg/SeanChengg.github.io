@@ -1,5 +1,5 @@
 import SectionHeading from './SectionHeading';
-import { INTEGRATION_TOP, INTEGRATION_HEIGHT } from '../pageLayout';
+import { INTEGRATION_TOP, INTEGRATION_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 export default function Integration() {
   const timelineSteps = [
@@ -11,10 +11,10 @@ export default function Integration() {
   ];
 
   return (
-    <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute', zIndex: 1 }}>
+    <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
       <SectionHeading>How It Comes Together</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: 187, position: 'absolute',
+        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 315,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,

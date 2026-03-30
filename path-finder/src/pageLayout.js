@@ -29,8 +29,11 @@ export const SECTION_HEADING_TOP = 124;
 /** Bold Arial section titles — matches components’ `lineHeight: '28.8px'` */
 export const SECTION_TITLE_LINE_HEIGHT = 28.8;
 
-/** Wheel icon — small relative to 30px titles; keeps heading row compact above body (top 187). */
-export const SECTION_WHEEL_SIZE = 48;
+/** Wheel asset size (SectionHeading + Hero) */
+export const SECTION_WHEEL_SIZE = 56;
+
+/** First body block under section headings — clears wheel+title row even if title wraps */
+export const SECTION_BODY_TOP = 204;
 
 /** Horizontal gap between wheel and title (icon right edge → title) */
 export const SECTION_ICON_TITLE_GAP = 13;
@@ -59,6 +62,15 @@ export const SECTION_PAGE_LEFT = 0.75;
 export const HERO_MAIN_COLUMN_LEFT =
   SECTION_ICON_LEFT + SECTION_PAGE_LEFT - HERO_PAGE_LEFT;
 
+/** Hero robot render — smaller + further right so intro copy is not covered */
+export const HERO_ROBOT_LEFT = 1220;
+export const HERO_ROBOT_W = 460;
+export const HERO_ROBOT_H = Math.round(780 * (HERO_ROBOT_W / 580));
+
+/** Text column ends before the robot so the paragraph uses full width (no “narrow strip”) */
+export const HERO_TEXT_COLUMN_GAP = 40;
+export const HERO_TEXT_COLUMN_WIDTH = HERO_ROBOT_LEFT - HERO_MAIN_COLUMN_LEFT - HERO_TEXT_COLUMN_GAP;
+
 /** Slightly larger gap after Hardware gallery → Line Detection heading (Host-style) */
 export const GAP_AFTER_GALLERY_TO_HEADING = 115;
 
@@ -68,16 +80,8 @@ export const GAP_AFTER_GALLERY_TO_HEADING = 115;
  */
 export const GAP_AFTER_BLOCK_TO_HEADING = 88;
 
-/**
- * Hero root — keep in sync with Hero.jsx outer wrapper (single source for “below hero” layout).
- * System Architecture must start *after* the hero; the old 750 value overlapped the hero (~914px
- * tall) so headings and Wheel.png sat in the same band as hero layers and looked broken.
- */
-export const HERO_ROOT_TOP = 93.37;
-export const HERO_ROOT_HEIGHT = 820.94;
-export const HERO_BOTTOM = HERO_ROOT_TOP + HERO_ROOT_HEIGHT;
-export const SYSTEM_ARCHITECTURE_GAP_AFTER_HERO = 16;
-export const SYSTEM_ARCHITECTURE_TOP = HERO_BOTTOM + SYSTEM_ARCHITECTURE_GAP_AFTER_HERO;
+/** Hero block ends ~914px */
+export const SYSTEM_ARCHITECTURE_TOP = 750;
 
 /**
  * Bottom of SystemArchitecture.jsx `.ns` diagram: top 510 + height 640 — keep in sync with that file.

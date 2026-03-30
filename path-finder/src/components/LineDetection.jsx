@@ -1,5 +1,5 @@
 import SectionHeading from './SectionHeading';
-import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT } from '../pageLayout';
+import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 export default function LineDetection() {
   const steps = [
@@ -11,10 +11,10 @@ export default function LineDetection() {
   ];
 
   return (
-    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', zIndex: 1 }}>
+    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute' }}>
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: 187, position: 'absolute',
+        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 360,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,

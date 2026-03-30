@@ -1,13 +1,13 @@
 import GlassWidget from './GlassWidget';
 import SectionHeading from './SectionHeading';
-import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT } from '../pageLayout';
+import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 export default function SystemArchitecture() {
   return (
-    <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute', zIndex: 1 }}>
+    <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
       <SectionHeading>System Architecture</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: 187, position: 'absolute',
+        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 270,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,

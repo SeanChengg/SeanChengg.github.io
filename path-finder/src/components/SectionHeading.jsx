@@ -12,6 +12,7 @@ const titleStyle = {
   fontFamily: 'Arial,sans-serif',
   fontWeight: 700,
   lineHeight: '28.8px',
+  whiteSpace: 'nowrap',
 };
 
 export default function SectionHeading({ children }) {
@@ -21,7 +22,7 @@ export default function SectionHeading({ children }) {
         position: 'absolute',
         left: SECTION_ICON_LEFT,
         top: SECTION_HEADING_ROW_TOP,
-        zIndex: 2,
+        zIndex: 1,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -31,13 +32,9 @@ export default function SectionHeading({ children }) {
       <img
         src={withBase('images/path_finder/Wheel.png')}
         alt=""
-        width={SECTION_WHEEL_SIZE}
-        height={SECTION_WHEEL_SIZE}
         style={{
           width: SECTION_WHEEL_SIZE,
           height: SECTION_WHEEL_SIZE,
-          maxWidth: SECTION_WHEEL_SIZE,
-          maxHeight: SECTION_WHEEL_SIZE,
           objectFit: 'contain',
           display: 'block',
           flexShrink: 0,
