@@ -29,8 +29,8 @@ export const SECTION_HEADING_TOP = 124;
 /** Bold Arial section titles — matches components’ `lineHeight: '28.8px'` */
 export const SECTION_TITLE_LINE_HEIGHT = 28.8;
 
-/** Wheel asset size (must match SectionHeading) */
-export const SECTION_WHEEL_SIZE = 70;
+/** Wheel asset size (must match SectionHeading + Hero) */
+export const SECTION_WHEEL_SIZE = 100;
 
 /** Horizontal gap between wheel and title (icon right edge → title) */
 export const SECTION_ICON_TITLE_GAP = 13;
@@ -47,6 +47,17 @@ export const SECTION_HEADING_ROW_TOP = SECTION_TITLE_CENTER_Y - SECTION_WHEEL_SI
 /** Flex row `left` — base column aligned to old 523 title + 13px gap, then shifted right */
 export const SECTION_ICON_LEFT =
   523 - SECTION_ICON_TITLE_GAP - SECTION_WHEEL_SIZE + HEADING_ROW_SHIFT_RIGHT;
+
+/**
+ * Hero root vs section root `left` on the scroll canvas (must match Hero / section components).
+ * Hero wheel + main column use this so Wheel.png lines up with SectionHeading on screen.
+ */
+export const HERO_PAGE_LEFT = 48.75;
+export const SECTION_PAGE_LEFT = 0.75;
+
+/** Hero: inner `left` for wheel row + big title block — same screen-x as SECTION_ICON_LEFT */
+export const HERO_MAIN_COLUMN_LEFT =
+  SECTION_ICON_LEFT + SECTION_PAGE_LEFT - HERO_PAGE_LEFT;
 
 /** Slightly larger gap after Hardware gallery → Line Detection heading (Host-style) */
 export const GAP_AFTER_GALLERY_TO_HEADING = 115;
