@@ -48,21 +48,135 @@ body {
   position: absolute;
   inset: -4px;
   border-radius: 12px;
-  background: rgba(255,255,255,.12);
+  background: rgba(255, 255, 255, 0.06);
   filter: url(#liquid-glass);
   z-index: 0;
 }
 
-.gw .gfr {
+/*
+ * “Breathing” liquid highlights: two pseudo-layers, different prime-ish durations so
+ * beats don’t repeat often; many keyframe stops so light doesn’t linger in one corner.
+ */
+@keyframes pfLiquidPatchA {
+  0%, 100% {
+    transform: translate(-6%, 4%) rotate(-2deg) scale(1);
+    opacity: 0.42;
+  }
+  14% {
+    transform: translate(38%, -18%) rotate(3deg) scale(1.18);
+    opacity: 0.84;
+  }
+  29% {
+    transform: translate(12%, 42%) rotate(-4deg) scale(0.88);
+    opacity: 0.36;
+  }
+  44% {
+    transform: translate(-28%, 8%) rotate(2deg) scale(1.12);
+    opacity: 0.72;
+  }
+  58% {
+    transform: translate(52%, 28%) rotate(-3deg) scale(0.95);
+    opacity: 0.5;
+  }
+  72% {
+    transform: translate(-12%, -22%) rotate(4deg) scale(1.08);
+    opacity: 0.8;
+  }
+  86% {
+    transform: translate(22%, 12%) rotate(-1deg) scale(1.02);
+    opacity: 0.48;
+  }
+}
+
+@keyframes pfLiquidPatchB {
+  0%, 100% {
+    transform: translate(8%, -6%) rotate(3deg) scale(1.05);
+    opacity: 0.34;
+  }
+  18% {
+    transform: translate(-35%, 22%) rotate(-5deg) scale(0.9);
+    opacity: 0.74;
+  }
+  36% {
+    transform: translate(42%, -8%) rotate(2deg) scale(1.2);
+    opacity: 0.4;
+  }
+  54% {
+    transform: translate(-8%, -38%) rotate(4deg) scale(0.92);
+    opacity: 0.68;
+  }
+  71% {
+    transform: translate(18%, 48%) rotate(-3deg) scale(1.1);
+    opacity: 0.44;
+  }
+  88% {
+    transform: translate(-42%, -12%) rotate(1deg) scale(1.06);
+    opacity: 0.62;
+  }
+}
+
+/*
+ * Liquid glass: blur + saturation on base; visible colour patches on ::before/::after.
+ */
+.pf-liquid-glass {
   position: absolute;
   inset: 0;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08) 40%, rgba(255,255,255,.1) 60%, rgba(255,255,255,.15));
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  border: 1px solid rgba(255,255,255,.15);
-  box-shadow: 0 4px 24px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.2), inset 0 .5px 0 rgba(255,255,255,.2);
   z-index: 1;
+  pointer-events: none;
+  border-radius: 8px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(22px) saturate(1.52) brightness(1.04);
+  -webkit-backdrop-filter: blur(22px) saturate(1.52) brightness(1.04);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 10px 44px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.pf-liquid-glass::before,
+.pf-liquid-glass::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Warm gold/peach — visible; a touch softer than original */
+.pf-liquid-glass::before {
+  inset: -25%;
+  background: radial-gradient(
+    ellipse 55% 48% at 45% 48%,
+    rgba(255, 234, 215, 0.48) 0%,
+    rgba(255, 214, 182, 0.2) 40%,
+    transparent 72%
+  );
+  mix-blend-mode: soft-light;
+  animation: pfLiquidPatchA 10.7s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+}
+
+/* Cool blue — slightly lighter stops; overlay reads stronger contrast */
+.pf-liquid-glass::after {
+  inset: -30%;
+  background: radial-gradient(
+    ellipse 50% 45% at 55% 52%,
+    rgba(220, 232, 255, 0.38) 0%,
+    rgba(190, 208, 242, 0.14) 42%,
+    transparent 70%
+  );
+  mix-blend-mode: overlay;
+  animation: pfLiquidPatchB 14.3s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-liquid-glass::before,
+  .pf-liquid-glass::after {
+    animation: none !important;
+    opacity: 0.45;
+    transform: none;
+  }
 }
 
 .gw .gc {
@@ -71,13 +185,23 @@ body {
   height: 100%;
 }
 
+/* Decorative pixels — always below .gfr */
+.gw .gw-pixels {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .gw-sm .gbg {
   inset: -3px;
   border-radius: 9px;
   filter: url(#liquid-glass-sm);
 }
 
-.gw-sm .gfr {
+.gw-sm .gfr.pf-liquid-glass {
   border-radius: 6px;
 }
 
@@ -181,21 +305,43 @@ body {
   user-select: none;
 }
 
+/* Legacy simple pulse — PixelBlocksBg uses pfPixelChaos when animated */
 @keyframes pfPixelPulse {
   0%, 100% {
-    opacity: 0.4;
-    transform: scale(0.85) translateY(0px);
-  }
-  25% {
-    opacity: 0.6;
-    transform: scale(1) translateY(-4px);
+    opacity: 0.42;
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.1) translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/*
+ * PixelBlocksBg — closed loop: 0% matches 100% for a seamless infinite repeat.
+ * Per-block --dx1..--dy3 from JSX. linear timing avoids ease “hitch” at loop wrap.
+ */
+@keyframes pfPixelChaos {
+  0%, 100% {
+    opacity: 0.32;
+    transform: translate(0, 0) scale(0.96);
+  }
+  25% {
+    opacity: 0.86;
+    transform: translate(var(--dx1), var(--dy1)) scale(1.05);
+  }
+  50% {
+    opacity: 0.36;
+    transform: translate(var(--dx2), var(--dy2)) scale(1.08);
   }
   75% {
-    opacity: 0.6;
-    transform: scale(1) translateY(-4px);
+    opacity: 0.82;
+    transform: translate(var(--dx3), var(--dy3)) scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-pixel-block {
+    animation: none !important;
+    opacity: 0.52 !important;
+    transform: none !important;
   }
 }

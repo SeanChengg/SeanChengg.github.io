@@ -8,7 +8,7 @@ export default function SvgFilters() {
             <fePointLight x="150" y="-60" z="200" />
           </feSpecularLighting>
           <feComposite in="spec" in2="SourceGraphic" operator="in" result="specOut" />
-          <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.6" k4="0" result="litShape" />
+          <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.32" k4="0" result="litShape" />
           <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="shadowBlur" />
           <feOffset in="shadowBlur" dx="2" dy="3" result="shadow" />
           <feFlood floodColor="rgba(0,0,0,0.12)" result="shadowColor" />
@@ -24,7 +24,7 @@ export default function SvgFilters() {
             <fePointLight x="140" y="-40" z="160" />
           </feSpecularLighting>
           <feComposite in="spec" in2="SourceGraphic" operator="in" result="specOut" />
-          <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.5" k4="0" result="litShape" />
+          <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.28" k4="0" result="litShape" />
           <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="shadowBlur" />
           <feOffset in="shadowBlur" dx="1" dy="2" result="shadow" />
           <feFlood floodColor="rgba(0,0,0,0.1)" result="shadowColor" />

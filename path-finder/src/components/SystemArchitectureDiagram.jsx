@@ -1,375 +1,262 @@
-import GlassWidget from './GlassWidget';
+import PixelBlocksBg from './PixelBlocksBg';
 
-/** SVG wire overlay — coordinates in `.ns` local space (1289×620) */
-function ArchWires() {
+function Wires() {
   const gold = '#B8A977';
-  const blue = '#5985AD';
-  const dash = 'rgba(255,255,255,0.35)';
+  const arrow = 'rgba(100,100,100,0.5)';
+  const dash = 'rgba(100,100,100,0.3)';
 
   return (
-    <svg
-      style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 3,
-      }}
-      viewBox="0 0 1289 620"
-    >
+    <svg style={{
+      position: 'absolute', inset: 0,
+      width: '100%', height: '100%',
+      pointerEvents: 'none', zIndex: 5,
+    }} viewBox="0 0 1289 680" preserveAspectRatio="xMidYMid meet">
       <defs>
-        <marker
-          id="arch-arrow-blue"
-          viewBox="0 0 10 10"
-          refX="8"
-          refY="5"
-          markerWidth="5"
-          markerHeight="5"
-          orient="auto-start-reverse"
-        >
-          <path d="M2 2L8 5L2 8" fill="none" stroke={blue} strokeWidth="1.5" strokeLinecap="round" />
+        <marker id="sa-g" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M2 2L8 5L2 8" fill="none" stroke={gold} strokeWidth="1.65" strokeLinecap="round"/>
         </marker>
-        <marker
-          id="arch-arrow-gold"
-          viewBox="0 0 10 10"
-          refX="8"
-          refY="5"
-          markerWidth="5"
-          markerHeight="5"
-          orient="auto-start-reverse"
-        >
-          <path d="M2 2L8 5L2 8" fill="none" stroke={gold} strokeWidth="1.5" strokeLinecap="round" />
+        <marker id="sa-a" viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M2 2L8 5L2 8" fill="none" stroke={arrow} strokeWidth="1.65" strokeLinecap="round"/>
         </marker>
       </defs>
 
-      {/* Pi Zero → UART */}
-      <line x1="330" y1="180" x2="380" y2="195" stroke={gold} strokeWidth="1.5" markerEnd="url(#arch-arrow-gold)" />
-      {/* UART → Pico */}
-      <line x1="520" y1="195" x2="550" y2="180" stroke={gold} strokeWidth="1.5" markerEnd="url(#arch-arrow-gold)" />
-      {/* Pico → fork */}
-      <line x1="830" y1="180" x2="855" y2="180" stroke={blue} strokeWidth="1.5" />
-      <line x1="855" y1="180" x2="855" y2="115" stroke={blue} strokeWidth="1.5" />
-      <line x1="855" y1="180" x2="855" y2="205" stroke={blue} strokeWidth="1.5" />
-      <line x1="855" y1="115" x2="880" y2="115" stroke={blue} strokeWidth="1.5" markerEnd="url(#arch-arrow-blue)" />
-      <line x1="855" y1="205" x2="880" y2="205" stroke={blue} strokeWidth="1.5" markerEnd="url(#arch-arrow-blue)" />
-      {/* Motors → encoders */}
-      <line x1="1040" y1="115" x2="1080" y2="115" stroke={blue} strokeWidth="1.5" markerEnd="url(#arch-arrow-blue)" />
-      <line x1="1040" y1="205" x2="1080" y2="205" stroke={blue} strokeWidth="1.5" markerEnd="url(#arch-arrow-blue)" />
-      {/* Feedback encoders → Pico (dashed) */}
-      <path
-        d="M 1160 150 L 1160 300 L 700 300 L 700 250 L 550 250"
-        fill="none"
-        stroke={dash}
-        strokeWidth="1.5"
-        strokeDasharray="6 4"
-      />
+      {/* Vision internal arrows — 52px gaps between cards (same rhythm as Motor brain) */}
+      <line x1="250" y1="163" x2="250" y2="215" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="250" y1="263" x2="250" y2="315" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="250" y1="363" x2="250" y2="415" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+
+      {/* Position → UART — straight horizontal, aligned with Position center y=439 */}
+      <line x1="420" y1="439" x2="490" y2="439" stroke={gold} strokeWidth="3.25" markerEnd="url(#sa-g)"/>
+
+      {/* UART → PID — exit UART right, up, into PID left center */}
+      <path d="M690 439 L735 439 L735 141 L800 141" fill="none" stroke={gold} strokeWidth="3.25" markerEnd="url(#sa-g)"/>
+
+      {/* PID → PWM — vertical center */}
+      <line x1="980" y1="167" x2="980" y2="219" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+
+      {/* PWM → Motors fork — symmetric split from center */}
+      <line x1="980" y1="271" x2="980" y2="297" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="980" y1="297" x2="890" y2="297" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="890" y1="297" x2="890" y2="323" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="980" y1="297" x2="1070" y2="297" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="1070" y1="297" x2="1070" y2="323" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+
+      {/* Motors → Encoders — vertical at each column center */}
+      <line x1="890" y1="379" x2="890" y2="431" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="1070" y1="379" x2="1070" y2="431" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+
+      {/* Feedback dashed — Encoder R right → up → PID right center */}
+      <path d="M1144 459 L1190 459 L1190 141 L1160 141" fill="none"
+        stroke={dash} strokeWidth="2.75" strokeDasharray="12 8" strokeLinecap="round" markerEnd="url(#sa-a)"/>
+
+      <text x="1202" y="300" fill="rgba(100,100,100,0.35)" fontSize="11"
+        fontFamily="Arial" fontWeight="600"
+        transform="rotate(90 1202 300)" textAnchor="middle">Encoder feedback</text>
     </svg>
   );
 }
 
+const innerCard = (w, h) => ({
+  position: 'absolute', width: w, height: h, borderRadius: 8,
+  border: '2px solid rgba(0,0,0,0.08)',
+  background: 'rgba(255,255,255,0.5)',
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  flexDirection: 'column', gap: 2,
+});
+
+const t1 = { color: '#141414', fontSize: 15, fontFamily: 'Inter,sans-serif', fontWeight: 600 };
+const t2 = { color: 'rgba(40,40,40,0.65)', fontSize: 12, fontFamily: "'Zilla Slab',serif" };
+const h1 = { color: '#101010', fontSize: 22, fontFamily: 'Inter,sans-serif', fontWeight: 700 };
+const h2 = { color: 'rgba(40,40,40,0.55)', fontSize: 14, fontFamily: "'Zilla Slab',serif" };
+
+/** Title + hardware line centered within each brain panel (not the section page paragraphs). */
+const brainTitleRow = {
+  position: 'relative',
+  zIndex: 2,
+  padding: '24px 28px 0',
+  textAlign: 'center',
+  width: '100%',
+  boxSizing: 'border-box',
+};
+
+const LEGEND_STEPS = [
+  'Signal flow: Camera',
+  'Pi Zero',
+  'UART',
+  'Pi Pico',
+  'PWM',
+  'Motors',
+  'Encoders',
+  'PID (feedback loop)',
+];
+
+const LEGEND_CAPTION =
+  'End-to-end data path; encoder feedback closes the motor control loop at PID (vision is feedforward).';
+
+const legendText = {
+  color: 'rgba(22, 32, 48, 0.88)',
+  fontSize: 17,
+  fontFamily: "'Zilla Slab',serif",
+  fontWeight: 600,
+  letterSpacing: 0.35,
+};
+
+const legendArrow = {
+  fontSize: 22,
+  lineHeight: 1,
+  color: 'rgba(55, 95, 125, 0.55)',
+  fontWeight: 400,
+  userSelect: 'none',
+};
+
+const legendCaption = {
+  color: 'rgba(22, 32, 48, 0.62)',
+  fontSize: 13,
+  fontFamily: "'Zilla Slab',serif",
+  fontWeight: 500,
+  letterSpacing: 0.2,
+  textAlign: 'center',
+  lineHeight: 1.35,
+  maxWidth: 1180,
+};
+
 export default function SystemArchitectureDiagram() {
   return (
-    <div
-      className="ns"
-      style={{
-        width: 1289,
-        height: 620,
-        left: 460,
-        top: 510,
-        position: 'absolute',
-        borderRadius: 24,
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          left: 80,
-          top: 30,
-          color: '#5DCAA5',
-          fontSize: 14,
-          fontFamily: 'Inter,sans-serif',
-          fontWeight: 700,
-          letterSpacing: 2,
-          textTransform: 'uppercase',
-        }}
-      >
-        Vision brain
+    <div style={{
+      width: 1289, height: 680,
+      left: 460, top: 540,
+      position: 'absolute',
+      background: 'transparent',
+    }}>
+
+      {/* VISION BRAIN — frosted glass over pixels */}
+      <div style={{
+        position: 'absolute', left: 30, top: 20,
+        width: 440, height: 540, borderRadius: 20,
+        overflow: 'hidden',
+        background: 'transparent',
+        border: '1px solid rgba(255, 255, 255, 0.36)',
+      }}>
+        <PixelBlocksBg />
+        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <div style={brainTitleRow}>
+          <div style={h1}>Vision brain</div>
+          <div style={{ ...h2, marginTop: 4 }}>Raspberry Pi Zero W · Python</div>
+        </div>
+        <div style={{ ...innerCard(340, 48), left: 50, top: 95, zIndex: 2 }}>
+          <div style={t1}>ArduCAM OV2640</div>
+        </div>
+        <div style={{ ...innerCard(340, 48), left: 50, top: 195, zIndex: 2 }}>
+          <div style={t1}>Grayscale + threshold</div>
+        </div>
+        <div style={{ ...innerCard(340, 48), left: 50, top: 295, zIndex: 2 }}>
+          <div style={t1}>Sliding window search</div>
+        </div>
+        <div style={{ ...innerCard(340, 48), left: 50, top: 395, zIndex: 2 }}>
+          <div style={t1}>Position (0–20)</div>
+        </div>
       </div>
-      <div
-        style={{
-          position: 'absolute',
-          left: 80,
-          top: 50,
-          color: 'rgba(255,255,255,0.5)',
-          fontSize: 12,
-          fontFamily: "'Zilla Slab',serif",
-        }}
-      >
-        Raspberry Pi Zero W · Python
+      {/* UART BRIDGE — same vertical rhythm as Motor cards; single label line */}
+      <div style={{
+        position: 'absolute', left: 490, top: 413, width: 200, height: 52,
+        borderRadius: 26, overflow: 'hidden',
+        background: 'transparent',
+        border: '1px solid rgba(255, 255, 255, 0.36)',
+        zIndex: 3,
+      }}>
+        <PixelBlocksBg />
+        <div className="pf-liquid-glass" style={{ borderRadius: 26 }} />
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 2,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <div style={{ ...t1, fontSize: 15 }}>UART 115200 baud</div>
+        </div>
       </div>
 
-      <GlassWidget
-        pixelColor="teal"
-        pixelCount={12}
-        style={{ left: 50, top: 80, width: 280, height: 200 }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 6,
-            padding: '16px 20px',
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 15 }}>
-            Raspberry Pi Zero W
+      {/* MOTOR BRAIN — frosted glass over pixels */}
+      <div style={{
+        position: 'absolute', left: 710, top: 20,
+        width: 540, height: 540, borderRadius: 20,
+        overflow: 'hidden',
+        background: 'transparent',
+        border: '1px solid rgba(255, 255, 255, 0.36)',
+      }}>
+        <PixelBlocksBg />
+        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <div style={brainTitleRow}>
+          <div style={h1}>Motor brain</div>
+          <div style={{ ...h2, marginTop: 4 }}>RP2040 Pico · Bare-metal C</div>
+        </div>
+        <div style={{ ...innerCard(360, 52), left: 90, top: 95, zIndex: 2 }}>
+          <div style={t1}>PID controller</div>
+        </div>
+        <div style={{ ...innerCard(360, 52), left: 90, top: 199, zIndex: 2 }}>
+          <div style={t1}>PWM duty calc</div>
+        </div>
+        <div style={{ ...innerCard(148, 56), left: 106, top: 303, zIndex: 2 }}>
+          <div style={t1}>Left motor</div>
+          <div style={t2}>GPIO 6</div>
+        </div>
+        <div style={{ ...innerCard(148, 56), left: 286, top: 303, zIndex: 2 }}>
+          <div style={t1}>Right motor</div>
+          <div style={t2}>GPIO 7</div>
+        </div>
+        <div style={{
+          ...innerCard(148, 56), left: 106, top: 411, zIndex: 2,
+          background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.06)',
+        }}>
+          <div style={t1}>Encoder L</div>
+          <div style={t2}>GPIO 26</div>
+        </div>
+        <div style={{
+          ...innerCard(148, 56), left: 286, top: 411, zIndex: 2,
+          background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.06)',
+        }}>
+          <div style={t1}>Encoder R</div>
+          <div style={t2}>GPIO 27</div>
+        </div>
+      </div>
+
+      <Wires />
+
+      {/* SIGNAL FLOW LEGEND — spans Vision left (30) through Motor right (1250): width 1220 */}
+      <div style={{
+        position: 'absolute', bottom: 10, left: 30,
+        width: 1220, height: 78,
+        borderRadius: 12,
+        overflow: 'hidden',
+        background: 'transparent',
+        border: '1px solid rgba(255, 255, 255, 0.36)',
+        zIndex: 6,
+      }}>
+        <PixelBlocksBg maxBlocks={16} />
+        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <div style={{
+          position: 'relative', zIndex: 2,
+          height: '100%',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          gap: 6,
+          padding: '6px 22px 8px',
+          boxSizing: 'border-box',
+        }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexWrap: 'wrap', gap: '8px 12px',
+          }}>
+            {LEGEND_STEPS.map((step, i) => (
+              <span
+                key={i}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}
+              >
+                {i > 0 && <span style={legendArrow} aria-hidden>→</span>}
+                <span style={legendText}>{step}</span>
+              </span>
+            ))}
           </div>
-          <div
-            style={{
-              fontFamily: "'Zilla Slab',serif",
-              fontWeight: 400,
-              color: '#666',
-              fontSize: 12,
-              lineHeight: 1.5,
-            }}
-          >
-            ArduCAM OV2640 (32×32)
-            <br />
-            Grayscale + threshold (150)
-            <br />
-            Sliding window search
-            <br />
-            Centroid → Position (0–20)
-            <br />
-            UART TX to Pico
-          </div>
-        </div>
-      </GlassWidget>
-
-      <GlassWidget pixelColor="amber" pixelCount={5} small style={{ left: 380, top: 170, width: 140, height: 50 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            gap: 6,
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>UART</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontWeight: 400, color: '#888', fontSize: 11 }}>115200</div>
-        </div>
-      </GlassWidget>
-
-      <div
-        style={{
-          position: 'absolute',
-          left: 570,
-          top: 30,
-          color: '#AFA9EC',
-          fontSize: 14,
-          fontFamily: 'Inter,sans-serif',
-          fontWeight: 700,
-          letterSpacing: 2,
-          textTransform: 'uppercase',
-        }}
-      >
-        Motor brain
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          left: 570,
-          top: 50,
-          color: 'rgba(255,255,255,0.5)',
-          fontSize: 12,
-          fontFamily: "'Zilla Slab',serif",
-        }}
-      >
-        RP2040 Pico · Bare-metal C
-      </div>
-
-      <GlassWidget
-        pixelColor="purple"
-        pixelCount={12}
-        style={{ left: 550, top: 80, width: 280, height: 200 }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 6,
-            padding: '16px 20px',
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 15 }}>
-            RP2040 Pico
-          </div>
-          <div
-            style={{
-              fontFamily: "'Zilla Slab',serif",
-              fontWeight: 400,
-              color: '#666',
-              fontSize: 12,
-              lineHeight: 1.5,
-            }}
-          >
-            Dual ARM Cortex-M0+ · 125 MHz
-            <br />
-            PID controller (Kp=0.1, Kd=0.1)
-            <br />
-            PWM motor control (2 kHz)
-            <br />
-            ADC encoder feedback
-            <br />
-            UART RX from Pi Zero
-          </div>
-        </div>
-      </GlassWidget>
-
-      <GlassWidget pixelColor="purple" pixelCount={4} small style={{ left: 880, top: 80, width: 160, height: 70 }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            gap: 2,
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>Left motor</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontWeight: 400, color: '#888', fontSize: 11 }}>PWM · GPIO 6</div>
-        </div>
-      </GlassWidget>
-
-      <GlassWidget pixelColor="purple" pixelCount={4} small style={{ left: 880, top: 170, width: 160, height: 70 }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            gap: 2,
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>Right motor</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontWeight: 400, color: '#888', fontSize: 11 }}>PWM · GPIO 7</div>
-        </div>
-      </GlassWidget>
-
-      <GlassWidget pixelColor="gray" pixelCount={3} small style={{ left: 1080, top: 80, width: 160, height: 70 }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            gap: 2,
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>Left encoder</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontWeight: 400, color: '#888', fontSize: 11 }}>ADC · GPIO 26</div>
-        </div>
-      </GlassWidget>
-
-      <GlassWidget pixelColor="gray" pixelCount={3} small style={{ left: 1080, top: 170, width: 160, height: 70 }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            gap: 2,
-          }}
-        >
-          <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>Right encoder</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontWeight: 400, color: '#888', fontSize: 11 }}>ADC · GPIO 27</div>
-        </div>
-      </GlassWidget>
-
-      <div
-        style={{
-          position: 'absolute',
-          left: 340,
-          top: 145,
-          color: '#B8A977',
-          fontSize: 11,
-          fontFamily: 'Arial',
-          fontWeight: 700,
-          whiteSpace: 'nowrap',
-          zIndex: 5,
-        }}
-      >
-        Position data
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          left: 835,
-          top: 110,
-          color: '#5985AD',
-          fontSize: 11,
-          fontFamily: 'Arial',
-          fontWeight: 700,
-          whiteSpace: 'nowrap',
-          zIndex: 5,
-        }}
-      >
-        PWM
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          left: 1045,
-          top: 110,
-          color: '#888',
-          fontSize: 11,
-          fontFamily: 'Arial',
-          fontWeight: 700,
-          whiteSpace: 'nowrap',
-          zIndex: 5,
-        }}
-      >
-        ADC
-      </div>
-
-      <ArchWires />
-
-      <div
-        style={{
-          display: 'flex',
-          width: 1180,
-          height: 44,
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '10px 20px',
-          position: 'absolute',
-          bottom: 30,
-          left: 55,
-          background: 'linear-gradient(180deg, rgba(218,218,218,0.08) 0%, rgba(206,206,206,0.05) 100%)',
-          borderRadius: 10,
-          border: '1px solid rgba(255,255,255,0.08)',
-          zIndex: 5,
-        }}
-      >
-        <div
-          style={{
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: 13,
-            fontFamily: "'Zilla Slab',serif",
-            fontWeight: 500,
-            letterSpacing: 0.5,
-          }}
-        >
-          Camera → Pi Zero → UART → Pi Pico → PWM → Motors → Encoders → PID ↻
+          <div style={legendCaption}>{LEGEND_CAPTION}</div>
         </div>
       </div>
     </div>

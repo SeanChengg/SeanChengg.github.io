@@ -84,9 +84,9 @@ export const GAP_AFTER_BLOCK_TO_HEADING = 88;
 export const SYSTEM_ARCHITECTURE_TOP = 750;
 
 /**
- * Bottom of SystemArchitectureDiagram.jsx: top 540 + height 680 — keep in sync with that file.
+ * Bottom of SystemArchitectureDiagram.jsx: top 100 + height 1100 — keep in sync with that file.
  */
-export const SYSTEM_ARCHITECTURE_DIAGRAM_BOTTOM = 1220;
+export const SYSTEM_ARCHITECTURE_DIAGRAM_BOTTOM = 1200;
 
 /** Section box height (must be ≥ SYSTEM_ARCHITECTURE_DIAGRAM_BOTTOM + a little pad) */
 export const SYSTEM_ARCHITECTURE_HEIGHT = 1260;
