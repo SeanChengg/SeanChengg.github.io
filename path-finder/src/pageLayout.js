@@ -29,8 +29,8 @@ export const SECTION_HEADING_TOP = 124;
 /** Bold Arial section titles — matches components’ `lineHeight: '28.8px'` */
 export const SECTION_TITLE_LINE_HEIGHT = 28.8;
 
-/** Wheel asset size (SectionHeading + Hero) */
-export const SECTION_WHEEL_SIZE = 56;
+/** Wheel asset size (SectionHeading + Hero); flex row keeps icons aligned with titles */
+export const SECTION_WHEEL_SIZE = 68;
 
 /** First body block under section headings — clears wheel+title row even if title wraps */
 export const SECTION_BODY_TOP = 204;
