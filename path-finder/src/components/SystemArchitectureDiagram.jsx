@@ -122,6 +122,9 @@ const legendCaption = {
   maxWidth: 1180,
 };
 
+/** Same pixel wash behind glass on every diagram tile (440×540 vs 540×540 differ otherwise). */
+const diagramPixelLayer = { opacity: 0.88 };
+
 export default function SystemArchitectureDiagram() {
   return (
     <div style={{
@@ -139,8 +142,8 @@ export default function SystemArchitectureDiagram() {
         background: 'transparent',
         border: '1px solid rgba(255, 255, 255, 0.36)',
       }}>
-        <PixelBlocksBg />
-        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <PixelBlocksBg style={diagramPixelLayer} />
+        <div className="pf-liquid-glass pf-liquid-glass--diagram" style={{ borderRadius: 'inherit' }} />
         <div style={brainTitleRow}>
           <div style={h1}>Vision brain</div>
           <div style={{ ...h2, marginTop: 4 }}>Raspberry Pi Zero W · Python</div>
@@ -166,8 +169,8 @@ export default function SystemArchitectureDiagram() {
         border: '1px solid rgba(255, 255, 255, 0.36)',
         zIndex: 3,
       }}>
-        <PixelBlocksBg />
-        <div className="pf-liquid-glass" style={{ borderRadius: 26 }} />
+        <PixelBlocksBg style={diagramPixelLayer} />
+        <div className="pf-liquid-glass pf-liquid-glass--diagram" style={{ borderRadius: 26 }} />
         <div style={{
           position: 'absolute', inset: 0, zIndex: 2,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -184,8 +187,8 @@ export default function SystemArchitectureDiagram() {
         background: 'transparent',
         border: '1px solid rgba(255, 255, 255, 0.36)',
       }}>
-        <PixelBlocksBg />
-        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <PixelBlocksBg style={diagramPixelLayer} />
+        <div className="pf-liquid-glass pf-liquid-glass--diagram" style={{ borderRadius: 'inherit' }} />
         <div style={brainTitleRow}>
           <div style={h1}>Motor brain</div>
           <div style={{ ...h2, marginTop: 4 }}>RP2040 Pico · Bare-metal C</div>
@@ -232,8 +235,8 @@ export default function SystemArchitectureDiagram() {
         border: '1px solid rgba(255, 255, 255, 0.36)',
         zIndex: 6,
       }}>
-        <PixelBlocksBg maxBlocks={16} />
-        <div className="pf-liquid-glass" style={{ borderRadius: 'inherit' }} />
+        <PixelBlocksBg maxBlocks={16} style={diagramPixelLayer} />
+        <div className="pf-liquid-glass pf-liquid-glass--diagram" style={{ borderRadius: 'inherit' }} />
         <div style={{
           position: 'relative', zIndex: 2,
           height: '100%',

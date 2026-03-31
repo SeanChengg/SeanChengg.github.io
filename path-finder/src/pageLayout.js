@@ -62,9 +62,9 @@ export const SECTION_PAGE_LEFT = 0.75;
 export const HERO_MAIN_COLUMN_LEFT =
   SECTION_ICON_LEFT + SECTION_PAGE_LEFT - HERO_PAGE_LEFT;
 
-/** Hero robot render — smaller + further right so intro copy is not covered */
-export const HERO_ROBOT_LEFT = 1220;
-export const HERO_ROBOT_W = 460;
+/** Hero robot render */
+export const HERO_ROBOT_LEFT = 1100;
+export const HERO_ROBOT_W = 580;
 export const HERO_ROBOT_H = Math.round(780 * (HERO_ROBOT_W / 580));
 
 /** Text column ends before the robot so the paragraph uses full width (no “narrow strip”) */

@@ -179,6 +179,36 @@ body {
   }
 }
 
+/*
+ * System architecture panels: same apparent frost on Vision vs Motor (different
+ * PixelBlocksBg sizes otherwise read as different “glass opacity”). Stronger
+ * base white + static patches (no phase drift between panels).
+ */
+.pf-liquid-glass--diagram {
+  background: rgba(255, 255, 255, 0.17);
+  backdrop-filter: blur(20px) saturate(1.22) brightness(1.02);
+  -webkit-backdrop-filter: blur(20px) saturate(1.22) brightness(1.02);
+}
+
+.pf-liquid-glass--diagram::before {
+  animation: none !important;
+  opacity: 0.3;
+  transform: none !important;
+}
+
+.pf-liquid-glass--diagram::after {
+  animation: none !important;
+  opacity: 0.26;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-liquid-glass--diagram::before,
+  .pf-liquid-glass--diagram::after {
+    opacity: 0.32;
+  }
+}
+
 .gw .gc {
   position: relative;
   z-index: 2;

@@ -111,7 +111,7 @@ function driftVars(i, mag) {
   };
 }
 
-export default function PixelBlocksBg({ maxBlocks: maxBlocksProp, config: configPartial }) {
+export default function PixelBlocksBg({ maxBlocks: maxBlocksProp, config: configPartial, style: layerStyle }) {
   const cfg = useMemo(() => {
     const base = mergePixelBlocksConfig(configPartial);
     return {
@@ -189,6 +189,7 @@ export default function PixelBlocksBg({ maxBlocks: maxBlocksProp, config: config
         borderRadius: 'inherit',
         pointerEvents: 'none',
         zIndex: 0,
+        ...layerStyle,
       }}
     >
       {blocks.map((b) => (
