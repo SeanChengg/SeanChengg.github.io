@@ -5,8 +5,7 @@ export default function SimpleFooter() {
     <div
       id="site-footer"
       style={{
-        width: 1919,
-        maxWidth: '100%',
+        width: '100%',
         position: 'relative',
         background: '#212121',
         borderTopLeftRadius: 24,

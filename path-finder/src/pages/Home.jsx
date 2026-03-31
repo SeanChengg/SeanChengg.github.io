@@ -33,10 +33,8 @@ export default function Home() {
               style={{
                 position: 'absolute',
                 left: 0,
-                right: 0,
                 top: FOOTER_TOP,
-                display: 'flex',
-                justifyContent: 'center',
+                width: '100%',
               }}
             >
               <SimpleFooter />

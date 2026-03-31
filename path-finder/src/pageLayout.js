@@ -128,4 +128,8 @@ export const INTEGRATION_HEIGHT = 1220;
 
 export const FOOTER_TOP = INTEGRATION_TOP + INTEGRATION_HEIGHT + SECTION_GAP;
 
-export const PAGE_SCROLL_HEIGHT = FOOTER_TOP + 400;
+/** Total height of `SimpleFooter` outer box — keep in sync when footer padding/content changes */
+export const FOOTER_BLOCK_HEIGHT = 384;
+
+/** Page length: ends flush with bottom of footer (no extra body background strip) */
+export const PAGE_SCROLL_HEIGHT = FOOTER_TOP + FOOTER_BLOCK_HEIGHT;
