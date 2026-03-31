@@ -34,7 +34,7 @@ export default function MotorControlPID() {
       </div>
 
       <div className="ns" style={{ width: 1289, height: 350, left: 460, top: 570, position: 'absolute' }}>
-        <GlassWidget small style={{ left: 24, top: 120, width: 100, height: 52 }}>
+        <GlassWidget small pixelColor="gray" pixelCount={6} style={{ left: 24, top: 120, width: 100, height: 52 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 12 }}>Target (10)</div>
           </div>
@@ -44,25 +44,25 @@ export default function MotorControlPID() {
           <span style={{ color: '#fff', fontSize: 18, fontWeight: 700 }}>Σ</span>
         </div>
         <div style={{ position: 'absolute', left: 218, top: 143, width: 36, height: 2, background: 'rgba(255,255,255,0.3)' }} />
-        <GlassWidget small style={{ left: 260, top: 113, width: 150, height: 68 }}>
+        <GlassWidget small pixelColor="purple" pixelCount={8} style={{ left: 260, top: 113, width: 150, height: 68 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', padding: '0 8px' }}>
             <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 12, textAlign: 'center' }}>PID<br /><span style={{ fontSize: 10, fontWeight: 400, color: '#666' }}>Kp·e + Kd·de/dt</span></div>
           </div>
         </GlassWidget>
         <div style={{ position: 'absolute', left: 418, top: 143, width: 36, height: 2, background: 'rgba(255,255,255,0.3)' }} />
-        <GlassWidget small style={{ left: 460, top: 113, width: 150, height: 68 }}>
+        <GlassWidget small pixelColor="purple" pixelCount={8} style={{ left: 460, top: 113, width: 150, height: 68 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 11, textAlign: 'center' }}>Motor Calc</div>
           </div>
         </GlassWidget>
         <div style={{ position: 'absolute', left: 618, top: 127, width: 28, height: 2, background: 'rgba(255,255,255,0.3)' }} />
         <div style={{ position: 'absolute', left: 618, top: 163, width: 28, height: 2, background: 'rgba(255,255,255,0.3)' }} />
-        <GlassWidget small style={{ left: 652, top: 103, width: 110, height: 40 }}>
+        <GlassWidget small pixelColor="purple" pixelCount={4} style={{ left: 652, top: 103, width: 110, height: 40 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 600, color: '#1a1a1a', fontSize: 11 }}>L Motor</div>
           </div>
         </GlassWidget>
-        <GlassWidget small style={{ left: 652, top: 153, width: 110, height: 40 }}>
+        <GlassWidget small pixelColor="purple" pixelCount={4} style={{ left: 652, top: 153, width: 110, height: 40 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,sans-serif', fontWeight: 600, color: '#1a1a1a', fontSize: 11 }}>R Motor</div>
           </div>
