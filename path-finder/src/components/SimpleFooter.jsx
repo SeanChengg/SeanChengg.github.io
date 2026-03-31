@@ -7,9 +7,7 @@ export default function SimpleFooter() {
       style={{
         width: '100%',
         position: 'relative',
-        background: '#212121',
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
+        minHeight: '100%',
         paddingBottom: 60,
         boxSizing: 'border-box',
       }}

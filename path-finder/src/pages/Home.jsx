@@ -34,7 +34,12 @@ export default function Home() {
                 position: 'absolute',
                 left: 0,
                 top: FOOTER_TOP,
+                bottom: 0,
                 width: '100%',
+                background: '#212121',
+                borderRadius: '24px 24px 0 0',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
               }}
             >
               <SimpleFooter />

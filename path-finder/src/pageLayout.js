@@ -128,8 +128,11 @@ export const INTEGRATION_HEIGHT = 1220;
 
 export const FOOTER_TOP = INTEGRATION_TOP + INTEGRATION_HEIGHT + SECTION_GAP;
 
-/** Total height of `SimpleFooter` outer box — keep in sync when footer padding/content changes */
-export const FOOTER_BLOCK_HEIGHT = 384;
+/**
+ * Space reserved below FOOTER_TOP — footer shell uses `bottom: 0` to fill this with #212121.
+ * Keep ≥ rendered footer content height so copy is not clipped.
+ */
+export const FOOTER_BLOCK_HEIGHT = 420;
 
-/** Page length: ends flush with bottom of footer (no extra body background strip) */
+/** Page length — scroll canvas ends where the footer block ends (no grey strip below) */
 export const PAGE_SCROLL_HEIGHT = FOOTER_TOP + FOOTER_BLOCK_HEIGHT;
