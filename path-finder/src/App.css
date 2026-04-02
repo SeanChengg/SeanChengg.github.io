@@ -354,14 +354,14 @@ body {
 }
 
 .pf-ld-card--active {
-  width: 560px;
-  height: 440px;
+  width: 580px;
+  height: 560px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
   border-color: rgba(235, 216, 122, 0.45);
 }
 
 .pf-ld-card--active-has-image {
-  height: 540px;
+  height: 580px;
 }
 
 .pf-ld-detail {

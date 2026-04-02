@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { withBase } from '../publicUrl';
 import SectionHeading from './SectionHeading';
 import PixelBlocksBg from './PixelBlocksBg';
@@ -13,7 +13,6 @@ function IconCapture() {
       <circle cx="22" cy="22" r="7" stroke="#555" strokeWidth="1.6" fill="none" />
       <circle cx="22" cy="22" r="3" fill="#888" />
       <rect x="17" y="6" width="10" height="4" rx="1.5" fill="#888" />
-      {/* 32×32 grid hint */}
       <line x1="15" y1="8" x2="15" y2="36" stroke="#bbb" strokeWidth="0.5" />
       <line x1="22" y1="8" x2="22" y2="36" stroke="#bbb" strokeWidth="0.5" />
       <line x1="29" y1="8" x2="29" y2="36" stroke="#bbb" strokeWidth="0.5" />
@@ -34,9 +33,7 @@ function IconGrayscale() {
         </linearGradient>
       </defs>
       <rect x="6" y="10" width="32" height="12" rx="3" fill="url(#gs-grad)" />
-      {/* threshold line */}
       <line x1="22" y1="8" x2="22" y2="24" stroke="#c44" strokeWidth="1.5" strokeDasharray="3 2" />
-      {/* binary output */}
       <rect x="6" y="28" width="14" height="8" rx="2" fill="#222" />
       <rect x="24" y="28" width="14" height="8" rx="2" fill="#eee" stroke="#ccc" strokeWidth="0.5" />
       <text x="13" y="34" textAnchor="middle" fill="#fff" fontSize="6" fontFamily="Arial" fontWeight="700">0</text>
@@ -48,15 +45,11 @@ function IconGrayscale() {
 function IconSlidingWindow() {
   return (
     <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-      {/* image frame */}
       <rect x="8" y="6" width="28" height="32" rx="3" stroke="#888" strokeWidth="1.2" fill="none" />
-      {/* white line through image */}
       <path d="M20 38 Q18 28, 22 22 Q26 16, 24 6" stroke="#aaa" strokeWidth="3" strokeLinecap="round" fill="none" />
-      {/* scanning windows bottom-to-top */}
       <rect x="12" y="28" width="20" height="7" rx="1.5" stroke="#d4a017" strokeWidth="1.4" fill="rgba(235,216,122,0.15)" />
       <rect x="13" y="19" width="18" height="7" rx="1.5" stroke="#d4a017" strokeWidth="1.2" fill="rgba(235,216,122,0.10)" />
       <rect x="15" y="10" width="16" height="7" rx="1.5" stroke="#d4a017" strokeWidth="1.0" fill="rgba(235,216,122,0.06)" />
-      {/* upward arrow */}
       <path d="M38 32 L38 12" stroke="#999" strokeWidth="1.2" />
       <path d="M36 14 L38 10 L40 14" stroke="#999" strokeWidth="1.2" fill="none" />
     </svg>
@@ -66,16 +59,13 @@ function IconSlidingWindow() {
 function IconPosition() {
   return (
     <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-      {/* ruler bar */}
       <rect x="4" y="18" width="36" height="8" rx="4" fill="rgba(0,0,0,0.06)" stroke="#bbb" strokeWidth="0.8" />
-      {/* ticks */}
       <line x1="7" y1="27" x2="7" y2="31" stroke="#999" strokeWidth="1" />
       <line x1="22" y1="27" x2="22" y2="31" stroke="#999" strokeWidth="1" />
       <line x1="37" y1="27" x2="37" y2="31" stroke="#999" strokeWidth="1" />
       <text x="7" y="37" textAnchor="middle" fill="#888" fontSize="7" fontFamily="Arial">0</text>
       <text x="22" y="37" textAnchor="middle" fill="#888" fontSize="7" fontFamily="Arial">10</text>
       <text x="37" y="37" textAnchor="middle" fill="#888" fontSize="7" fontFamily="Arial">20</text>
-      {/* position marker */}
       <circle cx="15" cy="22" r="4" fill="rgba(235,216,122,0.9)" stroke="#c9a800" strokeWidth="1" />
       <path d="M15 14 L15 17" stroke="#c9a800" strokeWidth="1.5" />
       <path d="M13 15.5 L15 12 L17 15.5" stroke="#c9a800" strokeWidth="1.2" fill="none" />
@@ -86,15 +76,11 @@ function IconPosition() {
 function IconUart() {
   return (
     <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-      {/* TX signal waveform */}
       <polyline points="4,22 8,22 9,12 11,12 12,22 14,22 15,32 17,32 18,22 22,22 23,12 25,12 26,22 28,22" stroke="#555" strokeWidth="1.6" fill="none" strokeLinejoin="round" />
-      {/* arrow to chip */}
       <path d="M30 22 L38 22" stroke="#999" strokeWidth="1.4" />
       <path d="M36 20 L39 22 L36 24" stroke="#999" strokeWidth="1.2" fill="none" />
-      {/* pico chip */}
       <rect x="32" y="30" width="10" height="8" rx="2" fill="#ddd" stroke="#999" strokeWidth="0.8" />
       <text x="37" y="36" textAnchor="middle" fill="#666" fontSize="5" fontFamily="Arial" fontWeight="700">PICO</text>
-      {/* baud label */}
       <text x="16" y="9" textAnchor="middle" fill="#aaa" fontSize="5.5" fontFamily="Arial">115200</text>
     </svg>
   );
@@ -104,62 +90,197 @@ const STEP_ICONS = [IconCapture, IconGrayscale, IconSlidingWindow, IconPosition,
 
 const STEPS = [
   {
-    label: 'Capture 32×32\nframe',
-    title: 'ArduCAM OV2640 — Raw Capture',
-    body: 'The downward-facing ArduCAM module captures a tiny 32×32-pixel colour image of the track surface at each processing cycle. Even at this low resolution the white line is clearly visible against the purple runway.',
+    label: 'Capture 32\u00d732\nframe',
+    title: 'ArduCAM OV2640 \u2014 Raw Capture',
+    body: 'A downward-facing ArduCAM captures a 32\u00d732-pixel colour snapshot of the track each cycle. Below is what the camera actually sees \u2014 the purple runway with a white guide strip the robot must follow.',
     image: 'colored.jpg',
+    imageCaption: 'Purple runway with white guide line \u2014 actual ArduCAM output',
     imageAlt: 'Colour capture of white line on purple track',
-    detail: '32×32 px · 3 channels (RGB) · ~3 KB per frame',
+    detail: '32\u00d732 px \u00b7 3 channels (RGB) \u00b7 ~3 KB per frame',
   },
   {
     label: 'Grayscale +\nThreshold',
     title: 'Grayscale Conversion + Binarisation',
-    body: 'First, the RGB image is converted to single-channel grayscale (0–255 brightness). Then a binary threshold at intensity 150 turns every pixel into pure black (floor) or pure white (line). This eliminates colour noise and reduces processing to simple binary math.',
+    body: 'RGB becomes one brightness per pixel: 8-bit intensity from 0 (black) to 255 (white). The threshold 150 is the cutoff on that 0\u2013255 scale: pixels brighter than 150 become white, 150 or below become black. The purple floor reads darker than the white strip, so after thresholding the line stays bright and the floor drops out.',
     image: 'grayscale_capture.jpg',
+    imageCaption: 'After grayscale + threshold \u2014 line isolated from floor',
     imageAlt: 'Grayscale capture showing white line on dark background',
-    detail: 'pixel > 150 → white (255)  •  pixel ≤ 150 → black (0)',
+    detail: 'Brightness > 150 \u2192 white (255). Brightness \u2264 150 \u2192 black (0).',
     codeSnippet: "image.convert('L')  # grayscale\nbinary = (arr > 150).astype(uint8)",
   },
   {
     label: 'Sliding Window\nSearch',
     title: 'Sliding Window Histogram Search',
-    body: 'Starting from the bottom of the binary image (closest to the robot), a histogram counts white pixels per column to find the line\'s base position. Rectangular search windows then scan upward — each window re-centres on the densest cluster of white pixels, tracing the line from bottom to top even through curves.',
-    detail: 'window height = 20 px · margin = ±25 px · min pixels = 50',
+    body: 'Take the bottom half of the 32\u00d732 binary image (16 rows). For each of the 32 columns, count white pixels \u2014 the tallest bar is where the line sits. Then a search box starts at that column at the bottom and slides upward through the image, re-centring on white pixels each step. This traces the line from bottom to top, even through curves.',
     codeSnippet: 'histogram = np.sum(bottom_half, axis=0)\nleftx_base = np.argmax(histogram[:mid])',
-    visual: 'histogram',
+    visual: 'slidingWindow',
   },
   {
-    label: 'line_position\n(0–20)',
-    title: 'Position Mapping — 0 to 20 Scale',
-    body: 'The average column index of the detected line is scaled to a 0–20 integer: 0 = line at the far left, 10 = centred, 20 = far right. This compact value is all the Pico\'s PID controller needs to calculate steering corrections.',
-    detail: 'line_position = int((line_center / 32) × 20)',
+    label: 'line_position\n(0\u201320)',
+    title: 'Position Mapping \u2014 0 to 20 Scale',
+    body: 'After detection, the line\u2019s horizontal centre sits somewhere across the 32-pixel-wide frame \u2014 that raw column value is called line_center (range 0\u201331). To make steering simpler, we squeeze it onto a 0\u201320 scale: divide by 32 (the frame width) to get a 0\u20131 fraction, then multiply by 20. The result is line_position: 0 = far left, 10 = dead centre, 20 = far right. The Pico\u2019s PID loop compares line_position to 10 every cycle and adjusts the wheel motors to steer back toward centre.',
+    codeSnippet: 'line_position = int((line_center / 32) \u00d7 20)\n\n# line_center  \u2014 raw column of the line (0\u201331)\n# 32           \u2014 frame width in pixels\n# 20           \u2014 target scale range\n# line_position \u2014 integer sent to Pico (0\u201320)',
     visual: 'scale',
   },
   {
     label: 'UART TX\nto Pico',
     title: 'UART Serial Transmission',
-    body: 'The position integer is sent as a simple ASCII string (e.g. "12\\n") over UART at 115 200 baud — taking roughly 260 µs. The Pico\'s interrupt handler catches each value and updates the global line_position variable that the PID loop reads every cycle.',
-    detail: '115 200 baud · ~260 µs per value · ASCII + newline',
+    body: 'The Pi sends each line position to the Pico over a single wire pair (UART). The number is sent as readable text \u2014 for example the characters 1, 2, then Enter \u2014 not as raw binary blobs. \u201c115 200 baud\u201d is simply how fast bits travel on that wire (about 115 thousand bits per second); it is fast enough that one small number arrives in a fraction of a millisecond. \u201c~260 \u00b5s per value\u201d means each number takes only about a quarter of a millisecond to send end-to-end \u2014 short enough that steering still feels instant. On the Pico, an interrupt fires when a full line arrives and updates line_position for the motor loop.',
+    detail: 'In plain terms: UART = serial link; baud = wire speed; \u00b5s = millionths of a second (how long one send takes); ASCII + newline = human-readable digits plus a line break so the Pico knows one value ended.',
     codeSnippet: 'zeroToPico.send_message(line_position)',
   },
 ];
 
 /* ── Inline visuals for expanded cards ── */
 
-function HistogramVisual() {
-  const cols = [0, 0, 1, 2, 5, 9, 8, 7, 9, 8, 3, 1, 0, 0, 0, 0];
-  const max = Math.max(...cols);
+function SlidingWindowVisual() {
+  const [scanStep, setScanStep] = useState(-1);
+  const gridSize = 32;
+  const cell = 7;
+  const pad = { l: 34, t: 12, r: 50, b: 8 };
+  const gridPx = gridSize * cell;
+  const svgW = pad.l + gridPx + pad.r;
+  const svgH = pad.t + gridPx + pad.b;
+
+  const lineCol = (row) => 16 + 5 * Math.sin((row / 31) * Math.PI * 1.2);
+
+  const pixels = [];
+  for (let r = 0; r < gridSize; r++) {
+    const center = lineCol(r);
+    const row = [];
+    for (let c = 0; c < gridSize; c++) {
+      row.push(Math.abs(c - center) <= 1.6 ? 1 : 0);
+    }
+    pixels.push(row);
+  }
+
+  const winH = 6;
+  const winW = 12;
+  const numWins = 5;
+  const scans = [];
+  for (let i = 0; i < numWins; i++) {
+    const centerRow = 31 - i * 6 - 3;
+    const cx = Math.round(lineCol(centerRow));
+    scans.push({
+      row: Math.max(0, Math.round(centerRow - winH / 2)),
+      col: Math.max(0, Math.min(gridSize - winW, cx - Math.floor(winW / 2))),
+    });
+  }
+
+  const histCols = [];
+  for (let c = 0; c < gridSize; c++) {
+    let count = 0;
+    for (let r = 16; r < 32; r++) count += pixels[r][c];
+    histCols.push(count);
+  }
+  const histMax = Math.max(...histCols, 1);
+
+  useEffect(() => {
+    let step = -1;
+    const id = setInterval(() => {
+      step = step >= numWins ? -1 : step + 1;
+      setScanStep(step);
+    }, 900);
+    return () => clearInterval(id);
+  }, []);
+
+  const barH = 48;
+
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 58, padding: '8px 0' }}>
-      {cols.map((v, i) => (
-        <div key={i} style={{
-          width: 16, height: Math.max(3, (v / max) * 50),
-          background: v > 4 ? 'rgba(235, 216, 122, 0.85)' : 'rgba(100,100,100,0.25)',
-          borderRadius: 2,
-        }} />
-      ))}
-      <div style={{ marginLeft: 10, fontSize: 12, color: 'rgba(40,40,40,0.55)', fontFamily: 'Arial', alignSelf: 'center' }}>
-        ← peak = line position
+    <div style={{ padding: '8px 0' }}>
+      <div style={{ fontSize: 14, fontWeight: 700, color: '#444', fontFamily: 'Arial', marginBottom: 6 }}>
+        What the robot sees — 32×32 binary frame
+      </div>
+      <div style={{ fontSize: 13, color: '#666', fontFamily: "'Zilla Slab', serif", marginBottom: 10, lineHeight: 1.45 }}>
+        Each square is one pixel. White = above threshold, black = below. The scan windows slide from bottom (row 31, closest to wheels) upward, re-centering on the white line at each step.
+      </div>
+
+      <svg width="100%" viewBox={`0 0 ${svgW} ${svgH}`} style={{ display: 'block', maxWidth: 420 }}>
+        <rect x={pad.l} y={pad.t} width={gridPx} height={gridPx} rx={4} fill="#0d0d1a" />
+
+        {pixels.map((row, r) =>
+          row.map((v, c) =>
+            v === 1 ? (
+              <rect
+                key={`${r}-${c}`}
+                x={pad.l + c * cell + 0.5}
+                y={pad.t + r * cell + 0.5}
+                width={cell - 1}
+                height={cell - 1}
+                fill="rgba(255,255,255,0.92)"
+                rx={1}
+              />
+            ) : null
+          )
+        )}
+
+        <line
+          x1={pad.l} y1={pad.t + 16 * cell}
+          x2={pad.l + gridPx} y2={pad.t + 16 * cell}
+          stroke="rgba(212,160,23,0.35)" strokeWidth={0.8} strokeDasharray="4 3"
+        />
+
+        {scans.map((s, i) => {
+          if (i >= scanStep) return null;
+          const active = i === scanStep - 1;
+          return (
+            <g key={i}>
+              <rect
+                x={pad.l + s.col * cell - 1}
+                y={pad.t + s.row * cell - 1}
+                width={winW * cell + 2}
+                height={winH * cell + 2}
+                rx={3}
+                fill={active ? 'rgba(212,160,23,0.22)' : 'rgba(212,160,23,0.06)'}
+                stroke={active ? '#d4a017' : 'rgba(212,160,23,0.35)'}
+                strokeWidth={active ? 2.2 : 1}
+              />
+              <text
+                x={pad.l + (s.col + winW) * cell + 5}
+                y={pad.t + s.row * cell + winH * cell / 2 + 3}
+                fontSize={9} fill={active ? '#d4a017' : 'rgba(212,160,23,0.5)'}
+                fontFamily="Arial" fontWeight={600}
+              >
+                scan {i + 1}
+              </text>
+            </g>
+          );
+        })}
+
+        <text x={pad.l - 3} y={pad.t + 7} textAnchor="end" fontSize={8} fill="#777" fontFamily="Arial">0</text>
+        <text x={pad.l - 3} y={pad.t + 16 * cell + 4} textAnchor="end" fontSize={8} fill="#777" fontFamily="Arial">16</text>
+        <text x={pad.l - 3} y={pad.t + 31 * cell + 7} textAnchor="end" fontSize={8} fill="#777" fontFamily="Arial">31</text>
+
+        <line
+          x1={svgW - 18} y1={pad.t + gridPx - 8}
+          x2={svgW - 18} y2={pad.t + 14}
+          stroke="#888" strokeWidth={1.1}
+        />
+        <path d={`M${svgW - 21} ${pad.t + 19} L${svgW - 18} ${pad.t + 10} L${svgW - 15} ${pad.t + 19}`} stroke="#888" strokeWidth={1.1} fill="none" />
+        <text
+          x={svgW - 10}
+          y={pad.t + gridPx / 2}
+          fontSize={8.5} fill="#888" fontFamily="Arial"
+          transform={`rotate(-90 ${svgW - 10} ${pad.t + gridPx / 2})`}
+        >scan direction</text>
+      </svg>
+
+      <div style={{ marginTop: 14, fontSize: 13, fontWeight: 700, color: '#444', fontFamily: 'Arial', marginBottom: 4 }}>
+        Bottom-half histogram (columns 0–31)
+      </div>
+      <div style={{ display: 'flex', alignItems: 'flex-end', height: barH, borderBottom: '1px solid rgba(0,0,0,0.1)', marginBottom: 4 }}>
+        {histCols.map((v, i) => (
+          <div key={i} style={{
+            flex: 1, minWidth: 0,
+            height: Math.max(1, (v / histMax) * barH),
+            background: v > 3 ? 'rgba(212,160,23,0.75)' : 'rgba(140,140,140,0.15)',
+            borderRadius: '2px 2px 0 0',
+            margin: '0 0.5px',
+          }} />
+        ))}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#999', fontFamily: 'Arial' }}>
+        <span>col 0</span><span>col 15</span><span>col 31</span>
       </div>
     </div>
   );
@@ -167,20 +288,121 @@ function HistogramVisual() {
 
 function ScaleVisual() {
   const ticks = [0, 5, 10, 15, 20];
+  const [t, setT] = useState(0);
+  const rafRef = useRef();
+
+  useEffect(() => {
+    let start = null;
+    const tick = (ts) => {
+      if (!start) start = ts;
+      setT((ts - start) / 1000);
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const roadW = 220;
+  const roadH = 300;
+  const roadX = 20;
+  const roadY = 10;
+  const cx = roadX + roadW / 2;
+  const speed = 50;
+  const scrollY = (t * speed) % roadH;
+
+  const lineFn = (y) => cx + 38 * Math.sin((y + t * speed) * 0.018);
+
+  const vehicleY = roadY + roadH * 0.62;
+  const lineAtVehicle = lineFn(vehicleY);
+  const lineOffset = lineAtVehicle - cx;
+  const linePos = Math.round(((lineAtVehicle - roadX) / roadW) * 20);
+  const clampedPos = Math.max(0, Math.min(20, linePos));
+  const pct = (clampedPos / 20) * 100;
+
+  const slope = lineFn(vehicleY - 3) - lineFn(vehicleY + 3);
+  const steerAngle = Math.max(-30, Math.min(30, slope * 2.5));
+
+  let linePath = '';
+  for (let py = -roadH; py <= roadH * 2; py += 3) {
+    linePath += (py === -roadH ? 'M' : 'L') + `${lineFn(py)},${py} `;
+  }
+
+  const bodyW = 40;
+  const bodyH = 64;
+  const wheelR = 20;
+  const wheelW = 10;
+
+  const label = clampedPos < 9 ? 'steer right' : clampedPos > 11 ? 'steer left' : 'centred';
+
   return (
-    <div style={{ padding: '8px 0 4px' }}>
-      <div style={{ position: 'relative', height: 26, background: 'rgba(0,0,0,0.05)', borderRadius: 13, overflow: 'hidden' }}>
+    <div style={{ padding: '10px 0 6px' }}>
+      <div style={{ fontSize: 13, fontWeight: 600, color: '#555', fontFamily: 'Arial', marginBottom: 8 }}>
+        line_position = {clampedPos} → {label}
+      </div>
+      <div style={{ position: 'relative', height: 28, background: 'rgba(0,0,0,0.05)', borderRadius: 14, overflow: 'hidden', marginBottom: 2 }}>
         <div style={{
-          position: 'absolute', left: '35%', top: 0, bottom: 0, width: 5,
-          background: 'rgba(235, 216, 122, 0.9)', borderRadius: 2,
+          position: 'absolute', left: `${pct}%`, top: 0, bottom: 0, width: 6,
+          background: 'rgba(212,160,23,0.9)', borderRadius: 3,
+          transform: 'translateX(-50%)',
         }} />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-        {ticks.map(t => (
-          <span key={t} style={{ fontSize: 11, color: 'rgba(40,40,40,0.5)', fontFamily: 'Arial' }}>
-            {t === 0 ? '0 (left)' : t === 10 ? '10 (center)' : t === 20 ? '20 (right)' : t}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, marginBottom: 10 }}>
+        {ticks.map(tk => (
+          <span key={tk} style={{ fontSize: 11, color: 'rgba(40,40,40,0.5)', fontFamily: 'Arial', fontWeight: tk === 10 ? 700 : 400 }}>
+            {tk === 0 ? '0 (left)' : tk === 10 ? '10 (centre)' : tk === 20 ? '20 (right)' : tk}
           </span>
         ))}
+      </div>
+
+      <svg width="100%" viewBox={`0 0 260 ${roadH + 20}`} style={{ display: 'block', maxWidth: 380, borderRadius: 10, background: 'rgba(0,0,0,0.02)' }}>
+        <defs>
+          <clipPath id="road-clip"><rect x={roadX} y={roadY} width={roadW} height={roadH} rx={10} /></clipPath>
+          <linearGradient id="road-g2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#c9b8de" />
+            <stop offset="100%" stopColor="#b8a4d0" />
+          </linearGradient>
+        </defs>
+
+        <rect x={roadX} y={roadY} width={roadW} height={roadH} rx={10} fill="url(#road-g2)" />
+
+        <g clipPath="url(#road-clip)">
+          {[0, 1, 2, 3, 4, 5, 6].map(i => {
+            const dashY = roadY + ((i * 50 + scrollY) % (roadH + 50)) - 50;
+            return (
+              <rect key={i} x={roadX + 8} y={dashY} width={3} height={22} rx={1.5}
+                fill="rgba(255,255,255,0.18)" />
+            );
+          })}
+          {[0, 1, 2, 3, 4, 5, 6].map(i => {
+            const dashY = roadY + ((i * 50 + scrollY) % (roadH + 50)) - 50;
+            return (
+              <rect key={i} x={roadX + roadW - 11} y={dashY} width={3} height={22} rx={1.5}
+                fill="rgba(255,255,255,0.18)" />
+            );
+          })}
+
+          <path d={linePath} fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" />
+          <path d={linePath} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
+
+          <g transform={`translate(${lineAtVehicle}, ${vehicleY}) rotate(${steerAngle * 0.95})`}>
+            <rect x={-bodyW / 2} y={-bodyH / 2} width={bodyW} height={bodyH} rx={8}
+              fill="rgba(50,50,55,0.18)" stroke="rgba(80,80,80,0.5)" strokeWidth={1.2} />
+
+            <g transform={`translate(${-bodyW / 2 - wheelW / 2 - 1}, 0) rotate(${steerAngle * 0.65})`}>
+              <rect x={-wheelW / 2} y={-wheelR} width={wheelW} height={wheelR * 2} rx={3.5}
+                fill="#d4a017" stroke="#b8900f" strokeWidth={1.2} />
+            </g>
+            <g transform={`translate(${bodyW / 2 + wheelW / 2 + 1}, 0) rotate(${steerAngle * 0.65})`}>
+              <rect x={-wheelW / 2} y={-wheelR} width={wheelW} height={wheelR * 2} rx={3.5}
+                fill="#d4a017" stroke="#b8900f" strokeWidth={1.2} />
+            </g>
+
+            <circle cx={0} cy={0} r={2.5} fill="rgba(100,100,100,0.3)" />
+          </g>
+        </g>
+      </svg>
+      <div style={{ fontSize: 11.5, color: '#888', fontFamily: "'Zilla Slab', serif", marginTop: 6, lineHeight: 1.4 }}>
+        When line_position {'<'} 10 the line is left of centre — PID speeds up the left motor to steer right, back toward the line. When {'>'} 10, the opposite. At 10, both motors run equally.
       </div>
     </div>
   );
@@ -207,13 +429,13 @@ function PipelineCard({ step, index, isActive, onHover, onLeave }) {
 
       <div style={{
         position: 'relative', zIndex: 2,
-        padding: isActive ? '22px 28px' : '14px 16px',
+        padding: isActive ? '24px 30px 20px' : '14px 16px',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
+        overflow: 'hidden',
       }}>
-        {/* Collapsed: icon + label stacked | Expanded: title */}
         <div style={{
           textAlign: 'center',
           display: isActive ? 'block' : 'flex',
@@ -225,48 +447,69 @@ function PipelineCard({ step, index, isActive, onHover, onLeave }) {
         }}>
           {!isActive && <Icon />}
           <div style={{
-            fontSize: isActive ? 18 : 15,
+            fontSize: isActive ? 20 : 15,
             fontWeight: 700,
             fontFamily: 'Inter, sans-serif',
             color: '#1a1a1a',
             whiteSpace: 'pre-line',
             lineHeight: 1.3,
-            marginBottom: isActive ? 12 : 0,
+            marginBottom: isActive ? 14 : 0,
             textAlign: isActive ? 'left' : 'center',
           }}>
             {isActive ? step.title : step.label}
           </div>
         </div>
 
-        {/* Expanded detail area */}
-        <div className="pf-ld-detail" style={{ flex: 1, overflow: 'hidden' }}>
+        <div className="pf-ld-detail" style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden' }}>
           {hasImage && (
-            <img
-              src={withBase(`images/path_finder/${step.image}`)}
-              alt={step.imageAlt || ''}
-              style={{
-                width: '100%', objectFit: 'contain',
-                borderRadius: 10, marginBottom: 12,
-                border: '1px solid rgba(0,0,0,0.08)',
-              }}
-            />
+            <div style={{
+              marginBottom: 10,
+              borderRadius: 10,
+              background: 'rgba(0,0,0,0.04)',
+              textAlign: 'center',
+              padding: '6px 0',
+            }}>
+              <img
+                src={withBase(`images/path_finder/${step.image}`)}
+                alt={step.imageAlt || ''}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: 300,
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  borderRadius: 8,
+                  border: '1px solid rgba(0,0,0,0.08)',
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                }}
+              />
+              {step.imageCaption && (
+                <div style={{
+                  fontSize: 12.5, fontStyle: 'italic', color: 'rgba(60,60,60,0.6)',
+                  fontFamily: 'Arial', marginTop: 5, textAlign: 'center',
+                }}>
+                  {step.imageCaption}
+                </div>
+              )}
+            </div>
           )}
 
           <div style={{
-            fontSize: 14.5, fontFamily: "'Zilla Slab', serif", fontWeight: 400,
-            color: '#2a2a2a', lineHeight: 1.55, marginBottom: 10,
+            fontSize: 15.5, fontFamily: "'Zilla Slab', serif", fontWeight: 400,
+            color: '#2a2a2a', lineHeight: 1.6, marginBottom: 12,
           }}>
             {step.body}
           </div>
 
-          {step.visual === 'histogram' && <HistogramVisual />}
+          {step.visual === 'slidingWindow' && <SlidingWindowVisual />}
           {step.visual === 'scale' && <ScaleVisual />}
 
           {step.codeSnippet && (
             <pre style={{
-              background: 'rgba(25,25,25,0.06)', borderRadius: 6, padding: '10px 14px',
-              fontSize: 12.5, fontFamily: "'SF Mono', Menlo, monospace", color: '#333',
-              overflowX: 'auto', marginBottom: 8, whiteSpace: 'pre-wrap', lineHeight: 1.5,
+              background: 'rgba(25,25,25,0.06)', borderRadius: 8, padding: '12px 16px',
+              fontSize: 13.5, fontFamily: "'SF Mono', Menlo, monospace", color: '#333',
+              overflowX: 'auto', marginBottom: 10, whiteSpace: 'pre-wrap', lineHeight: 1.55,
             }}>
               {step.codeSnippet}
             </pre>
@@ -274,8 +517,9 @@ function PipelineCard({ step, index, isActive, onHover, onLeave }) {
 
           {step.detail && (
             <div style={{
-              fontSize: 12.5, fontFamily: 'Arial', fontWeight: 600,
-              color: 'rgba(40,40,40,0.5)', letterSpacing: 0.3, marginTop: 4,
+              fontSize: 13.5, fontFamily: 'Arial', fontWeight: 600,
+              color: 'rgba(40,40,40,0.5)', letterSpacing: 0.3,
+              whiteSpace: 'pre-line',
             }}>
               {step.detail}
             </div>
@@ -292,7 +536,24 @@ export default function LineDetection() {
   const [active, setActive] = useState(null);
 
   return (
-    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute' }}>
+    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', overflow: 'hidden' }}>
+
+      <img
+        src={withBase('images/path_finder/Path4.png')}
+        alt=""
+        style={{
+          position: 'absolute',
+          left: '61%', top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '50%',
+          height: 'auto',
+          objectFit: 'contain',
+          opacity: 0.2,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
@@ -301,7 +562,7 @@ export default function LineDetection() {
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,
         lineHeight: '45px', letterSpacing: '0.6px'
       }}>
-        The Pi Zero's camera module captures a downward-facing 32×32 grayscale image of the track surface. A Python script processes each frame: applying a binary threshold at intensity 150 to isolate the dark line from the light background, then using a sliding-window histogram search on the bottom half of the image to locate left and right lane boundaries. The centroid of these boundaries maps to a position on a 0-to-20 integer scale — 0 meaning the line is at the far left, 20 at the far right, and 10 dead center. The position transmits as a simple ASCII string over UART — for example, "12\n" — taking roughly 260 microseconds. The Pico's interrupt handler catches each incoming value and updates the global line_position variable in real time.
+        {`The Pi Zero\u2019s camera module captures a downward-facing 32\u00d732 grayscale image of the track surface. A Python script processes each frame: applying a binary threshold at intensity 150 to isolate the dark line from the light background, then using a sliding-window histogram search on the bottom half of the image to locate left and right lane boundaries. The centroid of these boundaries maps to a position on a 0-to-20 integer scale \u2014 0 meaning the line is at the far left, 20 at the far right, and 10 dead center. The position transmits as a simple ASCII string over UART \u2014 for example, \u201c12\\n\u201d \u2014 taking roughly 260 microseconds. The Pico\u2019s interrupt handler catches each incoming value and updates the global line_position variable in real time.`}
       </div>
 
       <div style={{
@@ -309,6 +570,7 @@ export default function LineDetection() {
         display: 'flex', alignItems: 'flex-start', gap: 0,
         width: 1284,
         justifyContent: 'center',
+        zIndex: 2,
       }}>
         {STEPS.map((step, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -324,7 +586,7 @@ export default function LineDetection() {
                 fontSize: 24, color: '#999', margin: '50px 10px 0',
                 userSelect: 'none', fontFamily: 'Arial',
                 flexShrink: 0,
-              }}>→</div>
+              }}>{'\u2192'}</div>
             )}
           </div>
         ))}

@@ -104,14 +104,16 @@ export const HARDWARE_HEIGHT = HARDWARE_GALLERY_BOTTOM + 52;
 export const LINE_DETECTION_TOP =
   HARDWARE_TOP + HARDWARE_GALLERY_BOTTOM + GAP_AFTER_GALLERY_TO_HEADING - SECTION_HEADING_TOP;
 
-/** LineDetection.jsx: cards at top 590, expand up to 540px tall → bottom ≈1130 */
-export const LINE_DETECTION_PIPELINE_BOTTOM = 1140;
+/**
+ * LineDetection.jsx: pipeline at top 590, cards expand up to ~1170. Path4.png is a section backdrop.
+ */
+export const LINE_DETECTION_PIPELINE_BOTTOM = 1200;
 export const LINE_DETECTION_HEIGHT = LINE_DETECTION_PIPELINE_BOTTOM + 40;
 
 export const MOTOR_PID_TOP =
   LINE_DETECTION_TOP +
   LINE_DETECTION_PIPELINE_BOTTOM +
-  GAP_AFTER_BLOCK_TO_HEADING -
+  40 -
   SECTION_HEADING_TOP;
 
 /**
