@@ -337,6 +337,44 @@ body {
   user-select: none;
 }
 
+/* ─── Line Detection inline-expanding pipeline cards ─── */
+.pf-ld-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  width: 196px;
+  height: 124px;
+  transition: width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.32s ease,
+              border-color 0.32s ease;
+}
+
+.pf-ld-card--active {
+  width: 560px;
+  height: 440px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
+  border-color: rgba(235, 216, 122, 0.45);
+}
+
+.pf-ld-card--active-has-image {
+  height: 540px;
+}
+
+.pf-ld-detail {
+  opacity: 0;
+  transition: opacity 0.28s ease 0.2s;
+  pointer-events: none;
+}
+
+.pf-ld-card--active .pf-ld-detail {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* Legacy simple pulse — PixelBlocksBg uses pfPixelChaos when animated */
 @keyframes pfPixelPulse {
   0%, 100% {

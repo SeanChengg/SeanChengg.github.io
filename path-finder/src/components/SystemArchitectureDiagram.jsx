@@ -22,38 +22,41 @@ function Wires() {
         </marker>
       </defs>
 
-      {/* Vision internal arrows — 52px gaps between cards (same rhythm as Motor brain) */}
+      {/* Vision internal arrows — vertical at x=250, edge-to-edge */}
       <line x1="250" y1="163" x2="250" y2="215" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
       <line x1="250" y1="263" x2="250" y2="315" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
       <line x1="250" y1="363" x2="250" y2="415" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
 
-      {/* Position → UART — straight horizontal, aligned with Position center y=439 */}
+      {/* line_position → UART — straight horizontal at y=439 */}
       <line x1="420" y1="439" x2="490" y2="439" stroke={gold} strokeWidth="3.25" markerEnd="url(#sa-g)"/>
 
-      {/* UART → PID — exit UART right, up, into PID left center */}
-      <path d="M690 439 L735 439 L735 141 L800 141" fill="none" stroke={gold} strokeWidth="3.25" markerEnd="url(#sa-g)"/>
+      {/* UART → PID — right from UART, up, into PID left center (y=136) */}
+      <path d="M690 439 L735 439 L735 136 L800 136" fill="none" stroke={gold} strokeWidth="3.25" markerEnd="url(#sa-g)"/>
 
-      {/* PID → PWM — vertical center */}
-      <line x1="980" y1="167" x2="980" y2="219" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      {/* PID → PWM */}
+      <line x1="980" y1="162" x2="980" y2="198" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
 
-      {/* PWM → Motors fork — symmetric split from center */}
-      <line x1="980" y1="271" x2="980" y2="297" stroke={arrow} strokeWidth="2.75"/>
-      <line x1="980" y1="297" x2="890" y2="297" stroke={arrow} strokeWidth="2.75"/>
-      <line x1="890" y1="297" x2="890" y2="323" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
-      <line x1="980" y1="297" x2="1070" y2="297" stroke={arrow} strokeWidth="2.75"/>
-      <line x1="1070" y1="297" x2="1070" y2="323" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      {/* PWM → H-Bridge */}
+      <line x1="980" y1="250" x2="980" y2="286" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
 
-      {/* Motors → Encoders — vertical at each column center */}
-      <line x1="890" y1="379" x2="890" y2="431" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
-      <line x1="1070" y1="379" x2="1070" y2="431" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      {/* H-Bridge → Motors fork — symmetric split */}
+      <line x1="980" y1="338" x2="980" y2="356" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="980" y1="356" x2="890" y2="356" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="890" y1="356" x2="890" y2="374" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="980" y1="356" x2="1070" y2="356" stroke={arrow} strokeWidth="2.75"/>
+      <line x1="1070" y1="356" x2="1070" y2="374" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
 
-      {/* Feedback dashed — Encoder R right → up → PID right center */}
-      <path d="M1144 459 L1190 459 L1190 141 L1160 141" fill="none"
+      {/* Motors → Encoders */}
+      <line x1="890" y1="430" x2="890" y2="466" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+      <line x1="1070" y1="430" x2="1070" y2="466" stroke={arrow} strokeWidth="2.75" markerEnd="url(#sa-a)"/>
+
+      {/* ADC feedback dashed — Encoder R right → up → PID right center */}
+      <path d="M1144 494 L1190 494 L1190 136 L1160 136" fill="none"
         stroke={dash} strokeWidth="2.75" strokeDasharray="12 8" strokeLinecap="round" markerEnd="url(#sa-a)"/>
 
-      <text x="1202" y="300" fill="rgba(100,100,100,0.35)" fontSize="11"
+      <text x="1202" y="315" fill="rgba(100,100,100,0.35)" fontSize="11"
         fontFamily="Arial" fontWeight="600"
-        transform="rotate(90 1202 300)" textAnchor="middle">Encoder feedback</text>
+        transform="rotate(90 1202 315)" textAnchor="middle">ADC feedback</text>
     </svg>
   );
 }
@@ -87,13 +90,14 @@ const LEGEND_STEPS = [
   'UART',
   'Pi Pico',
   'PWM',
+  'H-Bridge',
   'Motors',
   'Encoders',
   'PID (feedback loop)',
 ];
 
 const LEGEND_CAPTION =
-  'End-to-end data path; encoder feedback closes the motor control loop at PID (vision is feedforward).';
+  'End-to-end data path; ADC encoder feedback closes the motor control loop at PID.';
 
 const legendText = {
   color: 'rgba(22, 32, 48, 0.88)',
@@ -149,7 +153,7 @@ export default function SystemArchitectureDiagram() {
           <div style={{ ...h2, marginTop: 4 }}>Raspberry Pi Zero W · Python</div>
         </div>
         <div style={{ ...innerCard(340, 48), left: 50, top: 95, zIndex: 2 }}>
-          <div style={t1}>ArduCAM OV2640</div>
+          <div style={t1}>Capture 32×32 frame</div>
         </div>
         <div style={{ ...innerCard(340, 48), left: 50, top: 195, zIndex: 2 }}>
           <div style={t1}>Grayscale + threshold</div>
@@ -158,7 +162,7 @@ export default function SystemArchitectureDiagram() {
           <div style={t1}>Sliding window search</div>
         </div>
         <div style={{ ...innerCard(340, 48), left: 50, top: 395, zIndex: 2 }}>
-          <div style={t1}>Position (0–20)</div>
+          <div style={t1}>line_position (0–20)</div>
         </div>
       </div>
       {/* UART BRIDGE — same vertical rhythm as Motor cards; single label line */}
@@ -193,33 +197,36 @@ export default function SystemArchitectureDiagram() {
           <div style={h1}>Motor brain</div>
           <div style={{ ...h2, marginTop: 4 }}>RP2040 Pico · Bare-metal C</div>
         </div>
-        <div style={{ ...innerCard(360, 52), left: 90, top: 95, zIndex: 2 }}>
+        <div style={{ ...innerCard(360, 52), left: 90, top: 90, zIndex: 2 }}>
           <div style={t1}>PID controller</div>
         </div>
-        <div style={{ ...innerCard(360, 52), left: 90, top: 199, zIndex: 2 }}>
+        <div style={{ ...innerCard(360, 52), left: 90, top: 178, zIndex: 2 }}>
           <div style={t1}>PWM duty calc</div>
         </div>
-        <div style={{ ...innerCard(148, 56), left: 106, top: 303, zIndex: 2 }}>
+        <div style={{ ...innerCard(360, 52), left: 90, top: 266, zIndex: 2 }}>
+          <div style={t1}>H-Bridge driver</div>
+        </div>
+        <div style={{ ...innerCard(148, 56), left: 106, top: 354, zIndex: 2 }}>
           <div style={t1}>Left motor</div>
           <div style={t2}>GPIO 6</div>
         </div>
-        <div style={{ ...innerCard(148, 56), left: 286, top: 303, zIndex: 2 }}>
+        <div style={{ ...innerCard(148, 56), left: 286, top: 354, zIndex: 2 }}>
           <div style={t1}>Right motor</div>
           <div style={t2}>GPIO 7</div>
         </div>
         <div style={{
-          ...innerCard(148, 56), left: 106, top: 411, zIndex: 2,
+          ...innerCard(148, 56), left: 106, top: 446, zIndex: 2,
           background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.06)',
         }}>
           <div style={t1}>Encoder L</div>
-          <div style={t2}>GPIO 26</div>
+          <div style={t2}>ADC 0 · GPIO 26</div>
         </div>
         <div style={{
-          ...innerCard(148, 56), left: 286, top: 411, zIndex: 2,
+          ...innerCard(148, 56), left: 286, top: 446, zIndex: 2,
           background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(0,0,0,0.06)',
         }}>
           <div style={t1}>Encoder R</div>
-          <div style={t2}>GPIO 27</div>
+          <div style={t2}>ADC 1 · GPIO 27</div>
         </div>
       </div>
 
