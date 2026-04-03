@@ -345,10 +345,12 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  width: 196px;
-  height: 124px;
+  width: 220px;
+  height: 220px;
+  z-index: 1;
   transition: width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
               height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+              margin 0.42s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.32s ease,
               border-color 0.32s ease;
 }
@@ -356,12 +358,17 @@ body {
 .pf-ld-card--active {
   width: 580px;
   height: 560px;
+  margin-top: -170px;
+  margin-bottom: -170px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
   border-color: rgba(235, 216, 122, 0.45);
+  z-index: 20;
 }
 
 .pf-ld-card--active-has-image {
   height: 580px;
+  margin-top: -180px;
+  margin-bottom: -180px;
 }
 
 .pf-ld-detail {

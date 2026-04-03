@@ -105,7 +105,7 @@ export const LINE_DETECTION_TOP =
   HARDWARE_TOP + HARDWARE_GALLERY_BOTTOM + GAP_AFTER_GALLERY_TO_HEADING - SECTION_HEADING_TOP;
 
 /**
- * LineDetection.jsx: pipeline at top 590, cards expand up to ~1170. Path4.png is a section backdrop.
+ * LineDetection.jsx: pipeline row top ~748, cards expand up to ~1170. Path4.png is a section backdrop.
  */
 export const LINE_DETECTION_PIPELINE_BOTTOM = 1200;
 export const LINE_DETECTION_HEIGHT = LINE_DETECTION_PIPELINE_BOTTOM + 40;
