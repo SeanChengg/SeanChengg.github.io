@@ -337,6 +337,25 @@ body {
   user-select: none;
 }
 
+/* Motor PID scenario cards — bright halo only (no dark shadow) */
+.pf-pid-result-glow {
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 1),
+    0 0 14px rgba(255, 255, 255, 0.85),
+    0 0 26px rgba(255, 255, 255, 0.55);
+}
+
+/* Motor PID flow diagram — brighter glass on nodes only */
+.pf-motor-flow-diagram .gw .gfr.pf-liquid-glass {
+  box-shadow:
+    0 0 28px rgba(255, 255, 255, 0.75),
+    0 0 48px rgba(255, 255, 255, 0.35),
+    0 14px 40px rgba(0, 0, 0, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.52);
+}
+
 /* ─── Line Detection inline-expanding pipeline cards ─── */
 .pf-ld-card {
   position: relative;

@@ -593,23 +593,6 @@ export default function LineDetection() {
   return (
     <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', overflow: 'hidden', zIndex: 3 }}>
 
-      <img
-        src={withBase('images/path_finder/Path4.png')}
-        alt=""
-        style={{
-          position: 'absolute',
-          right: 240,
-          top: 'calc(50% + 28px)',
-          transform: 'translateY(-50%)',
-          width: '9%',
-          height: 'auto',
-          objectFit: 'contain',
-          opacity: 0.2,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,

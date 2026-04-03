@@ -105,7 +105,7 @@ export const LINE_DETECTION_TOP =
   HARDWARE_TOP + HARDWARE_GALLERY_BOTTOM + GAP_AFTER_GALLERY_TO_HEADING - SECTION_HEADING_TOP;
 
 /**
- * LineDetection.jsx: pipeline row top ~748, cards expand up to ~1170. Path4.png is a section backdrop.
+ * LineDetection.jsx: pipeline row top ~748, cards expand up to ~1170.
  */
 export const LINE_DETECTION_PIPELINE_BOTTOM = 1200;
 export const LINE_DETECTION_HEIGHT = LINE_DETECTION_PIPELINE_BOTTOM + 40;
@@ -117,9 +117,9 @@ export const MOTOR_PID_TOP =
   SECTION_HEADING_TOP;
 
 /**
- * MotorControlPID.jsx: code + PID panels at top 1180 (~320px tall) — keep in sync if layout changes.
+ * MotorControlPID.jsx: diagram top ~550, scenario row ~910, code row ~1160 — keep in sync if layout changes.
  */
-export const MOTOR_PID_CONTENT_BOTTOM = 1500;
+export const MOTOR_PID_CONTENT_BOTTOM = 1420;
 
 export const MOTOR_PID_HEIGHT = MOTOR_PID_CONTENT_BOTTOM + 64;
 
