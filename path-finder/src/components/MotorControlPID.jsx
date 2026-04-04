@@ -297,7 +297,7 @@ export default function MotorControlPID() {
         {/* 1190px: rightmost feedback segment reaches ~1170 — 1130 clipped the dashed line */}
         <div style={{ position: 'relative', width: 1220, height: '100%', margin: '0 auto', overflow: 'visible' }}>
         {/* Sigma / error junction */}
-        <GlassWidget small pixelColor="turquoise" style={{
+        <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.sigma - 24, top: boxY - diagramTop,
           width: 104, height: boxH,
           zIndex: 5,
@@ -308,7 +308,7 @@ export default function MotorControlPID() {
           </div>
         </GlassWidget>
         {/* Target box */}
-        <GlassWidget small pixelColor="turquoise" style={{
+        <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.target, top: boxY - diagramTop,
           width: boxW.target, height: boxH,
         }}>
@@ -326,7 +326,7 @@ export default function MotorControlPID() {
         <FlowArrow left={col.sigma + 88} top={midY - diagramTop - 11} width={col.pid - col.sigma - 88 - 8} />
 
         {/* PID box */}
-        <GlassWidget small pixelColor="gold" style={{
+        <GlassWidget diagramGlass small pixelColor="gold" style={{
           left: col.pid, top: boxY - diagramTop - 6,
           width: boxW.pid, height: boxH + 12,
         }}>
@@ -340,7 +340,7 @@ export default function MotorControlPID() {
         <FlowArrow left={col.pid + boxW.pid + 8} top={midY - diagramTop - 11} width={col.motor - col.pid - boxW.pid - 16} />
 
         {/* Motor Calc box */}
-        <GlassWidget small pixelColor="gold" style={{
+        <GlassWidget diagramGlass small pixelColor="gold" style={{
           left: col.motor, top: boxY - diagramTop - 6,
           width: boxW.motor, height: boxH + 12,
         }}>
@@ -354,7 +354,7 @@ export default function MotorControlPID() {
         <FlowSplit left={col.motor + boxW.motor + 8} top={boxY - diagramTop - 28} height={boxH + 56} armWidth={col.lMotor - col.motor - boxW.motor - 20} />
 
         {/* L Motor */}
-        <GlassWidget small pixelColor="turquoise" style={{
+        <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.lMotor, top: boxY - diagramTop - 40,
           width: boxW.output, height: 56,
         }}>
@@ -364,7 +364,7 @@ export default function MotorControlPID() {
         </GlassWidget>
 
         {/* R Motor */}
-        <GlassWidget small pixelColor="turquoise" style={{
+        <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.rMotor, top: boxY - diagramTop + boxH - 16,
           width: boxW.output, height: 56,
         }}>
@@ -402,7 +402,7 @@ export default function MotorControlPID() {
           userSelect: 'none',
         }}>L/R encoders send back speed/position feedback</div>
 
-        {/* Card glow overlays — dim cards by default, brighten + glow on arrival */}
+        {/* Pulse halo only while the sprite rests on a node — no dimmed idle state */}
         {[
           { id: 'target', x: col.target, y: boxY - diagramTop, w: boxW.target, h: boxH },
           { id: 'sigma', x: col.sigma - 24, y: boxY - diagramTop, w: 104, h: boxH },
@@ -414,11 +414,11 @@ export default function MotorControlPID() {
           const active = glow.card === c.id;
           return (
             <div key={`cg${i}`} style={{
-              position: 'absolute', left: c.x, top: c.y,
-              width: c.w, height: c.h, borderRadius: 12,
-              background: active ? 'transparent' : 'rgba(0,0,0,0.12)',
-              boxShadow: active ? '0 0 30px 10px rgba(255,255,255,0.5)' : 'none',
-              transition: 'box-shadow 0.3s, background 0.3s',
+              position: 'absolute', left: c.x - 2, top: c.y - 2,
+              width: c.w + 4, height: c.h + 4, borderRadius: 14,
+              boxShadow: active ? '0 0 28px 12px rgba(255,255,255,0.55)' : 'none',
+              opacity: active ? 1 : 0,
+              transition: 'opacity 0.28s ease, box-shadow 0.28s ease',
               pointerEvents: 'none', zIndex: 10,
             }} />
           );
@@ -444,7 +444,7 @@ export default function MotorControlPID() {
       {/* ── Scenario cards — liquid glass with vehicle animation ── */}
       <div style={{ left: 460, top: 910, position: 'absolute', display: 'flex', gap: 28, width: 1284, zIndex: 2 }}>
         {scenarios.map((s, i) => (
-          <GlassWidget key={i} small pixelColor={i === 1 ? 'gold' : 'turquoise'} style={{
+          <GlassWidget diagramGlass key={i} small pixelColor={i === 1 ? 'gold' : 'turquoise'} style={{
             position: 'relative',
             flex: 1, minHeight: 200,
           }}>
@@ -481,7 +481,7 @@ export default function MotorControlPID() {
         {codeSnippet}
       </div>
 
-      <GlassWidget small pixelColor="gold" style={{ left: 1120, top: 1160, width: 620, height: 'auto', zIndex: 2 }}>
+      <GlassWidget diagramGlass small pixelColor="gold" style={{ left: 1120, top: 1160, width: 620, height: 'auto', zIndex: 2 }}>
         <div style={{ padding: '24px 28px' }}>
           <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, fontSize: 18, color: '#1a1a1a', marginBottom: 12 }}>PID Parameters</div>
           <div style={{ fontFamily: "'Zilla Slab',serif", fontSize: 16, color: '#333', lineHeight: 1.85 }}>

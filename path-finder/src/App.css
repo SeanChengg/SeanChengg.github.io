@@ -46,6 +46,13 @@ body {
   overflow: visible;
 }
 
+/* GlassWidget diagramGlass: same frost path as System Architecture / Line Detection cards */
+.pf-gw-diagram-glass {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  isolation: isolate;
+}
+
 .gw .gbg {
   position: absolute;
   inset: -4px;
@@ -345,7 +352,7 @@ body {
     0 0 26px rgba(255, 255, 255, 0.55);
 }
 
-/* Motor PID flow diagram — brighter glass on nodes only */
+/* Motor PID flow diagram — brighter glass on nodes only (diagram variant included) */
 .pf-motor-flow-diagram .gw .gfr.pf-liquid-glass {
   box-shadow:
     0 0 28px rgba(255, 255, 255, 0.75),
