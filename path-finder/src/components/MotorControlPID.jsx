@@ -138,7 +138,7 @@ function FlowArrow({ left, top, width }) {
       style={{ position: 'absolute', left, top, pointerEvents: 'none', zIndex: 3 }}
       width={width} height={22} viewBox={`0 0 ${width} 22`}
     >
-      <line x1={0} y1={11} x2={width - 10} y2={11} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" />
+      <line x1={0} y1={11} x2={width - 10} y2={11} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" strokeDasharray="8 5" />
       <polygon points={`${width - 10},4 ${width},11 ${width - 10},18`} fill={FLOW_STROKE} />
     </svg>
   );
@@ -150,14 +150,84 @@ function FlowSplit({ left, top, height, armWidth }) {
       style={{ position: 'absolute', left, top, pointerEvents: 'none', zIndex: 3 }}
       width={armWidth + 14} height={height} viewBox={`0 0 ${armWidth + 14} ${height}`}
     >
-      <line x1={0} y1={height / 2} x2={14} y2={height / 2} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" />
-      <line x1={14} y1={18} x2={14} y2={height - 18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" />
-      <line x1={14} y1={18} x2={armWidth + 2} y2={18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" />
+      <line x1={0} y1={height / 2} x2={14} y2={height / 2} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" strokeDasharray="8 5" />
+      <line x1={14} y1={18} x2={14} y2={height - 18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" strokeDasharray="8 5" />
+      <line x1={14} y1={18} x2={armWidth + 2} y2={18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" strokeDasharray="8 5" />
       <polygon points={`${armWidth + 2},10 ${armWidth + 14},18 ${armWidth + 2},26`} fill={FLOW_STROKE} />
-      <line x1={14} y1={height - 18} x2={armWidth + 2} y2={height - 18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" />
+      <line x1={14} y1={height - 18} x2={armWidth + 2} y2={height - 18} stroke={FLOW_STROKE} strokeWidth={FLOW_STROKE_W} strokeLinecap="round" strokeDasharray="8 5" />
       <polygon points={`${armWidth + 2},${height - 26} ${armWidth + 14},${height - 18} ${armWidth + 2},${height - 10}`} fill={FLOW_STROKE} />
     </svg>
   );
+}
+
+function hexToRgb(hex) {
+  let h = hex.slice(1);
+  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const n = parseInt(h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function interpPath(pts, t) {
+  if (t <= 0) return pts[0];
+  if (t >= 1) return pts[pts.length - 1];
+  let total = 0;
+  const lens = [];
+  for (let i = 1; i < pts.length; i++) {
+    const dx = pts[i][0] - pts[i-1][0], dy = pts[i][1] - pts[i-1][1];
+    lens.push(Math.sqrt(dx * dx + dy * dy));
+    total += lens[i - 1];
+  }
+  let d = t * total;
+  for (let i = 0; i < lens.length; i++) {
+    if (d <= lens[i]) {
+      const s = d / lens[i];
+      return [pts[i][0] + (pts[i+1][0] - pts[i][0]) * s, pts[i][1] + (pts[i+1][1] - pts[i][1]) * s];
+    }
+    d -= lens[i];
+  }
+  return pts[pts.length - 1];
+}
+
+const LOOP_IDX = 2;
+const GLOW_SEGS = [
+  // --- first pass only (0–1) ---
+  { type: 'p', pos: [85, 170], dur: 800, card: 'target', color: '#ffffff' },
+  { type: 'm', wp: [[170, 170], [228, 170]], dur: 650, color: '#ffffff' },
+  // --- loop starts here (index 2) ---
+  { type: 'p', pos: [280, 170], dur: 550, card: 'sigma', color: '#ffffff' },
+  { type: 'm', wp: [[332, 170], [390, 170]], dur: 650, color: '#ffffff' },
+  { type: 'p', pos: [500, 170], dur: 550, card: 'pid', color: '#ffffff' },
+  { type: 'm', wp: [[618, 170], [652, 170]], dur: 550, color: '#ffffff' },
+  { type: 'p', pos: [760, 170], dur: 550, card: 'motor', color: '#ffffff' },
+  { type: 's', wpA: [[860, 170], [882, 170], [882, 124], [950, 124]], wpB: [[860, 170], [882, 170], [882, 216], [950, 216]], dur: 900, color: '#ffffff' },
+  { type: 'p', posA: [1045, 122], posB: [1045, 218], dur: 650, card: 'outputs', color: '#ffffff' },
+  { type: 's', wpA: [[1130, 122], [1170, 122], [1170, 276]], wpB: [[1130, 218], [1170, 218], [1170, 276]], dur: 900, color: '#ffffff', colorEnd: '#64dcdc' },
+  { type: 'm', wp: [[1170, 276], [280, 276]], dur: 1300, color: '#64dcdc' },
+  { type: 'm', wp: [[280, 276], [280, 170]], dur: 650, color: '#64dcdc', colorEnd: '#ffffff' },
+];
+
+function getGlow(elapsed) {
+  const preDur = GLOW_SEGS.slice(0, LOOP_IDX).reduce((s, g) => s + g.dur, 0);
+  const loopDur = GLOW_SEGS.slice(LOOP_IDX).reduce((s, g) => s + g.dur, 0);
+  let idx, rem;
+  if (elapsed < preDur) {
+    rem = elapsed; idx = 0;
+    while (idx < LOOP_IDX && rem >= GLOW_SEGS[idx].dur) { rem -= GLOW_SEGS[idx].dur; idx++; }
+  } else {
+    rem = (elapsed - preDur) % loopDur; idx = LOOP_IDX;
+    while (idx < GLOW_SEGS.length && rem >= GLOW_SEGS[idx].dur) { rem -= GLOW_SEGS[idx].dur; idx++; }
+    if (idx >= GLOW_SEGS.length) { idx = LOOP_IDX; rem = 0; }
+  }
+  const seg = GLOW_SEGS[idx], t = Math.min(1, rem / seg.dur);
+  let positions, color = seg.color, card = seg.card || null;
+  if (seg.type === 'p') positions = seg.posA ? [seg.posA, seg.posB] : [seg.pos];
+  else if (seg.type === 'm') positions = [interpPath(seg.wp, t)];
+  else positions = [interpPath(seg.wpA, t), interpPath(seg.wpB, t)];
+  if (seg.colorEnd) {
+    const a = hexToRgb(seg.color), b = hexToRgb(seg.colorEnd);
+    color = `rgb(${Math.round(a[0]+(b[0]-a[0])*t)},${Math.round(a[1]+(b[1]-a[1])*t)},${Math.round(a[2]+(b[2]-a[2])*t)})`;
+  }
+  return { positions, color, card, idx };
 }
 
 export default function MotorControlPID() {
@@ -169,14 +239,24 @@ export default function MotorControlPID() {
 
   const col = {
     target: 0,
-    sigma: 220,
-    pid: 330,
-    motor: 620,
-    splitStart: 860,
-    lMotor: 950,
-    rMotor: 950,
+    sigma: 252,
+    pid: 390,
+    motor: 660,
+    splitStart: 900,
+    lMotor: 960,
+    rMotor: 960,
   };
-  const boxW = { target: 180, pid: 220, motor: 220, output: 180 };
+  const boxW = { target: 170, pid: 220, motor: 200, output: 170 };
+
+  const [animT, setAnimT] = useState(0);
+  const glowRaf = useRef();
+  useEffect(() => {
+    let s = null;
+    const tick = (ts) => { if (!s) s = ts; setAnimT(ts - s); glowRaf.current = requestAnimationFrame(tick); };
+    glowRaf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(glowRaf.current);
+  }, []);
+  const glow = getGlow(animT);
 
   return (
     <div id="motor-control" style={{
@@ -215,22 +295,18 @@ export default function MotorControlPID() {
         }}
       >
         {/* 1190px: rightmost feedback segment reaches ~1170 — 1130 clipped the dashed line */}
-        <div style={{ position: 'relative', width: 1190, height: '100%', margin: '0 auto', overflow: 'visible' }}>
-        {/* Sigma circle */}
-        <div style={{
-          position: 'absolute',
-          left: col.sigma, top: midY - diagramTop - 28,
-          width: 56, height: 56,
-          borderRadius: '50%',
-          background: 'rgba(235,216,122,0.28)',
-          border: `3px solid ${FLOW_STROKE}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        <div style={{ position: 'relative', width: 1220, height: '100%', margin: '0 auto', overflow: 'visible' }}>
+        {/* Sigma / error junction */}
+        <GlassWidget small pixelColor="turquoise" style={{
+          left: col.sigma - 24, top: boxY - diagramTop,
+          width: 104, height: boxH,
           zIndex: 5,
-          boxShadow: '0 0 18px rgba(255,255,255,0.65), 0 4px 14px rgba(0,0,0,0.08)',
         }}>
-          <span style={{ color: '#8a7d55', fontSize: 26, fontWeight: 700 }}>Σ</span>
-        </div>
-
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 2 }}>
+            <span style={{ color: '#8a7d55', fontSize: 28, fontWeight: 700, lineHeight: 1 }}>Σ</span>
+            <span style={{ color: '#4a4540', fontSize: 12, fontWeight: 600, fontFamily: 'Inter,Arial,sans-serif', lineHeight: 1.3, textAlign: 'center' }}>compare &amp;<br/>find error</span>
+          </div>
+        </GlassWidget>
         {/* Target box */}
         <GlassWidget small pixelColor="turquoise" style={{
           left: col.target, top: boxY - diagramTop,
@@ -244,10 +320,10 @@ export default function MotorControlPID() {
         </GlassWidget>
 
         {/* Arrow: Target → Sigma */}
-        <FlowArrow left={col.target + boxW.target + 4} top={midY - diagramTop - 11} width={col.sigma - col.target - boxW.target - 4} />
+        <FlowArrow left={col.target + boxW.target + 8} top={midY - diagramTop - 11} width={col.sigma - 24 - col.target - boxW.target - 16} />
 
         {/* Arrow: Sigma → PID */}
-        <FlowArrow left={col.sigma + 60} top={midY - diagramTop - 11} width={col.pid - col.sigma - 60 + 4} />
+        <FlowArrow left={col.sigma + 88} top={midY - diagramTop - 11} width={col.pid - col.sigma - 88 - 8} />
 
         {/* PID box */}
         <GlassWidget small pixelColor="gold" style={{
@@ -256,25 +332,26 @@ export default function MotorControlPID() {
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 20 }}>PID</div>
-            <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 500, color: '#555', fontSize: 14, marginTop: 2 }}>Kp · e + Kd · de/dt</div>
+            <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 500, color: '#555', fontSize: 14, marginTop: 2 }}><em>u</em> = Kp · error + Kd · Δerror/Δt</div>
           </div>
         </GlassWidget>
 
         {/* Arrow: PID → Motor Calc */}
-        <FlowArrow left={col.pid + boxW.pid + 4} top={midY - diagramTop - 11} width={col.motor - col.pid - boxW.pid - 4} />
+        <FlowArrow left={col.pid + boxW.pid + 8} top={midY - diagramTop - 11} width={col.motor - col.pid - boxW.pid - 16} />
 
         {/* Motor Calc box */}
         <GlassWidget small pixelColor="gold" style={{
-          left: col.motor, top: boxY - diagramTop,
-          width: boxW.motor, height: boxH,
+          left: col.motor, top: boxY - diagramTop - 6,
+          width: boxW.motor, height: boxH + 12,
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 18 }}>Motor Calc</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 20 }}>Motor Calc</div>
+            <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 500, color: '#555', fontSize: 13, marginTop: 2, textAlign: 'center', lineHeight: 1.4 }}>L = speed × (1 − <em>u</em>)<br/>R = speed × (1 + <em>u</em>)</div>
           </div>
         </GlassWidget>
 
         {/* Split: Motor Calc → L Motor / R Motor */}
-        <FlowSplit left={col.motor + boxW.motor} top={boxY - diagramTop - 28} height={boxH + 56} armWidth={col.lMotor - col.motor - boxW.motor - 12} />
+        <FlowSplit left={col.motor + boxW.motor + 8} top={boxY - diagramTop - 28} height={boxH + 56} armWidth={col.lMotor - col.motor - boxW.motor - 20} />
 
         {/* L Motor */}
         <GlassWidget small pixelColor="turquoise" style={{
@@ -305,14 +382,62 @@ export default function MotorControlPID() {
             points={`${col.lMotor + boxW.output + 14},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${midY - diagramTop + 28}`}
             fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
           />
+          <polyline
+            points={`${col.rMotor + boxW.output + 14},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70}`}
+            fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
+          />
         </svg>
         <div style={{
           position: 'absolute',
-          left: col.motor + 40,
+          left: 0,
+          width: '120%',
           top: boxY - diagramTop + boxH + 54,
           color: '#6a6660',
+          textShadow: (glow.idx >= 9 && glow.idx <= 11)
+            ? '0 0 4px rgba(255,255,255,0.95), 0 0 10px rgba(255,255,255,0.55), 0 0 18px rgba(255,255,255,0.3)'
+            : 'none',
+          transition: 'text-shadow 0.35s ease',
+          textAlign: 'center',
           fontSize: 14, fontFamily: 'Arial', fontWeight: 700,
-        }}>Encoder feedback</div>
+          userSelect: 'none',
+        }}>L/R encoders send back speed/position feedback</div>
+
+        {/* Card glow overlays — dim cards by default, brighten + glow on arrival */}
+        {[
+          { id: 'target', x: col.target, y: boxY - diagramTop, w: boxW.target, h: boxH },
+          { id: 'sigma', x: col.sigma - 24, y: boxY - diagramTop, w: 104, h: boxH },
+          { id: 'pid', x: col.pid, y: boxY - diagramTop - 6, w: boxW.pid, h: boxH + 12 },
+          { id: 'motor', x: col.motor, y: boxY - diagramTop - 6, w: boxW.motor, h: boxH + 12 },
+          { id: 'outputs', x: col.lMotor, y: boxY - diagramTop - 40, w: boxW.output, h: 56 },
+          { id: 'outputs', x: col.rMotor, y: boxY - diagramTop + boxH - 16, w: boxW.output, h: 56 },
+        ].map((c, i) => {
+          const active = glow.card === c.id;
+          return (
+            <div key={`cg${i}`} style={{
+              position: 'absolute', left: c.x, top: c.y,
+              width: c.w, height: c.h, borderRadius: 12,
+              background: active ? 'transparent' : 'rgba(0,0,0,0.12)',
+              boxShadow: active ? '0 0 30px 10px rgba(255,255,255,0.5)' : 'none',
+              transition: 'box-shadow 0.3s, background 0.3s',
+              pointerEvents: 'none', zIndex: 10,
+            }} />
+          );
+        })}
+
+        {/* Animated glow dot */}
+        <svg style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 11, overflow: 'visible' }} overflow="visible">
+          <defs>
+            <filter id="pf-glow-sm" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="6" /></filter>
+            <filter id="pf-glow-lg" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="14" /></filter>
+          </defs>
+          {glow.positions.map((p, i) => (
+            <g key={i}>
+              <circle cx={p[0]} cy={p[1]} r={18} fill={glow.color} filter="url(#pf-glow-lg)" opacity={0.3} />
+              <circle cx={p[0]} cy={p[1]} r={6} fill={glow.color} filter="url(#pf-glow-sm)" opacity={0.7} />
+              <circle cx={p[0]} cy={p[1]} r={3} fill="#fff" opacity={0.9} />
+            </g>
+          ))}
+        </svg>
         </div>
       </div>
 
