@@ -276,13 +276,13 @@ export default function MotorControlPID() {
       }}>
         Once the Pico receives line_position over UART, a PID loop compares it to the centre
         target of 10. The difference is the error — for example, position 15 means error = +5.
-        Three terms act on that error: <strong>Kp</strong> (proportional) reacts to how far off the
-        line is right now — bigger drift, harder correction. <strong>Kd</strong> (derivative)
-        reacts to how fast the error is changing, dampening overshoot so the robot does not
-        zig-zag. <strong>Ki</strong> (integral) is disabled (set to 0) to keep the response
-        crisp at speed. The combined PID output adjusts left and right motor duty cycles in
-        opposite directions — drift right and the left wheel speeds up, drift left and the
-        right wheel speeds up — steering the robot back onto the line every cycle.
+        Three terms act on that error: <strong>Kp</strong> reacts to how far off the line is
+        right now, <strong>Kd</strong> dampens overshoot so Path Finder does not zig-zag,
+        and <strong>Ki</strong> is disabled (set to 0) to keep the response crisp. The PID
+        output <em>u</em> sets a <strong>duty cycle</strong> for each motor — the fraction of
+        time the PWM signal is HIGH, controlling wheel speed. Left and right duty cycles shift
+        in opposite directions, steering Path Finder back toward the line. Encoders measure
+        actual rotation and feed it back to Σ, closing the loop every cycle.
       </div>
 
       {/* ── Flow diagram — centered in 1284px column (matches three cards below) ── */}
@@ -296,11 +296,39 @@ export default function MotorControlPID() {
       >
         {/* 1190px: rightmost feedback segment reaches ~1170 — 1130 clipped the dashed line */}
         <div style={{ position: 'relative', width: 1220, height: '100%', margin: '0 auto', overflow: 'visible' }}>
+        {/* Layering: feedback z1, arrows z3, glow z4 (on arrows, under glass z6), label z5, halos z10 */}
+        <svg
+          style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1, overflow: 'visible' }}
+          overflow="visible"
+        >
+          <polyline
+            points={`${col.lMotor + boxW.output + 14},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${midY - diagramTop + 28}`}
+            fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
+          />
+          <polyline
+            points={`${col.rMotor + boxW.output + 14},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70}`}
+            fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
+          />
+        </svg>
+        <svg style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 4, overflow: 'visible' }} overflow="visible">
+          <defs>
+            <filter id="pf-glow-sm" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="6" /></filter>
+            <filter id="pf-glow-lg" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="14" /></filter>
+          </defs>
+          {glow.positions.map((p, i) => (
+            <g key={i}>
+              <circle cx={p[0]} cy={p[1]} r={18} fill={glow.color} filter="url(#pf-glow-lg)" opacity={0.3} />
+              <circle cx={p[0]} cy={p[1]} r={6} fill={glow.color} filter="url(#pf-glow-sm)" opacity={0.7} />
+              <circle cx={p[0]} cy={p[1]} r={3} fill="#fff" opacity={0.9} />
+            </g>
+          ))}
+        </svg>
+
         {/* Sigma / error junction */}
         <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.sigma - 24, top: boxY - diagramTop,
           width: 104, height: boxH,
-          zIndex: 5,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 2 }}>
             <span style={{ color: '#8a7d55', fontSize: 28, fontWeight: 700, lineHeight: 1 }}>Σ</span>
@@ -311,6 +339,7 @@ export default function MotorControlPID() {
         <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.target, top: boxY - diagramTop,
           width: boxW.target, height: boxH,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 18 }}>
@@ -329,6 +358,7 @@ export default function MotorControlPID() {
         <GlassWidget diagramGlass small pixelColor="gold" style={{
           left: col.pid, top: boxY - diagramTop - 6,
           width: boxW.pid, height: boxH + 12,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 20 }}>PID</div>
@@ -343,6 +373,7 @@ export default function MotorControlPID() {
         <GlassWidget diagramGlass small pixelColor="gold" style={{
           left: col.motor, top: boxY - diagramTop - 6,
           width: boxW.motor, height: boxH + 12,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 20 }}>Motor Calc</div>
@@ -357,6 +388,7 @@ export default function MotorControlPID() {
         <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.lMotor, top: boxY - diagramTop - 40,
           width: boxW.output, height: 56,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 17 }}>L Motor</div>
@@ -367,31 +399,19 @@ export default function MotorControlPID() {
         <GlassWidget diagramGlass small pixelColor="turquoise" style={{
           left: col.rMotor, top: boxY - diagramTop + boxH - 16,
           width: boxW.output, height: 56,
+          zIndex: 6,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
             <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, color: '#1a1a1a', fontSize: 17 }}>R Motor</div>
           </div>
         </GlassWidget>
 
-        {/* Feedback loop */}
-        <svg
-          style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2, overflow: 'visible' }}
-          overflow="visible"
-        >
-          <polyline
-            points={`${col.lMotor + boxW.output + 14},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop - 12} ${col.lMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${boxY - diagramTop + boxH + 70} ${col.sigma + 28},${midY - diagramTop + 28}`}
-            fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
-          />
-          <polyline
-            points={`${col.rMotor + boxW.output + 14},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 12} ${col.rMotor + boxW.output + 40},${boxY - diagramTop + boxH + 70}`}
-            fill="none" stroke={FEEDBACK_STROKE} strokeWidth={3} strokeDasharray="12 8" strokeLinecap="round" strokeLinejoin="round" opacity={0.88}
-          />
-        </svg>
         <div style={{
           position: 'absolute',
           left: 0,
           width: '120%',
           top: boxY - diagramTop + boxH + 54,
+          zIndex: 5,
           color: '#6a6660',
           textShadow: (glow.idx >= 9 && glow.idx <= 11)
             ? '0 0 4px rgba(255,255,255,0.95), 0 0 10px rgba(255,255,255,0.55), 0 0 18px rgba(255,255,255,0.3)'
@@ -423,21 +443,6 @@ export default function MotorControlPID() {
             }} />
           );
         })}
-
-        {/* Animated glow dot */}
-        <svg style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 11, overflow: 'visible' }} overflow="visible">
-          <defs>
-            <filter id="pf-glow-sm" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="6" /></filter>
-            <filter id="pf-glow-lg" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="14" /></filter>
-          </defs>
-          {glow.positions.map((p, i) => (
-            <g key={i}>
-              <circle cx={p[0]} cy={p[1]} r={18} fill={glow.color} filter="url(#pf-glow-lg)" opacity={0.3} />
-              <circle cx={p[0]} cy={p[1]} r={6} fill={glow.color} filter="url(#pf-glow-sm)" opacity={0.7} />
-              <circle cx={p[0]} cy={p[1]} r={3} fill="#fff" opacity={0.9} />
-            </g>
-          ))}
-        </svg>
         </div>
       </div>
 
@@ -476,21 +481,48 @@ export default function MotorControlPID() {
         ))}
       </div>
 
-      {/* ── Code + PID params ── */}
-      <div className="pf-code-block" style={{ left: 460, top: 1160, width: 620, position: 'absolute', fontSize: 13, padding: '22px 26px', zIndex: 2 }}>
-        {codeSnippet}
-      </div>
-
-      <GlassWidget diagramGlass small pixelColor="gold" style={{ left: 1120, top: 1160, width: 620, height: 'auto', zIndex: 2 }}>
-        <div style={{ padding: '24px 28px' }}>
-          <div style={{ fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, fontSize: 18, color: '#1a1a1a', marginBottom: 12 }}>PID Parameters</div>
-          <div style={{ fontFamily: "'Zilla Slab',serif", fontSize: 16, color: '#333', lineHeight: 1.85 }}>
-            <strong>Kp = 0.1</strong> — Responsive steering without oscillation<br />
-            <strong>Ki = 0.0</strong> — Disabled to prevent instability<br />
-            <strong>Kd = 0.1</strong> — Smooths response, prevents zig-zag
-          </div>
+      {/* ── Code + PID params: grid keeps PID column height = code column; 460+620+40 = 1120 → PID left unchanged ── */}
+      <div style={{
+        position: 'absolute', left: 460, top: 1160, zIndex: 2,
+        width: 1280,
+        display: 'grid',
+        gridTemplateColumns: '620px 620px',
+        columnGap: 40,
+        alignItems: 'stretch',
+      }}>
+        <div
+          className="pf-code-block"
+          style={{
+            position: 'relative', left: 0, top: 0, width: '100%', boxSizing: 'border-box',
+            fontSize: 13, padding: '22px 26px',
+          }}
+        >
+          {codeSnippet}
         </div>
-      </GlassWidget>
+        <div style={{ position: 'relative', width: 620, minHeight: 0 }}>
+          <GlassWidget diagramGlass small pixelColor="gold" style={{
+            position: 'absolute', left: 0, top: 0, width: 620, height: '100%',
+          }}>
+            <div style={{
+              padding: '24px 28px', height: '100%', boxSizing: 'border-box',
+              display: 'flex', flexDirection: 'column',
+            }}>
+              <div style={{
+                fontFamily: 'Inter,Arial,sans-serif', fontWeight: 700, fontSize: 22, color: '#1a1a1a',
+                flexShrink: 0, lineHeight: 1.2, marginBottom: 8,
+              }}>PID Parameters</div>
+              <div style={{
+                flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+                fontFamily: "'Zilla Slab',serif", fontSize: 19, color: '#333', lineHeight: 1.55,
+              }}>
+                <div><strong>Kp = 0.1</strong> — Responsive steering without oscillation</div>
+                <div><strong>Ki = 0.0</strong> — Disabled to prevent instability</div>
+                <div><strong>Kd = 0.1</strong> — Smooths response, prevents zig-zag</div>
+              </div>
+            </div>
+          </GlassWidget>
+        </div>
+      </div>
     </div>
   );
 }

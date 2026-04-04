@@ -18,7 +18,7 @@ export default function Hardware() {
       </div>
 
       <div style={{
-        left: 460,
+        left: 488,
         top: 507,
         position: 'absolute',
         color: '#212121',
