@@ -13,8 +13,13 @@ export default function usePageScale() {
      */
     if (s >= 1) {
       w.style.transform = 'none';
+      w.style.transformOrigin = '';
     } else {
-      /* top center + margin:auto on wrapper keeps scaled layout centered like wide-screen centered artboard */
+      /*
+       * Must use top center here: .page-scale-canvas flex-centers the 1920px box, but scale() with
+       * top left origin shrinks toward the left — huge gap on the right (GitHub / narrow windows).
+       */
+      w.style.transformOrigin = 'top center';
       w.style.transform = 'translate3d(0, 0, 0) scale(' + s + ')';
     }
     document.body.style.height = (PAGE_SCROLL_HEIGHT * s) + 'px';

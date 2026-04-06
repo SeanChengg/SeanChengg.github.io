@@ -27,7 +27,8 @@ body {
 .page-scale-wrapper {
   width: 1920px;
   flex-shrink: 0;
-  transform-origin: top left;
+  /* Default; usePageScale sets top center when scale < 1 */
+  transform-origin: top center;
   transform-style: flat;
 }
 
@@ -36,6 +37,7 @@ body {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
+  min-width: 0;
 }
 
 #sidebar-nav .sn-link,
