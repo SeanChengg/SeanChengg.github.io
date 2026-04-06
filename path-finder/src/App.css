@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
 body {
   overflow-x: hidden;
   background-color: #F3F3F3;
@@ -14,19 +21,21 @@ body {
   background-size: 512px 512px;
 }
 
+/*
+ * 1900px artboard — Home.jsx wraps in .page-scale-canvas (flex center) for GitHub + local.
+ */
 .page-scale-wrapper {
-  width: 1920px;
-  transform-origin: top left;
-  /* Helps compositing when transform scale() is applied (narrow viewports) */
+  width: 1900px;
+  flex-shrink: 0;
+  transform-origin: top center;
   transform-style: flat;
 }
 
-/* At ≥1920px the canvas is full width; right-align so the footer sits flush with the viewport (no gap on the right). Below 1920px usePageScale() scales from the left — keep default margins. */
-@media (min-width: 1920px) {
-  .page-scale-wrapper {
-    margin-left: auto;
-    margin-right: 0;
-  }
+.page-scale-canvas {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 #sidebar-nav .sn-link,

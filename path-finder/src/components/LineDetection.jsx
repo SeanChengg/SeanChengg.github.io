@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { withBase } from '../publicUrl';
 import SectionHeading from './SectionHeading';
 import PixelBlocksBg from './PixelBlocksBg';
-import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
+import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
 
 /* ── SVG icons for each pipeline stage ── */
 
@@ -591,7 +591,7 @@ export default function LineDetection() {
   }, [active]);
 
   return (
-    <div id="line-detection" style={{ width: 1919, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', overflow: 'hidden', zIndex: 3 }}>
+    <div id="line-detection" style={{ width: SECTION_SHELL_WIDTH, height: LINE_DETECTION_HEIGHT, left: 0.75, top: LINE_DETECTION_TOP, position: 'absolute', overflow: 'hidden', zIndex: 3 }}>
 
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{

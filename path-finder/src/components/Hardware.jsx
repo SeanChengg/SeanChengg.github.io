@@ -1,11 +1,11 @@
 import Gallery from './Gallery';
 import CostTable from './CostTable';
 import SectionHeading from './SectionHeading';
-import { HARDWARE_TOP, HARDWARE_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
+import { HARDWARE_TOP, HARDWARE_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
 
 export default function Hardware() {
   return (
-    <div id="hardware" style={{ width: 1919, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
+    <div id="hardware" style={{ width: SECTION_SHELL_WIDTH, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
       <SectionHeading>Hardware</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,

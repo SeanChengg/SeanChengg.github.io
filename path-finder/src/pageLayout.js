@@ -7,6 +7,12 @@
  * Gallery → Line Detection keeps a slightly larger Host-style gap (GAP_AFTER_GALLERY_TO_HEADING).
  */
 
+/** Fixed design width — scaling, sidebar, and section shells all use this (GitHub + local). */
+export const ARTBOARD_WIDTH = 1900;
+
+/** Section root divs use width − 1px (legacy layout nudge). */
+export const SECTION_SHELL_WIDTH = ARTBOARD_WIDTH - 1;
+
 export const SECTION_GAP = 80;
 
 /** Gallery metrics (single source; Gallery.jsx imports these) */

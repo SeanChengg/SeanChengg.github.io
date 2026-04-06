@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import GlassWidget from './GlassWidget';
 import SectionHeading from './SectionHeading';
-import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
+import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
 
 const codeSnippet = `// PID Controller — pid_control.c
 float apply_pid_control(float error, float integral, float derivative) {
@@ -260,7 +260,7 @@ export default function MotorControlPID() {
 
   return (
     <div id="motor-control" style={{
-      width: 1919, height: MOTOR_PID_HEIGHT, left: 0.75,
+      width: SECTION_SHELL_WIDTH, height: MOTOR_PID_HEIGHT, left: 0.75,
       top: MOTOR_PID_TOP, position: 'absolute',
       zIndex: 2,
       overflow: 'visible',

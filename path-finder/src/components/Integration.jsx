@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import SectionHeading from './SectionHeading';
 import { withBase } from '../publicUrl';
-import { INTEGRATION_TOP, INTEGRATION_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
+import { INTEGRATION_TOP, INTEGRATION_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
 
 const STEPS = [
   { time: '0 ms', label: 'LED ON', desc: 'Visual heartbeat begins' },
@@ -63,7 +63,7 @@ export default function Integration() {
   const videoLeft = contentRight - VIDEO_W;
 
   return (
-    <div id="integration" style={{ width: 1919, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
+    <div id="integration" style={{ width: SECTION_SHELL_WIDTH, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
       <SectionHeading>Integration</SectionHeading>
       <div style={{
         width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,

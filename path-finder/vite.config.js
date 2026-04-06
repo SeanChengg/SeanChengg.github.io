@@ -9,4 +9,9 @@ export default defineConfig({
     port: 5173,
     host: true,
   },
+  // Same URL as dev: open http://localhost:5173/path_finder/ — this is the *exact* bundle GitHub Pages serves after `npm run deploy`.
+  preview: {
+    port: 5173,
+    host: true,
+  },
 })

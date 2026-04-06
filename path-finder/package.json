@@ -8,7 +8,8 @@
     "build": "vite build",
     "deploy": "npm run build && rm -rf ../path_finder && mkdir -p ../path_finder && cp -R dist/* ../path_finder/",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:github": "npm run build && vite preview"
   },
   "dependencies": {
     "react": "^19.2.4",

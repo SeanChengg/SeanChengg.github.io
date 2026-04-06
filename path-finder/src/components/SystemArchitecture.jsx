@@ -1,10 +1,10 @@
 import SectionHeading from './SectionHeading';
 import SystemArchitectureDiagram from './SystemArchitectureDiagram';
-import { SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
+import { SECTION_SHELL_WIDTH, SYSTEM_ARCHITECTURE_TOP, SYSTEM_ARCHITECTURE_HEIGHT, SECTION_BODY_TOP } from '../pageLayout';
 
 export default function SystemArchitecture() {
   return (
-    <div id="system-architecture" style={{ width: 1919, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
+    <div id="system-architecture" style={{ width: SECTION_SHELL_WIDTH, height: SYSTEM_ARCHITECTURE_HEIGHT, left: 0.75, top: SYSTEM_ARCHITECTURE_TOP, position: 'absolute' }}>
       <SectionHeading>System Architecture</SectionHeading>
       <div
         style={{
