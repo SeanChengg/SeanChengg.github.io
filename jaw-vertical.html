@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- index.css only: shared.css uses overflow:hidden on body -->
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #f6f2e8;
+        }
+        body {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+            background-color: #f6f2e8;
+            color: #333;
+            font-family: 'Open Sans', sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded { opacity: 1; }
+
+        :root { --scale-factor: 1; }
+
+        .scroll-wrapper {
+            transform: scale(var(--scale-factor));
+            transform-origin: top left;
+            width: 1920px;
+        }
+
+        .section {
+            position: relative;
+            width: 1920px;
+            overflow: hidden;
+            background-color: #f6f2e8;
+        }
+
+        /* ── Section 1: jaw.html (01) ── */
+        .jv-s1 {
+            height: 1080px;
+        }
+        .jv-s1 .jaw-content-parent {
+            position: absolute;
+            top: 207px;
+            left: 385px;
+            width: 1369px;
+            height: 759px;
+            font-size: 30px;
+            color: #000;
+            font-family: 'Zilla Slab', serif;
+        }
+        .jv-s1 .this-wearable-accessory {
+            position: absolute;
+            top: 481px;
+            left: 492px;
+            display: inline-block;
+            width: 898px;
+            height: 235px;
+            text-align: justify;
+        }
+        .jv-s1 .a-pneumatically-powered {
+            position: absolute;
+            top: 0px;
+            left: 4px;
+            display: inline-block;
+            width: 723px;
+            height: 157px;
+        }
+        .jv-s1 .concept-jaw {
+            position: absolute;
+            top: -62px;
+            left: 13px;
+            font-size: 45px;
+            font-family: Wallpoet, serif;
+            color: #6d6d6d;
+        }
+        .jv-s1 .left-upper-jaw {
+            position: absolute;
+            top: -62px;
+            left: 435px;
+            width: 1011px;
+            height: 564px;
+            object-fit: cover;
+        }
+        .jv-s1 .left-lower-jaw {
+            position: absolute;
+            top: 347px;
+            left: -255px;
+            width: 690px;
+            height: 387px;
+            object-fit: cover;
+        }
+        .jv-s1 .right-upper-jaw {
+            position: absolute;
+            top: -67px;
+            left: -289px;
+            width: 680.4px;
+            height: 554.7px;
+            object-fit: contain;
+        }
+        .jv-s1 .frame-child {
+            position: absolute;
+            top: 96px;
+            left: 35px;
+            background-color: #101420;
+            width: 363px;
+            height: 4px;
+        }
+        .jv-s1 .div {
+            font-family: 'Open Sans', sans-serif;
+            color: #101420;
+        }
+
+        /* ── Section 2: jaw2.html (02) ── */
+        .jv-s2 {
+            height: 1080px;
+        }
+        .jv-s2 .creature-animatronic1 {
+            margin: 0;
+        }
+        .jv-s2 .creature-animatronic {
+            position: absolute;
+            top: 45px;
+            left: 398px;
+            font-size: 60px;
+            font-family: 'Yeseva One', serif;
+            color: #101420;
+            display: inline-block;
+            width: 1554px;
+            height: 99px;
+        }
+        .jv-s2 .frame-child {
+            position: absolute;
+            top: 96px;
+            left: 35px;
+            background-color: #101420;
+            width: 363px;
+            height: 4px;
+        }
+        .jv-s2 .div {
+            position: absolute;
+            top: 140px;
+            left: 130px;
+            font-size: 120px;
+            font-weight: 300;
+            font-family: 'Open Sans', sans-serif;
+            color: #101420;
+            display: inline-block;
+            width: 197.5px;
+            height: 233.2px;
+            opacity: 0.1;
+        }
+        .jv-s2 .inspired-by-a {
+            position: absolute;
+            top: 596px;
+            left: 202px;
+            display: inline-block;
+            width: 1232px;
+            height: 314px;
+        }
+        .jv-s2 .casted-bronze-steel {
+            position: absolute;
+            top: 62px;
+            left: 0px;
+            text-align: left;
+            display: inline-block;
+            width: 673px;
+            height: 157px;
+        }
+        .jv-s2 .component {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 45px;
+            font-family: Wallpoet, serif;
+            color: #6d6d6d;
+            text-align: left;
+        }
+        .jv-s2 .design-features {
+            position: absolute;
+            top: 537px;
+            left: 202px;
+            font-size: 45px;
+            font-family: Wallpoet, serif;
+            color: #6d6d6d;
+            display: inline-block;
+            width: 466px;
+            height: 38px;
+        }
+        .jv-s2 .inspired-by-a-prior-jewelry-de-parent {
+            position: absolute;
+            top: 145px;
+            left: 398px;
+            width: 1434px;
+            height: 910px;
+            text-align: justify;
+            font-size: 30px;
+            color: #000;
+            font-family: 'Zilla Slab', serif;
+        }
+        .jv-s2 .img-1898-1-icon {
+            position: absolute;
+            top: 330px;
+            left: 848px;
+            width: 290px;
+            height: 290px;
+            object-fit: cover;
+        }
+        .jv-s2 .img-1801-recovered-1-icon {
+            position: absolute;
+            top: 397px;
+            left: 659px;
+            width: 152px;
+            height: 212px;
+            object-fit: cover;
+        }
+        .jv-s2 .video-36-1 {
+            position: absolute;
+            top: 149px;
+            left: 1172px;
+            box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            width: 660px;
+            height: 496px;
+            overflow: hidden;
+        }
+        .jv-s2 .video-37-1 {
+            position: absolute;
+            top: 341px;
+            left: 130px;
+            box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            background-color: rgba(255, 254, 249, 0.2);
+            width: 420px;
+            height: 572px;
+            overflow: hidden;
+        }
+        .jv-s2 .video-36-1 video,
+        .jv-s2 .video-37-1 video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .narrow-screen-message { display: block; }
+            .scroll-wrapper { opacity: 0.7; filter: blur(1px); }
+        }
+        @media screen and (max-width: 768px) {
+            .scroll-wrapper { opacity: 0.5; filter: blur(2px); }
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .back-btn:hover { opacity: 1; transform: scale(1.1); }
+        .back-btn img { width: 40px; height: 40px; }
+
+        .narrow-screen-message {
+            display: none;
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 20px;
+            background: rgba(246, 242, 232, 0.9);
+            border-radius: 8px;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <a class="back-btn" href="index.html" id="backBtn" aria-label="Back to portfolio">
+        <img src="images/Back_Sign.svg" alt="">
+    </a>
+
+    <div class="scroll-wrapper" id="scrollWrapper">
+
+        <div class="section jv-s1">
+            <div class="jaw-content-parent">
+                <div class="this-wearable-accessory">This wearable accessory features a pneumatic cylinder that opens and closes the bronze jaw through controlled piston extension and retraction. Users operate the jaw by placing their hand inside the mechanical body and pressing an internal button. The device connects directly to compact air and power supplies.</div>
+                <div class="a-pneumatically-powered">A pneumatically powered animatronic jaw sculpture</div>
+                <div class="concept-jaw">Concept</div>
+
+                <img class="left-upper-jaw" alt="" src="images/RightUpperJaw.png">
+                <img class="left-lower-jaw" alt="" src="images/LeftLowerJaw.png">
+                <img class="right-upper-jaw" alt="" src="images/LeftUpperJaw.png">
+            </div>
+
+            <div class="breaking-bad">Creature Animatronic</div>
+            <div class="frame-child"></div>
+            <div class="div">01</div>
+        </div>
+
+        <div class="section jv-s2">
+            <div class="creature-animatronic">
+                <p class="creature-animatronic1">Creature Animatronic</p>
+            </div>
+            <div class="frame-child"></div>
+            <div class="div">02</div>
+            <div class="inspired-by-a-prior-jewelry-de-parent">
+                <div class="inspired-by-a">Referencing a prior jewelry design, the creature's cranium and mandible blend cosmetic exteriors with internal mechanics, modeled in ZBrush and Fusion 360. Modular skeletal structure combines 3D-printed and cast bronze parts, including a CNC-carved maple headpiece. A pneumatic cylinder drives the mandible's motion, demonstrated in a temporary setup using air and DC power.</div>
+                <div class="casted-bronze-steel">Casted Bronze, Steel, Hardwood, Bearings, Bimba Double Acting Pneumatic Cylinder and Solenoid Valve, 24V Supply</div>
+                <div class="component">Component</div>
+                <div class="design-features">Design Features</div>
+            </div>
+            <img class="img-1898-1-icon" alt="" src="images/MiddleRing.png">
+            <img class="img-1801-recovered-1-icon" alt="" src="images/MiddleHead.png">
+
+            <video class="video-36-1" controls>
+                <source src="videos/JawRight.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <video class="video-37-1" controls>
+                <source src="videos/JawLeft.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+
+    <div class="narrow-screen-message">View project details on a larger screen</div>
+
+    <script>
+        function updateScale() {
+            var wrapper = document.getElementById('scrollWrapper');
+            if (!wrapper) return;
+            var totalHeight = 1080 + 1080;
+            var w = Math.max(1, window.innerWidth);
+            var scale = w / 1920;
+            document.documentElement.style.setProperty('--scale-factor', String(scale));
+            wrapper.style.marginBottom = -(totalHeight * (1 - scale)) + 'px';
+            wrapper.style.marginRight = -(1920 * (1 - scale)) + 'px';
+        }
+        function showPage() {
+            updateScale();
+            document.body.classList.add('loaded');
+        }
+        document.addEventListener('DOMContentLoaded', showPage);
+        window.addEventListener('load', updateScale);
+        window.addEventListener('resize', updateScale);
+
+        document.getElementById('backBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.style.opacity = 0;
+            setTimeout(function() { window.location.href = 'index.html'; }, 200);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "redirects": [
+    {
+      "source": "/runaway-teapot",
+      "destination": "/runaway-teapot/"
+    },
+    {
+      "source": "/path_finder",
+      "destination": "/path_finder/"
+    }
+  ]
+}

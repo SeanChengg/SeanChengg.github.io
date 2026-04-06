@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- index.css only: shared.css fixes body to overflow:hidden which breaks vertical scroll -->
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wallpoet:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #f6f2e8;
+        }
+        body {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+            background-color: #f6f2e8;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded { opacity: 1; }
+
+        :root { --scale-factor: 1; }
+
+        .scroll-wrapper {
+            transform: scale(var(--scale-factor));
+            transform-origin: top left;
+            width: 1920px;
+        }
+
+        .section {
+            position: relative;
+            width: 1920px;
+            overflow: hidden;
+            background-color: #f6f2e8;
+        }
+
+        /* ── Section 1: Breaking-concept (was 01) ── */
+        .bv-s1 {
+            height: 1080px;
+        }
+        @media screen and (max-width: 1024px) {
+            .bv-s1 .breaking-bad { font-size: 40px; }
+            .bv-s1 .breaking-bad-themed-halloween { font-size: 24px; width: 80%; }
+            .bv-s1 .modified-gatling-gun-container { width: 80%; font-size: 16px; }
+        }
+        @media screen and (max-width: 768px) {
+            .bv-s1 .breaking-bad { font-size: 32px; }
+        }
+
+        /* ── Section 2: Breaking2.svg (was 02 — video) ── */
+        .bv-s2 {
+            height: 1080px;
+        }
+        /* Breaking2 used different .div metrics than index.css — override */
+        .bv-s2 .div {
+            width: 148px;
+            height: 163px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .bv-s2 .frame-child {
+            position: absolute;
+            top: 96px;
+            left: 35px;
+            background-color: #101420;
+            width: 363px;
+            height: 4px;
+        }
+        .bv-s2 .video-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68%;
+            height: auto;
+            z-index: 5;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .bv-s2 .video-container video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-color: #000;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .narrow-screen-message { display: block; }
+            .scroll-wrapper { opacity: 0.7; filter: blur(1px); }
+        }
+        @media screen and (max-width: 768px) {
+            .scroll-wrapper { opacity: 0.5; filter: blur(2px); }
+        }
+
+        /* Back — same as lims2 / adaptable-living */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .back-btn:hover { opacity: 1; transform: scale(1.1); }
+        .back-btn img { width: 40px; height: 40px; }
+
+        .narrow-screen-message {
+            display: none;
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Zilla Slab', serif;
+            color: #777;
+            font-size: 1.2rem;
+            padding: 20px;
+            background: rgba(246, 242, 232, 0.9);
+            border-radius: 8px;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <a class="back-btn" href="index.html" id="backBtn" aria-label="Back to portfolio">
+        <img src="images/Back_Sign.svg" alt="">
+    </a>
+
+    <div class="scroll-wrapper" id="scrollWrapper">
+
+        <!-- ═══ Section 1: Breaking-concept.html ═══ -->
+        <div class="section bv-s1">
+            <div class="breaking-bad-themed-halloween-parent">
+                <div class="breaking-bad-themed-halloween">Breaking Bad-themed Halloween project inspired by Walter White's trunk-mounted M60.</div>
+                <div class="modified-gatling-gun-container">
+                    <p class="blank-line">&nbsp;</p>
+                    <ul class="modified-gatling-gun-model-equ">
+                        <li class="modified-gatling-gun">Modified Gatling gun model equipped with a DC motor to spin gun barrels.</li>
+                        <li class="rc-servo-driven-5-bar">RC servo-driven 5-bar linkage mimics machine gun pivoting by a  repurposed garage door opener.</li>
+                        <li>IR remote (car key trigger), speed-adjusting potentiometer, and gunfire sound effects from a speaker.</li>
+                    </ul>
+                </div>
+                <div class="design-features">Design Features</div>
+            </div>
+            <div class="breaking-bad">Breaking Bad</div>
+            <div class="frame-inner"></div>
+            <div class="div">01</div>
+            <img class="img-2782-1-icon" alt="" src="images/Gatling.png">
+            <div class="concept">Concept</div>
+            <img class="walter-1-icon" alt="" src="images/Walter.png">
+        </div>
+
+        <!-- ═══ Section 2: Breaking2.svg.html ═══ -->
+        <div class="section bv-s2">
+            <div class="breaking-bad">Breaking Bad</div>
+            <div class="frame-child"></div>
+            <div class="div">02</div>
+            <div class="video-container">
+                <video id="breakingVideo" autoplay loop muted playsinline>
+                    <source src="videos/Breaking.mov" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="narrow-screen-message">View project details on a larger screen</div>
+
+    <script>
+        function updateScale() {
+            var wrapper = document.getElementById('scrollWrapper');
+            if (!wrapper) return;
+            var totalHeight = 1080 + 1080;
+            var w = Math.max(1, window.innerWidth);
+            var scale = w / 1920;
+            document.documentElement.style.setProperty('--scale-factor', String(scale));
+            wrapper.style.marginBottom = -(totalHeight * (1 - scale)) + 'px';
+            wrapper.style.marginRight = -(1920 * (1 - scale)) + 'px';
+        }
+        function showPage() {
+            updateScale();
+            document.body.classList.add('loaded');
+        }
+        document.addEventListener('DOMContentLoaded', showPage);
+        window.addEventListener('load', updateScale);
+        window.addEventListener('resize', updateScale);
+
+        document.getElementById('backBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.style.opacity = 0;
+            setTimeout(function() { window.location.href = 'index.html'; }, 200);
+        });
+    </script>
+</body>
+</html>
