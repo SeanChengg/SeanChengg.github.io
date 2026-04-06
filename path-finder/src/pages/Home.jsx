@@ -9,7 +9,7 @@ import LineDetection from '../components/LineDetection';
 import MotorControlPID from '../components/MotorControlPID';
 import Integration from '../components/Integration';
 import SimpleFooter from '../components/SimpleFooter';
-import { FOOTER_TOP, PAGE_SCROLL_HEIGHT } from '../pageLayout';
+import { FOOTER_TOP, PAGE_SCROLL_HEIGHT, SCROLL_CANVAS_TOP_OFFSET } from '../pageLayout';
 
 export default function Home() {
   usePageScale();
@@ -29,23 +29,24 @@ export default function Home() {
             <LineDetection />
             <MotorControlPID />
             <Integration />
-            <div
-              style={{
-                position: 'absolute',
-                /* Same band as sections (1919 @ 0.75); full 1947 width clipped the top-right radius */
-                left: 0.75,
-                top: FOOTER_TOP,
-                bottom: 0,
-                width: 1919,
-                background: '#212121',
-                borderRadius: '24px 24px 0 0',
-                overflow: 'hidden',
-                boxSizing: 'border-box',
-              }}
-            >
-              <SimpleFooter />
-            </div>
           </div>
+        </div>
+        {/* Footer on 1920 artboard (sibling of inner track) — nested 1947px canvas clipped the top-right radius */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: SCROLL_CANVAS_TOP_OFFSET + FOOTER_TOP,
+            width: 1920,
+            height: PAGE_SCROLL_HEIGHT - FOOTER_TOP,
+            background: '#212121',
+            borderRadius: '24px 24px 0 0',
+            overflow: 'hidden',
+            boxSizing: 'border-box',
+            zIndex: 2,
+          }}
+        >
+          <SimpleFooter />
         </div>
       </div>
     </>
