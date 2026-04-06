@@ -31,13 +31,13 @@ export default function Home() {
             <Integration />
           </div>
         </div>
-        {/* Footer on 1920 artboard (sibling of inner track) — nested 1947px canvas clipped the top-right radius */}
+        {/* Full-bleed below max artboard width: 1920px left gray gap on wide monitors; max(100vw,1920) + same top radius */}
         <div
           style={{
             position: 'absolute',
             left: 0,
             top: SCROLL_CANVAS_TOP_OFFSET + FOOTER_TOP,
-            width: 1920,
+            width: 'max(100vw, 1920px)',
             height: PAGE_SCROLL_HEIGHT - FOOTER_TOP,
             background: '#212121',
             borderRadius: '24px 24px 0 0',
