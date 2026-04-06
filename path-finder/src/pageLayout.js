@@ -1,17 +1,39 @@
 /**
- * Path Finder vertical layout — unified “block → next heading” rhythm:
- * All transitions use the same rule as Line Detection → Motor PID:
- *   nextSectionTop = prevSectionTop + lastContentBottom + GAP_AFTER_BLOCK_TO_HEADING - SECTION_HEADING_TOP
- * so the visible gap from the end of the previous block to the next section title is GAP_AFTER_BLOCK_TO_HEADING (88px).
+ * Path Finder layout — `pageLayout.js` is the single source of truth.
  *
- * Gallery → Line Detection keeps a slightly larger Host-style gap (GAP_AFTER_GALLERY_TO_HEADING).
+ * Vertical rhythm: nextSectionTop = prevSectionTop + lastContentBottom + GAP_AFTER_BLOCK_TO_HEADING − SECTION_HEADING_TOP
+ * (see rest of file). Gallery → Line Detection uses GAP_AFTER_GALLERY_TO_HEADING.
  */
 
-/** Fixed design width — all absolute layout in components assumes this width. Do not shrink without retuning every section. */
+/** Fixed design width — `.page-scale-wrapper`, footer shell, scroll canvas. */
 export const ARTBOARD_WIDTH = 1920;
 
 /** Section root divs use width − 1px (legacy layout nudge). */
 export const SECTION_SHELL_WIDTH = ARTBOARD_WIDTH - 1;
+
+/** Section roots use this `left` on the scroll canvas (must match each section’s root style). */
+export const SECTION_PAGE_LEFT = 0.75;
+
+/**
+ * ---------------------------------------------------------------------------
+ * HORIZONTAL (X) — align main column with footer + section bodies.
+ * ---------------------------------------------------------------------------
+ * MAIN_COLUMN_SHIFT_X — add px to move the whole main column + footer text right (0–16; tweak to taste).
+ *
+ * SECTION_BODY_LEFT — inner `left` for blocks inside a section root (relative to that root).
+ * SECTION_BODY_SCREEN_LEFT — artboard-x of that column = SECTION_PAGE_LEFT + SECTION_BODY_LEFT.
+ *   SimpleFooter must use SCREEN_LEFT for paddingLeft (footer is not inside a section root; padding 460 alone
+ *   did not match 0.75 + 460 for section content).
+ * SECTION_BODY_RIGHT_GAP — ARTBOARD − SCREEN_LEFT − WIDTH.
+ *
+ * HERO_PAGE_LEFT — Hero root `left` (separate from sections). SECTION_ICON_LEFT, HERO_MAIN_COLUMN_LEFT — titles.
+ * ---------------------------------------------------------------------------
+ */
+export const MAIN_COLUMN_SHIFT_X = 6;
+export const SECTION_BODY_LEFT = 460 + MAIN_COLUMN_SHIFT_X;
+export const SECTION_BODY_WIDTH = 1284;
+export const SECTION_BODY_SCREEN_LEFT = SECTION_PAGE_LEFT + SECTION_BODY_LEFT;
+export const SECTION_BODY_RIGHT_GAP = ARTBOARD_WIDTH - SECTION_BODY_SCREEN_LEFT - SECTION_BODY_WIDTH;
 
 export const SECTION_GAP = 80;
 
@@ -24,7 +46,9 @@ export const PF_GALLERY_TOP_IN_HARDWARE = 995;
 const pfSx = (n) => Math.round(n * PF_GALLERY_SCALE);
 export const PF_GALLERY_W = pfSx(PF_GALLERY_BASE_W);
 export const PF_GALLERY_H = pfSx(PF_GALLERY_BASE_H);
-export const PF_GALLERY_LEFT = Math.round(460 + PF_GALLERY_BASE_W / 2 - PF_GALLERY_W / 2);
+export const PF_GALLERY_LEFT = Math.round(
+  SECTION_BODY_LEFT + PF_GALLERY_BASE_W / 2 - PF_GALLERY_W / 2
+);
 
 /** Y offset from Hardware section top → bottom of grey gallery panel */
 export const HARDWARE_GALLERY_BOTTOM = PF_GALLERY_TOP_IN_HARDWARE + PF_GALLERY_H;
@@ -62,7 +86,6 @@ export const SECTION_ICON_LEFT =
  * Hero wheel + main column use this so Wheel.png lines up with SectionHeading on screen.
  */
 export const HERO_PAGE_LEFT = 48.75;
-export const SECTION_PAGE_LEFT = 0.75;
 
 /** Hero: inner `left` for wheel row + big title block — same screen-x as SECTION_ICON_LEFT */
 export const HERO_MAIN_COLUMN_LEFT =
@@ -132,9 +155,21 @@ export const MOTOR_PID_HEIGHT = MOTOR_PID_CONTENT_BOTTOM + 64;
 export const INTEGRATION_TOP =
   MOTOR_PID_TOP + MOTOR_PID_CONTENT_BOTTOM + GAP_AFTER_BLOCK_TO_HEADING - SECTION_HEADING_TOP;
 
-export const INTEGRATION_HEIGHT = 1440;
+/**
+ * Integration section — must stay in sync with Integration.jsx (timeline + video row).
+ * Content bottom = row top + video height; section box was 1440 with ~50px dead air under the video.
+ */
+export const INTEGRATION_VIDEO_ROW_TOP = 800;
+export const INTEGRATION_VIDEO_W = 960;
+export const INTEGRATION_VIDEO_H = 590;
+export const INTEGRATION_CONTENT_BOTTOM = INTEGRATION_VIDEO_ROW_TOP + INTEGRATION_VIDEO_H;
+export const INTEGRATION_SECTION_BOTTOM_PAD = 20;
+export const INTEGRATION_HEIGHT = INTEGRATION_CONTENT_BOTTOM + INTEGRATION_SECTION_BOTTOM_PAD;
 
-export const FOOTER_TOP = INTEGRATION_TOP + INTEGRATION_HEIGHT + SECTION_GAP;
+/** Shorter than SECTION_GAP — pulls the dark footer up; was a huge grey strip under the video */
+export const GAP_AFTER_INTEGRATION_TO_FOOTER = 40;
+
+export const FOOTER_TOP = INTEGRATION_TOP + INTEGRATION_HEIGHT + GAP_AFTER_INTEGRATION_TO_FOOTER;
 
 /**
  * Space reserved below FOOTER_TOP — footer shell uses `bottom: 0` to fill this with #212121.

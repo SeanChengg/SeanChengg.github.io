@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import GlassWidget from './GlassWidget';
 import SectionHeading from './SectionHeading';
-import { MOTOR_PID_TOP, MOTOR_PID_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
+import {
+  MOTOR_PID_TOP,
+  MOTOR_PID_HEIGHT,
+  SECTION_BODY_TOP,
+  SECTION_BODY_LEFT,
+  SECTION_BODY_WIDTH,
+  SECTION_SHELL_WIDTH,
+} from '../pageLayout';
 
 const codeSnippet = `// PID Controller — pid_control.c
 float apply_pid_control(float error, float integral, float derivative) {
@@ -268,7 +275,7 @@ export default function MotorControlPID() {
 
       <SectionHeading>Motor Control & PID</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
+        width: SECTION_BODY_WIDTH, left: SECTION_BODY_LEFT, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 0,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,
@@ -289,8 +296,8 @@ export default function MotorControlPID() {
       <div
         className="pf-motor-flow-diagram"
         style={{
-          position: 'absolute', left: 460, top: diagramTop,
-          width: 1284, height: diagramH, zIndex: 3,
+          position: 'absolute', left: SECTION_BODY_LEFT, top: diagramTop,
+          width: SECTION_BODY_WIDTH, height: diagramH, zIndex: 3,
           overflow: 'visible',
         }}
       >
@@ -447,7 +454,7 @@ export default function MotorControlPID() {
       </div>
 
       {/* ── Scenario cards — liquid glass with vehicle animation ── */}
-      <div style={{ left: 460, top: 910, position: 'absolute', display: 'flex', gap: 28, width: 1284, zIndex: 2 }}>
+      <div style={{ left: SECTION_BODY_LEFT, top: 910, position: 'absolute', display: 'flex', gap: 28, width: SECTION_BODY_WIDTH, zIndex: 2 }}>
         {scenarios.map((s, i) => (
           <GlassWidget diagramGlass key={i} small pixelColor={i === 1 ? 'gold' : 'turquoise'} style={{
             position: 'relative',
@@ -483,7 +490,7 @@ export default function MotorControlPID() {
 
       {/* ── Code + PID params: grid keeps PID column height = code column; 460+620+40 = 1120 → PID left unchanged ── */}
       <div style={{
-        position: 'absolute', left: 460, top: 1160, zIndex: 2,
+        position: 'absolute', left: SECTION_BODY_LEFT, top: 1160, zIndex: 2,
         width: 1280,
         display: 'grid',
         gridTemplateColumns: '620px 620px',

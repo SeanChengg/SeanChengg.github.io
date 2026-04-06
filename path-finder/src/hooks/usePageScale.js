@@ -1,11 +1,12 @@
 import { useEffect, useCallback } from 'react';
-import { ARTBOARD_WIDTH, PAGE_SCROLL_HEIGHT } from '../pageLayout';
+import { PAGE_SCROLL_HEIGHT } from '../pageLayout';
+import { getArtboardScale } from '../viewportScale';
 
 export default function usePageScale() {
   const scalePage = useCallback(() => {
     const w = document.querySelector('.page-scale-wrapper');
     if (!w) return;
-    const s = Math.min(window.innerWidth / ARTBOARD_WIDTH, 1);
+    const s = getArtboardScale();
     /*
      * Chrome often drops backdrop-filter when any ancestor has transform().
      * If the viewport is ≥ artboard wide, skip transform entirely (not just scale(1))
@@ -27,7 +28,14 @@ export default function usePageScale() {
 
   useEffect(() => {
     scalePage();
-    window.addEventListener('resize', scalePage);
-    return () => window.removeEventListener('resize', scalePage);
+    const onResize = () => scalePage();
+    window.addEventListener('resize', onResize);
+    window.visualViewport?.addEventListener('resize', onResize);
+    window.visualViewport?.addEventListener('scroll', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('scroll', onResize);
+    };
   }, [scalePage]);
 }

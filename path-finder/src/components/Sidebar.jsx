@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { ARTBOARD_WIDTH, FOOTER_TOP } from '../pageLayout';
+import { FOOTER_TOP } from '../pageLayout';
+import { getArtboardScale } from '../viewportScale';
 
 export default function Sidebar() {
   const sidebarRef = useRef(null);
@@ -7,7 +8,7 @@ export default function Sidebar() {
   const scaleSidebar = useCallback(() => {
     const sidebar = sidebarRef.current;
     if (!sidebar) return;
-    const s = Math.min(window.innerWidth / ARTBOARD_WIDTH, 1);
+    const s = getArtboardScale();
     sidebar.style.left = (100 * s) + 'px';
     sidebar.style.width = (240 * s) + 'px';
     sidebar.style.gap = (24 * s) + 'px';
@@ -24,7 +25,7 @@ export default function Sidebar() {
   const positionSidebar = useCallback(() => {
     const sidebar = sidebarRef.current;
     if (!sidebar) return;
-    const s = Math.min(window.innerWidth / ARTBOARD_WIDTH, 1);
+    const s = getArtboardScale();
     const scrollY = window.scrollY;
 
     const startScroll = (93.37 + 137 + 156) * s;
@@ -80,7 +81,7 @@ export default function Sidebar() {
       } else {
         const target = document.getElementById(targetId);
         if (!target) return;
-        const s = Math.min(window.innerWidth / ARTBOARD_WIDTH, 1);
+        const s = getArtboardScale();
         const rect = target.getBoundingClientRect();
         targetScroll = window.scrollY + rect.top - (20 * s);
       }

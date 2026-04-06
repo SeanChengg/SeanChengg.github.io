@@ -2,7 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { withBase } from '../publicUrl';
 import SectionHeading from './SectionHeading';
 import PixelBlocksBg from './PixelBlocksBg';
-import { LINE_DETECTION_TOP, LINE_DETECTION_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
+import {
+  LINE_DETECTION_TOP,
+  LINE_DETECTION_HEIGHT,
+  SECTION_BODY_TOP,
+  SECTION_BODY_LEFT,
+  SECTION_BODY_WIDTH,
+  SECTION_SHELL_WIDTH,
+} from '../pageLayout';
 
 /* ── SVG icons for each pipeline stage ── */
 
@@ -89,7 +96,7 @@ function IconUart() {
 const STEP_ICONS = [IconCapture, IconGrayscale, IconSlidingWindow, IconPosition, IconUart];
 
 function TireTrackArches() {
-  const cW = 1284, cardW = 220, gapPx = 16, numCards = 5;
+  const cW = SECTION_BODY_WIDTH, cardW = 220, gapPx = 16, numCards = 5;
   const archScale = 1.12;
   const stretchX = 1.14;
   const rowW = numCards * cardW + (numCards - 1) * gapPx;
@@ -595,7 +602,7 @@ export default function LineDetection() {
 
       <SectionHeading>Line Detection</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
+        width: SECTION_BODY_WIDTH, left: SECTION_BODY_LEFT, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 360,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,
@@ -605,8 +612,8 @@ export default function LineDetection() {
       </div>
 
       <div style={{
-        left: 460, top: 748, position: 'absolute',
-        width: 1284,
+        left: SECTION_BODY_LEFT, top: 748, position: 'absolute',
+        width: SECTION_BODY_WIDTH,
         zIndex: 2,
       }}>
         <TireTrackArches />

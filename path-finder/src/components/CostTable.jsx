@@ -1,4 +1,5 @@
 import PixelBlocksBg from './PixelBlocksBg';
+import { SECTION_BODY_LEFT } from '../pageLayout';
 
 const rows = [
   { component: 'Raspberry Pi Pico', role: 'Real-time Controller', spec: 'RP2040, Dual ARM Cortex-M0+, 125 MHz' },
@@ -13,7 +14,7 @@ const rows = [
 export default function CostTable({ top = 545 }) {
   return (
     <div style={{
-      width: 1290, left: 460, top, position: 'absolute',
+      width: 1290, left: SECTION_BODY_LEFT, top, position: 'absolute',
       overflow: 'hidden', borderRadius: 16,
       border: '1px solid rgba(255, 255, 255, 0.36)',
       background: 'transparent',

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PixelBlocksBg from './PixelBlocksBg';
+import { SECTION_BODY_LEFT } from '../pageLayout';
 
 const DASH = '8 5';
 const WIRE_COLOR = 'rgba(100,100,100,0.5)';
@@ -321,7 +322,7 @@ export default function SystemArchitectureDiagram() {
   return (
     <div style={{
       width: 1289, height: 680,
-      left: 460, top: 540,
+      left: SECTION_BODY_LEFT, top: 540,
       position: 'absolute',
       background: 'transparent',
     }}>

@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+/* Reserve scrollbar width so viewport width (and artboard scale) match dev vs prod / with vs without scroll */
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body,
 #root {

@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import SectionHeading from './SectionHeading';
 import { withBase } from '../publicUrl';
-import { INTEGRATION_TOP, INTEGRATION_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
+import {
+  INTEGRATION_TOP,
+  INTEGRATION_HEIGHT,
+  SECTION_BODY_TOP,
+  SECTION_BODY_LEFT,
+  SECTION_BODY_WIDTH,
+  SECTION_SHELL_WIDTH,
+  INTEGRATION_VIDEO_ROW_TOP,
+  INTEGRATION_VIDEO_W,
+  INTEGRATION_VIDEO_H,
+} from '../pageLayout';
 
 const STEPS = [
   { time: '0 ms', label: 'LED ON', desc: 'Visual heartbeat begins' },
@@ -23,8 +33,8 @@ const SOFT_GLOW = 'rgba(220,80,70,0.25)';
 const HARD_RED = '#ff3b30';
 const HARD_GLOW = 'rgba(255,59,48,0.5)';
 
-const VIDEO_W = 960;
-const VIDEO_H = 590;
+const VIDEO_W = INTEGRATION_VIDEO_W;
+const VIDEO_H = INTEGRATION_VIDEO_H;
 const STEP_GAP = (VIDEO_H - 14) / (STEPS.length - 1);
 
 export default function Integration() {
@@ -59,14 +69,14 @@ export default function Integration() {
   const breatheT = phase === 'breathe' ? (animT - intenseEnd) : 0;
   const breatheAlpha = 0.4 + 0.25 * Math.sin(breatheT * Math.PI * 2 / 2000);
 
-  const contentRight = 460 + 1284;
+  const contentRight = SECTION_BODY_LEFT + SECTION_BODY_WIDTH;
   const videoLeft = contentRight - VIDEO_W;
 
   return (
     <div id="integration" style={{ width: SECTION_SHELL_WIDTH, height: INTEGRATION_HEIGHT, left: 0.75, top: INTEGRATION_TOP, position: 'absolute' }}>
       <SectionHeading>Integration</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
+        width: SECTION_BODY_WIDTH, left: SECTION_BODY_LEFT, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 315,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,
@@ -76,7 +86,7 @@ export default function Integration() {
       </div>
 
       {/* Sequential timeline — stretched to match video height */}
-      <div style={{ left: 460, top: 800, position: 'absolute', height: VIDEO_H }}>
+      <div style={{ left: SECTION_BODY_LEFT, top: INTEGRATION_VIDEO_ROW_TOP, position: 'absolute', height: VIDEO_H }}>
         {/* Vertical progress line */}
         <div style={{
           position: 'absolute',
@@ -137,7 +147,7 @@ export default function Integration() {
         style={{
           position: 'absolute',
           left: videoLeft,
-          top: 800,
+          top: INTEGRATION_VIDEO_ROW_TOP,
           width: VIDEO_W,
           height: VIDEO_H,
           objectFit: 'cover',

@@ -1,14 +1,21 @@
 import Gallery from './Gallery';
 import CostTable from './CostTable';
 import SectionHeading from './SectionHeading';
-import { HARDWARE_TOP, HARDWARE_HEIGHT, SECTION_BODY_TOP, SECTION_SHELL_WIDTH } from '../pageLayout';
+import {
+  HARDWARE_TOP,
+  HARDWARE_HEIGHT,
+  SECTION_BODY_TOP,
+  SECTION_BODY_LEFT,
+  SECTION_BODY_WIDTH,
+  SECTION_SHELL_WIDTH,
+} from '../pageLayout';
 
 export default function Hardware() {
   return (
     <div id="hardware" style={{ width: SECTION_SHELL_WIDTH, height: HARDWARE_HEIGHT, left: 0.75, top: HARDWARE_TOP, position: 'absolute' }}>
       <SectionHeading>Hardware</SectionHeading>
       <div style={{
-        width: 1284, left: 460, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
+        width: SECTION_BODY_WIDTH, left: SECTION_BODY_LEFT, top: SECTION_BODY_TOP, position: 'absolute', zIndex: 2,
         minHeight: 270,
         textAlign: 'justify', color: 'black', fontSize: 30,
         fontFamily: "'Zilla Slab',serif", fontWeight: 400,
