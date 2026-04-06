@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+#root {
+  width: 100%;
+  position: relative;
+}
+
 body {
   overflow-x: hidden;
   background-color: #F3F3F3;

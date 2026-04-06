@@ -20,27 +20,33 @@ export default function Home() {
       <Sidebar />
       <SvgFilters />
 
-      <div className="page-scale-wrapper" style={{ width: 1920, position: 'relative', background: 'transparent' }}>
-        <div style={{ width: 1919, height: PAGE_SCROLL_HEIGHT, left: -0.25, top: 0.37, position: 'absolute', background: 'transparent' }}>
-          <div style={{ width: 1947, height: PAGE_SCROLL_HEIGHT, left: 0, top: 137, position: 'absolute', overflow: 'visible' }}>
-            <Hero />
-            <SystemArchitecture />
-            <Hardware />
-            <LineDetection />
-            <MotorControlPID />
-            <Integration />
+      {/* Full-width shell so footer can use left+right (100% layout width). 100vw is wider than the layout when a scrollbar exists — body overflow-x clips the right side and kills border-top-right-radius. */}
+      <div
+        className="pf-page-shell"
+        style={{ position: 'relative', width: '100%', minHeight: PAGE_SCROLL_HEIGHT }}
+      >
+        <div className="page-scale-wrapper" style={{ width: 1920, position: 'relative', background: 'transparent' }}>
+          <div style={{ width: 1919, height: PAGE_SCROLL_HEIGHT, left: -0.25, top: 0.37, position: 'absolute', background: 'transparent' }}>
+            <div style={{ width: 1947, height: PAGE_SCROLL_HEIGHT, left: 0, top: 137, position: 'absolute', overflow: 'visible' }}>
+              <Hero />
+              <SystemArchitecture />
+              <Hardware />
+              <LineDetection />
+              <MotorControlPID />
+              <Integration />
+            </div>
           </div>
         </div>
-        {/* Full-bleed below max artboard width: 1920px left gray gap on wide monitors; max(100vw,1920) + same top radius */}
         <div
           style={{
             position: 'absolute',
             left: 0,
+            right: 0,
             top: SCROLL_CANVAS_TOP_OFFSET + FOOTER_TOP,
-            width: 'max(100vw, 1920px)',
             height: PAGE_SCROLL_HEIGHT - FOOTER_TOP,
             background: '#212121',
-            borderRadius: '24px 24px 0 0',
+            borderTopLeftRadius: 24,
+            borderTopRightRadius: 24,
             overflow: 'hidden',
             boxSizing: 'border-box',
             zIndex: 2,
