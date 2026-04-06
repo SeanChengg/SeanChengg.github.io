@@ -130,9 +130,6 @@ export const INTEGRATION_HEIGHT = 1440;
 
 export const FOOTER_TOP = INTEGRATION_TOP + INTEGRATION_HEIGHT + SECTION_GAP;
 
-/** `Home.jsx`: wrapper top (0.37) + inner scroll canvas offset (137) → top of div B in document px */
-export const SCROLL_CANVAS_TOP_OFFSET = 0.37 + 137;
-
 /**
  * Space reserved below FOOTER_TOP — footer shell uses `bottom: 0` to fill this with #212121.
  * Keep ≥ rendered footer content height so copy is not clipped.

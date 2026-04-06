@@ -6,28 +6,8 @@
   box-sizing: border-box;
 }
 
-#root {
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-/* Fills viewport below short pages so grey texture doesn’t show in the bottom corners */
-body::after {
-  content: '';
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--pf-bottom-fill, 0px);
-  background: #212121;
-  z-index: 0;
-  pointer-events: none;
-}
-
 body {
   overflow-x: hidden;
-  min-height: 100vh;
   background-color: #F3F3F3;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-blend-mode: multiply;
@@ -39,6 +19,14 @@ body {
   transform-origin: top left;
   /* Helps compositing when transform scale() is applied (narrow viewports) */
   transform-style: flat;
+}
+
+/* At ≥1920px the canvas is full width; right-align so the footer sits flush with the viewport (no gap on the right). Below 1920px usePageScale() scales from the left — keep default margins. */
+@media (min-width: 1920px) {
+  .page-scale-wrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
 }
 
 #sidebar-nav .sn-link,

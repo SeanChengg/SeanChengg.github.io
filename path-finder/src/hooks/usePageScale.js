@@ -16,11 +16,7 @@ export default function usePageScale() {
     } else {
       w.style.transform = 'translate3d(0, 0, 0) scale(' + s + ')';
     }
-    const sh = PAGE_SCROLL_HEIGHT * s;
-    document.body.style.height = sh + 'px';
-    /* When document is shorter than the viewport, grey body bg shows under the footer — paint black in that strip */
-    const bottomFill = Math.max(0, window.innerHeight - sh);
-    document.body.style.setProperty('--pf-bottom-fill', bottomFill + 'px');
+    document.body.style.height = (PAGE_SCROLL_HEIGHT * s) + 'px';
   }, []);
 
   useEffect(() => {

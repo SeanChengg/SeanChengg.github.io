@@ -9,7 +9,7 @@ import LineDetection from '../components/LineDetection';
 import MotorControlPID from '../components/MotorControlPID';
 import Integration from '../components/Integration';
 import SimpleFooter from '../components/SimpleFooter';
-import { FOOTER_TOP, PAGE_SCROLL_HEIGHT, SCROLL_CANVAS_TOP_OFFSET } from '../pageLayout';
+import { FOOTER_TOP, PAGE_SCROLL_HEIGHT } from '../pageLayout';
 
 export default function Home() {
   usePageScale();
@@ -20,41 +20,38 @@ export default function Home() {
       <Sidebar />
       <SvgFilters />
 
-      {/* Full-width shell so footer can use left+right (100% layout width). 100vw is wider than the layout when a scrollbar exists — body overflow-x clips the right side and kills border-top-right-radius. */}
-      <div
-        className="pf-page-shell"
-        style={{ position: 'relative', width: '100%', minHeight: PAGE_SCROLL_HEIGHT }}
-      >
-        <div className="page-scale-wrapper" style={{ width: 1920, position: 'relative', background: 'transparent' }}>
-          <div style={{ width: 1919, height: PAGE_SCROLL_HEIGHT, left: -0.25, top: 0.37, position: 'absolute', background: 'transparent' }}>
-            <div style={{ width: 1947, height: PAGE_SCROLL_HEIGHT, left: 0, top: 137, position: 'absolute', overflow: 'visible' }}>
-              <Hero />
-              <SystemArchitecture />
-              <Hardware />
-              <LineDetection />
-              <MotorControlPID />
-              <Integration />
+      <div className="page-scale-wrapper" style={{ width: 1920, position: 'relative', background: 'transparent' }}>
+        {/*
+          Keep scroll canvas width === 1920 (same as .page-scale-wrapper). A wider canvas (e.g. 1947px)
+          extended past the viewport; body overflow-x:hidden then clipped the right edge and hid the
+          footer’s top-right border-radius. Footer shell: width 100% × radius 24px 24px 0 0 below.
+        */}
+        <div style={{ width: 1920, height: PAGE_SCROLL_HEIGHT, left: 0, top: 0.37, position: 'absolute', background: 'transparent' }}>
+          <div style={{ width: 1920, height: PAGE_SCROLL_HEIGHT, left: 0, top: 137, position: 'absolute', overflow: 'visible' }}>
+            <Hero />
+            <SystemArchitecture />
+            <Hardware />
+            <LineDetection />
+            <MotorControlPID />
+            <Integration />
+            <div
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: FOOTER_TOP,
+                bottom: 0,
+                width: '100%',
+                maxWidth: 1900,
+                background: '#212121',
+                borderTopLeftRadius: 24,
+                borderTopRightRadius: 24,
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+              }}
+            >
+              <SimpleFooter />
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: SCROLL_CANVAS_TOP_OFFSET + FOOTER_TOP,
-            height: PAGE_SCROLL_HEIGHT - FOOTER_TOP,
-            background: '#212121',
-            borderTopLeftRadius: 24,
-            borderTopRightRadius: 24,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            overflow: 'hidden',
-            boxSizing: 'border-box',
-            zIndex: 2,
-          }}
-        >
-          <SimpleFooter />
         </div>
       </div>
     </>
