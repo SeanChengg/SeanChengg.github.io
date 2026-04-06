@@ -7,8 +7,8 @@
  * Gallery → Line Detection keeps a slightly larger Host-style gap (GAP_AFTER_GALLERY_TO_HEADING).
  */
 
-/** Fixed design width — scaling, sidebar, and section shells all use this (GitHub + local). */
-export const ARTBOARD_WIDTH = 1900;
+/** Fixed design width — all absolute layout in components assumes this width. Do not shrink without retuning every section. */
+export const ARTBOARD_WIDTH = 1920;
 
 /** Section root divs use width − 1px (legacy layout nudge). */
 export const SECTION_SHELL_WIDTH = ARTBOARD_WIDTH - 1;

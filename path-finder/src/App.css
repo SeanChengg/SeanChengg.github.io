@@ -22,12 +22,12 @@ body {
 }
 
 /*
- * 1900px artboard — Home.jsx wraps in .page-scale-canvas (flex center) for GitHub + local.
+ * 1920px artboard — Home.jsx wraps in .page-scale-canvas (flex center). Scale math matches ARTBOARD_WIDTH in pageLayout.js.
  */
 .page-scale-wrapper {
-  width: 1900px;
+  width: 1920px;
   flex-shrink: 0;
-  transform-origin: top center;
+  transform-origin: top left;
   transform-style: flat;
 }
 
