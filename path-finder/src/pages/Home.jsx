@@ -47,6 +47,8 @@ export default function Home() {
             background: '#212121',
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
             overflow: 'hidden',
             boxSizing: 'border-box',
             zIndex: 2,
