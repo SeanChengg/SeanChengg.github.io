@@ -32,10 +32,11 @@ export default function Home() {
             <div
               style={{
                 position: 'absolute',
-                left: 0,
+                /* Same band as sections (1919 @ 0.75); full 1947 width clipped the top-right radius */
+                left: 0.75,
                 top: FOOTER_TOP,
                 bottom: 0,
-                width: '100%',
+                width: 1919,
                 background: '#212121',
                 borderRadius: '24px 24px 0 0',
                 overflow: 'hidden',
