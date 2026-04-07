@@ -37,7 +37,7 @@ export default function Home() {
                   top: FOOTER_TOP,
                   bottom: 0,
                   width: ARTBOARD_WIDTH,
-                  background: '#212121',
+                  background: '#2A2A2A',
                   borderTopLeftRadius: 24,
                   borderTopRightRadius: 24,
                   overflow: 'hidden',
