@@ -328,8 +328,8 @@
       transform: rotateY(0deg) scale(1.15);
     }
     
-    /* Add hover effect for images */
-    .carousel .slider .item:hover img {
+    /* Add hover effect for images (Archor item 7 uses its own keyframed opacity) */
+    .carousel .slider .item:not(:nth-child(7)):hover img {
       opacity: 1;
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
       pointer-events: auto;
@@ -474,6 +474,100 @@
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); /* Glow effect that follows contour */
       opacity: 1;
       /* We're using drop-shadow instead of box-shadow to follow the image contour */
+    }
+
+    /* Archor (item 7): symmetric crossfades (no dark gap); linear = swift + even */
+    .carousel .slider .item:nth-child(7) .archor-sequence {
+      --archor-s: 0.72;
+      --archor-s-lit: 0.84;
+    }
+    .carousel .slider .item:nth-child(7) .archor-sequence img {
+      opacity: 0;
+      transition: filter 0.45s ease, transform 0.45s ease;
+    }
+    .carousel .slider .item:nth-child(7) .archor-sequence .archor-f1 {
+      opacity: 0.4;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+      transform: rotateY(0deg) scale(var(--archor-s));
+    }
+    .carousel .slider .item:nth-child(7) .archor-sequence .archor-f2,
+    .carousel .slider .item:nth-child(7) .archor-sequence .archor-f3 {
+      opacity: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+      transform: rotateY(0deg) scale(var(--archor-s));
+    }
+    /*
+     * Cycle order on hover: f2 → f3 → f1 → f2 ...
+     * f2 starts at opacity 1 at 0% so it shows INSTANTLY on hover with zero delay.
+     * Crossfade windows: 27–33% f2↔f3, 60–66% f3↔f1, 93–100% f1↔f2
+     */
+    @keyframes archor-frame-1 {
+      0%, 60% {
+        opacity: 0;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+        transform: rotateY(0deg) scale(var(--archor-s));
+      }
+      66%, 93% {
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+        transform: rotateY(0deg) scale(var(--archor-s-lit));
+      }
+      100% {
+        opacity: 0;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+        transform: rotateY(0deg) scale(var(--archor-s));
+      }
+    }
+    @keyframes archor-frame-2 {
+      0%, 27% {
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+        transform: rotateY(0deg) scale(var(--archor-s-lit));
+      }
+      33%, 93% {
+        opacity: 0;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+        transform: rotateY(0deg) scale(var(--archor-s));
+      }
+      100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+        transform: rotateY(0deg) scale(var(--archor-s-lit));
+      }
+    }
+    @keyframes archor-frame-3 {
+      0%, 27% {
+        opacity: 0;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+        transform: rotateY(0deg) scale(var(--archor-s));
+      }
+      33%, 60% {
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+        transform: rotateY(0deg) scale(var(--archor-s-lit));
+      }
+      66%, 100% {
+        opacity: 0;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2));
+        transform: rotateY(0deg) scale(var(--archor-s));
+      }
+    }
+    .carousel .slider .item:nth-child(7):hover .archor-sequence .archor-f1,
+    .carousel .slider .item:nth-child(7):active .archor-sequence .archor-f1 {
+      animation: archor-frame-1 3.35s linear infinite;
+    }
+    .carousel .slider .item:nth-child(7):hover .archor-sequence .archor-f2,
+    .carousel .slider .item:nth-child(7):active .archor-sequence .archor-f2 {
+      animation: archor-frame-2 3.35s linear infinite;
+    }
+    .carousel .slider .item:nth-child(7):hover .archor-sequence .archor-f3,
+    .carousel .slider .item:nth-child(7):active .archor-sequence .archor-f3 {
+      animation: archor-frame-3 3.35s linear infinite;
+    }
+    /* Don’t let the global :hover img rule fight Archor keyframes */
+    .carousel .slider .item:nth-child(7):hover .archor-sequence img {
+      transition: none;
     }
 
     /* Page and button transitions */
@@ -621,7 +715,13 @@
             <img class="jaw-open" src="images/JAW2.png" alt="JAW2 Image" />
           </div>
         </div>
-        <div class="item" style="--position: 7;"><img src="images/MCW.png" alt="MCW Image" /></div>
+        <div class="item" style="--position: 7;">
+          <div class="image-container archor-sequence">
+            <img class="archor-f1" src="images/Archor01.png" alt="Archor render" />
+            <img class="archor-f2" src="images/Archor02.png" alt="" aria-hidden="true" />
+            <img class="archor-f3" src="images/Archor03.png" alt="" aria-hidden="true" />
+          </div>
+        </div>
         <div class="item" style="--position: 8;"><img src="images/MCW.png" alt="MCW Image" /></div>
         <div class="item" style="--position: 9;"><img src="images/MCW.png" alt="MCW Image" /></div>
         <div class="item" style="--position: 10;"><img src="images/MCW.png" alt="MCW Image" /></div>
@@ -803,8 +903,12 @@
           
           // Check if we have dual images (open/closed states)
           if (imgs.length > 1) {
-            // Use the "open" state image that shows on hover
-            imgSrc = imgs[1].src;
+            // Archor slot (7): three frames — log first; others use "open" second image
+            if (index + 1 === 7 && imgs.length >= 3) {
+              imgSrc = imgs[0].src;
+            } else {
+              imgSrc = imgs[1].src;
+            }
           } else if (imgs.length === 1) {
             imgSrc = imgs[0].src;
           }
