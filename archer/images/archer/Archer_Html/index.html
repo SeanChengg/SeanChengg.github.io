@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Archer ring — patina</title>
+  <style>
+    /*
+      Light-only chrome: no dark panels, no letterboxed “stage” that reads as a black box.
+    */
+    :root {
+      --paper: #f3f3f3;
+      --muted: #737373;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html {
+      margin: 0;
+      height: 100%;
+      background: var(--paper) !important;
+      color-scheme: light;
+    }
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--paper) !important;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 0;
+    }
+    #wrap {
+      width: 100%;
+      max-width: 1289px;
+      margin: 0 auto;
+      padding: 0;
+      background: var(--paper);
+    }
+    #cv {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: top;
+      background: var(--paper) !important;
+      border-radius: 12px;
+      /* Avoid GPU scaling shimmer on some GPUs */
+      image-rendering: auto;
+    }
+    #status {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
+      text-align: center;
+      font: 14px/1.4 system-ui, sans-serif;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    #wrap.posrel { position: relative; }
+    #play {
+      display: none;
+      margin: 16px auto 0;
+      padding: 10px 20px;
+      font: 15px system-ui, sans-serif;
+      color: #212121;
+      background: #e8e8e8;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    #play:focus-visible {
+      outline: 2px solid #212121;
+      outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #play { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap" class="posrel">
+    <canvas id="cv" aria-label="Patina animation"></canvas>
+    <div id="status" role="status" aria-live="polite"></div>
+  </div>
+  <button type="button" id="play">Play animation</button>
+
+  <script>
+(function () {
+  var FRAME_COUNT = 300;
+  var PREFIX = 'patina_test.png';
+  var CROP_BOTTOM = 100;
+  /* Slightly slower = less harsh strobing than 18fps */
+  var FPS = 12;
+  var BG = '#f3f3f3';
+
+  var canvas = document.getElementById('cv');
+  var ctx = null;
+  try {
+    ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+  } catch (e) {}
+  if (!ctx) ctx = canvas.getContext('2d', { alpha: false });
+  var statusEl = document.getElementById('status');
+  var playBtn = document.getElementById('play');
+
+  var reducedMotion = false;
+  try {
+    reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (e) {}
+
+  function framePath(i) {
+    return PREFIX + String(i).padStart(4, '0') + '.png';
+  }
+
+  /** Load one image and optional ImageBitmap for fast blits */
+  function loadFrame(idx) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.onload = function () {
+        var p = Promise.resolve(null);
+        if (typeof createImageBitmap === 'function') {
+          p = createImageBitmap(img).catch(function () { return null; });
+        }
+        p.then(function (bmp) {
+          resolve({ idx: idx, img: img, bmp: bmp });
+        });
+      };
+      img.onerror = function () {
+        resolve({ idx: idx, img: null, bmp: null });
+      };
+      img.src = framePath(idx);
+    });
+  }
+
+  var frames = [];
+  var cw = 0;
+  var ch = 0;
+
+  function sizeFromEntry(entry) {
+    var img = entry.img;
+    if (!img || !img.naturalWidth) return;
+    cw = img.naturalWidth;
+    ch = Math.max(1, img.naturalHeight - CROP_BOTTOM);
+  }
+
+  function drawEntry(entry) {
+    if (!entry || !entry.img || !entry.img.naturalWidth) return;
+    if (canvas.width !== cw || canvas.height !== ch) {
+      canvas.width = cw;
+      canvas.height = ch;
+    }
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, cw, ch);
+    /* Source region: full width × (height minus bottom crop) */
+    if (entry.bmp) {
+      try {
+        ctx.drawImage(entry.bmp, 0, 0, cw, ch, 0, 0, cw, ch);
+      } catch (e) {
+        ctx.drawImage(entry.img, 0, 0, cw, ch, 0, 0, cw, ch);
+      }
+    } else {
+      ctx.drawImage(entry.img, 0, 0, cw, ch, 0, 0, cw, ch);
+    }
+  }
+
+  function setStatus(text) {
+    statusEl.textContent = text;
+  }
+
+  /** Parallel load in waves to avoid hammering decode */
+  function preloadAll() {
+    var wave = 40;
+    var i = 1;
+    var done = 0;
+
+    function nextWave() {
+      var batch = [];
+      for (var n = 0; n < wave && i <= FRAME_COUNT; n++, i++) {
+        batch.push(loadFrame(i));
+      }
+      if (!batch.length) return Promise.resolve();
+
+      return Promise.all(batch).then(function (results) {
+        results.forEach(function (r) {
+          if (r && r.img && r.img.naturalWidth) {
+            frames[r.idx] = r;
+          }
+          done++;
+        });
+        setStatus('Loading… ' + done + '/' + FRAME_COUNT);
+        return nextWave();
+      });
+    }
+
+    setStatus('Loading… 0/' + FRAME_COUNT);
+    return nextWave().then(function () {
+      /* Find first valid frame for dimensions */
+      for (var k = 1; k <= FRAME_COUNT; k++) {
+        if (frames[k]) {
+          sizeFromEntry(frames[k]);
+          break;
+        }
+      }
+      if (!cw || !ch) {
+        setStatus('Could not load frames.');
+        return;
+      }
+      setStatus('');
+      var firstDraw = frames[1];
+      if (!firstDraw) {
+        for (var j = 1; j <= FRAME_COUNT; j++) {
+          if (frames[j]) {
+            firstDraw = frames[j];
+            break;
+          }
+        }
+      }
+      if (firstDraw) drawEntry(firstDraw);
+    });
+  }
+
+  var current = 1;
+  var playing = false;
+  var raf = 0;
+  var lastT = 0;
+  var accum = 0;
+  var frameMs = 1000 / FPS;
+
+  function tick(t) {
+    if (!playing) return;
+    if (!lastT) lastT = t;
+    accum += t - lastT;
+    lastT = t;
+    if (accum > frameMs * 4) accum = frameMs;
+    while (accum >= frameMs) {
+      accum -= frameMs;
+      current++;
+      if (current > FRAME_COUNT) current = 1;
+      var ent = frames[current];
+      if (ent) drawEntry(ent);
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function startPlayback() {
+    if (playing) return;
+    playing = true;
+    lastT = 0;
+    accum = 0;
+    raf = requestAnimationFrame(tick);
+  }
+
+  function stopPlayback() {
+    playing = false;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+  }
+
+  preloadAll().then(function () {
+    if (!cw) return;
+
+    if (reducedMotion) {
+      playBtn.addEventListener('click', function () {
+        playBtn.style.display = 'none';
+        startPlayback();
+      });
+      return;
+    }
+
+    startPlayback();
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      stopPlayback();
+    } else if (!reducedMotion && cw) {
+      lastT = 0;
+      accum = 0;
+      startPlayback();
+    }
+  });
+})();
+  </script>
+</body>
+</html>
